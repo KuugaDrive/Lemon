@@ -1,10 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
+        <h2 class="font-semibold text-xl text-slate-800 leading-tight">
+            Pembayaran SPP
+        </h2>
+    </x-slot>
+
+    <div class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                    Pembayaran SPP
-                </h2>
+                <h3 class="text-lg font-bold text-slate-900">Transaksi SPP</h3>
+                <p class="text-sm text-slate-500">Kelola catatan iuran dan riwayat pembayaran SPP santri.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 <a href="{{ route('spp.pengaturan') }}" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5">
@@ -34,9 +39,6 @@
                 </a>
             </div>
         </div>
-    </x-slot>
-
-    <div class="space-y-6">
         @if(session('kuitansi_id'))
             <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div class="text-sm text-emerald-900 font-medium">

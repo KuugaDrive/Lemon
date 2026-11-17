@@ -1,15 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-                <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                    Monitoring Tunggakan SPP
-                </h2>
-                <p class="text-xs text-slate-500 mt-1">Daftar santri yang belum melakukan pembayaran pada periode berjalan</p>
-            </div>
-            <a href="{{ route('spp.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">
-                &larr; Kembali ke Pembayaran
+        <div class="flex items-center gap-2">
+            <a href="{{ route('spp.index') }}" class="text-slate-400 hover:text-slate-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
             </a>
+            <h2 class="font-semibold text-xl text-slate-800 leading-tight">
+                Monitoring Tunggakan SPP
+            </h2>
         </div>
     </x-slot>
 

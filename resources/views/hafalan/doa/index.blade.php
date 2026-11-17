@@ -1,19 +1,23 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Hafalan Doa Harian
-            </h2>
-            <a href="{{ route('hafalan.doa.create') }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors flex items-center gap-2">
+        <h2 class="font-semibold text-xl text-slate-800 leading-tight">
+            Hafalan Doa Harian
+        </h2>
+    </x-slot>
+
+    <div class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h3 class="text-lg font-bold text-slate-900">Daftar Hafalan Doa Harian</h3>
+                <p class="text-sm text-slate-500">Catatan pengujian dan penilaian hafalan doa harian santri.</p>
+            </div>
+            <a href="{{ route('hafalan.doa.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors whitespace-nowrap self-start sm:self-auto">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 <span>Tambah Hafalan</span>
             </a>
         </div>
-    </x-slot>
-
-    <div class="space-y-6">
         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
             <form method="GET" action="{{ route('hafalan.doa.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 <div>
