@@ -25,7 +25,7 @@
             <div>
                 <label for="nama_kelas" class="block text-sm font-medium text-slate-700">Nama Kelas <span class="text-rose-500">*</span></label>
                 <input type="text" id="nama_kelas" name="nama_kelas" value="{{ old('nama_kelas') }}" required autofocus
-                       placeholder="Contoh: Kelas Usman bin Affan (PAUD A)" 
+                       placeholder="Contoh: Kelas Usman bin Affan PAUD A" 
                        class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                 @error('nama_kelas')
                     <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>

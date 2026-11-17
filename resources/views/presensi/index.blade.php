@@ -89,7 +89,7 @@
                                     <th class="px-4 py-3.5 text-center w-12">No</th>
                                     <th class="px-6 py-3.5">Nama Santri</th>
                                     <th class="px-6 py-3.5 text-center">Status Kehadiran</th>
-                                    <th class="px-6 py-3.5">Keterangan (Opsional)</th>
+                                    <th class="px-6 py-3.5">Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200">

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Pencatatan Pembayaran SPP (Satuan)
+                Pencatatan Pembayaran SPP Satuan
             </h2>
             <a href="{{ route('spp.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">
                 &larr; Kembali
@@ -24,7 +24,7 @@
                         <option value="">-- Pilih Santri --</option>
                         @foreach($siswas as $s)
                             <option value="{{ $s->id }}" {{ old('siswa_id', $selectedSiswaId) == $s->id ? 'selected' : '' }}>
-                                {{ $s->nama_siswa }} (NIS: {{ $s->nis }}) — {{ $s->kelas?->nama_kelas }}
+                                {{ $s->nama_siswa }} &bull; NIS {{ $s->nis }} &bull; {{ $s->kelas?->nama_kelas }}
                             </option>
                         @endforeach
                     </select>
@@ -67,7 +67,7 @@
                     <!-- Nominal -->
                     <div>
                         <label for="nominal" class="block text-sm font-semibold text-slate-700 mb-1">
-                            Nominal (Rp) <span class="text-rose-500">*</span>
+                            Nominal Rupiah <span class="text-rose-500">*</span>
                         </label>
                         <input type="number" id="nominal" name="nominal" min="1" step="1000" value="{{ old('nominal', $defaultNominal) }}" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('nominal') border-rose-500 @enderror" required>
                         @error('nominal') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
@@ -86,7 +86,7 @@
                 <!-- Keterangan -->
                 <div>
                     <label for="ket" class="block text-sm font-semibold text-slate-700 mb-1">
-                        Keterangan (Opsional)
+                        Keterangan
                     </label>
                     <input type="text" id="ket" name="ket" value="{{ old('ket') }}" placeholder="Misal: Tunai / Transfer Bank BCA a.n..." class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('ket') border-rose-500 @enderror">
                     @error('ket') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror

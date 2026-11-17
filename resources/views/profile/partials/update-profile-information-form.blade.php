@@ -14,7 +14,7 @@
         @method('patch')
 
         <div>
-            <x-input-label for="nip" value="NIP (Nomor Induk Pegawai)" />
+            <x-input-label for="nip" value="Nomor Induk Pegawai NIP" />
             <x-text-input id="nip" name="nip" type="text" class="mt-1 block w-full bg-gray-100 text-gray-600 cursor-not-allowed" :value="$user->nip" disabled readonly />
             <p class="text-xs text-gray-500 mt-1">NIP dikelola oleh Administrator dan tidak dapat diubah sendiri.</p>
         </div>
@@ -26,7 +26,7 @@
         </div>
 
         <div>
-            <x-input-label for="email" value="Email (Opsional)" />
+            <x-input-label for="email" value="Email" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>

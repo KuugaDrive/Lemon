@@ -45,7 +45,7 @@
                             <th class="px-6 py-4">NIP</th>
                             <th class="px-6 py-4">Nama Lengkap</th>
                             <th class="px-6 py-4">No. HP</th>
-                            <th class="px-6 py-4">Peran (Role)</th>
+                            <th class="px-6 py-4">Peran</th>
                             <th class="px-6 py-4">Kelas Diampu</th>
                             <th class="px-6 py-4 text-center">Aksi</th>
                         </tr>

@@ -24,7 +24,7 @@
                     <select id="siswa_id" name="siswa_id" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('siswa_id') border-rose-500 @enderror" required>
                         @foreach($siswas as $s)
                             <option value="{{ $s->id }}" {{ old('siswa_id', $bacaBuku->siswa_id) == $s->id ? 'selected' : '' }}>
-                                {{ $s->nama_siswa }} (NIS: {{ $s->nis }}) — {{ $s->kelas?->nama_kelas }}
+                                {{ $s->nama_siswa }} &bull; NIS {{ $s->nis }} &bull; {{ $s->kelas?->nama_kelas }}
                             </option>
                         @endforeach
                     </select>
@@ -39,7 +39,7 @@
                     <select id="alfabet_id" name="alfabet_id" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('alfabet_id') border-rose-500 @enderror" required>
                         @foreach($alfabets as $a)
                             <option value="{{ $a->id }}" {{ old('alfabet_id', $bacaBuku->alfabet_id) == $a->id ? 'selected' : '' }}>
-                                {{ $a->nama_alfabet }} {{ $a->ket ? '(' . $a->ket . ')' : '' }}
+                                {{ $a->nama_alfabet }} {{ $a->ket ? '&bull; ' . $a->ket : '' }}
                             </option>
                         @endforeach
                     </select>

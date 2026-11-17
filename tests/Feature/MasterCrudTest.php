@@ -249,6 +249,34 @@ class MasterCrudTest extends TestCase
         $this->assertNull(Siswa::find($siswa->id));
     }
 
+    public function test_admin_can_crud_siswa_with_ayah_dan_ibu_kandung(): void
+    {
+        $storeResponse = $this->actingAs($this->admin)->post(route('master.siswa.store'), [
+            'nis' => '20267777',
+            'nama_siswa' => 'Santri Al-Iman',
+            'nama_ayah_kandung' => 'Ahmad Fauzi',
+            'nama_ibu_kandung' => 'Khadijah',
+            'no_hp_ortu' => '081277778888',
+            'alamat' => 'Jl. Kebon Jeruk No. 10',
+            'kelas_id' => $this->kelasA->id,
+        ]);
+        $storeResponse->assertRedirect(route('master.siswa.index'));
+        $siswa = Siswa::where('nis', '20267777')->first();
+        $this->assertNotNull($siswa);
+        $this->assertEquals('Ahmad Fauzi', $siswa->nama_ayah_kandung);
+        $this->assertEquals('Khadijah', $siswa->nama_ibu_kandung);
+
+        $showResponse = $this->actingAs($this->admin)->get(route('master.siswa.show', $siswa));
+        $showResponse->assertOk();
+        $showResponse->assertSee('Ahmad Fauzi');
+        $showResponse->assertSee('Khadijah');
+
+        $indexResponse = $this->actingAs($this->admin)->get(route('master.siswa.index'));
+        $indexResponse->assertOk();
+        $indexResponse->assertSee('Ahmad Fauzi');
+        $indexResponse->assertSee('Khadijah');
+    }
+
     public function test_nis_duplicate_is_rejected(): void
     {
         Siswa::create([

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-            Katalog Surat Al-Qur'an (114 Surat)
+            Kumpulan Nama Surat Al-Qur'an
         </h2>
     </x-slot>
 

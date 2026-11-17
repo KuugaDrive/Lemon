@@ -5,14 +5,15 @@
     <thead>
         <tr>
             <th style="width: 4%;" class="text-center">No</th>
-            <th style="width: 14%;">Tanggal</th>
-            <th style="width: 14%;">NIS</th>
+            <th style="width: 12%;">Tanggal</th>
+            <th style="width: 12%;">NIS</th>
             <th>Nama Santri</th>
-            <th style="width: 18%;">Surat</th>
-            <th style="width: 8%;" class="text-center">Juz</th>
-            <th style="width: 12%;" class="text-center">Ayat</th>
+            <th>Wali Santri</th>
+            <th style="width: 16%;">Surat</th>
+            <th style="width: 6%;" class="text-center">Juz</th>
+            <th style="width: 10%;" class="text-center">Ayat</th>
             <th style="width: 8%;" class="text-center">Nilai</th>
-            <th style="width: 14%;">Penguji</th>
+            <th style="width: 12%;">Penguji</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
                 <td>{{ $item->tanggal->translatedFormat('d M Y') }}</td>
                 <td class="font-mono">{{ $item->siswa->nis }}</td>
                 <td class="font-bold">{{ $item->siswa->nama_siswa }}</td>
+                <td>{{ $item->siswa->nama_wali }}</td>
                 <td>{{ $item->surat->nama_surat }}</td>
                 <td class="text-center">{{ $item->juz }}</td>
                 <td class="text-center">{{ $item->ayat_mulai }}-{{ $item->ayat_selesai }}</td>
@@ -32,7 +34,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="9" class="text-center" style="padding: 16px; color: #94a3b8; font-style: italic;">
+                <td colspan="10" class="text-center" style="padding: 16px; color: #94a3b8; font-style: italic;">
                     Belum ada catatan setoran Al-Qur'an pada rentang tanggal ini.
                 </td>
             </tr>

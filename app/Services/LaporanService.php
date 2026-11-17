@@ -198,19 +198,19 @@ class LaporanService
     public static function judul(string $jenis, string $mode): string
     {
         $labelJenis = match ($jenis) {
-            'presensi' => 'Presensi & Kehadiran Santri',
+            'presensi' => 'Presensi dan Kehadiran Santri',
             'iqro' => 'Perkembangan Setoran Iqro',
             'quran' => 'Perkembangan Setoran Al-Qur\'an',
             'doa' => 'Hafalan Doa Harian',
             'hadist' => 'Hafalan Hadits Pendek',
-            'surat' => 'Hafalan Surat Pendek / Al-Qur\'an',
-            'baca_buku' => 'Baca Buku / Huruf Hijaiyah',
+            'surat' => 'Hafalan Nama Surat',
+            'baca_buku' => 'Baca Buku Alfabet',
             'spp' => 'Pembayaran Iuran SPP',
             default => 'Laporan Akademik',
         };
 
         $labelMode = $mode === 'siswa' ? 'Individual Santri' : 'Rekapitulasi Kelas';
 
-        return "LAPORAN " . strtoupper($labelJenis) . " (" . strtoupper($labelMode) . ")";
+        return "LAPORAN " . strtoupper($labelJenis) . " — " . strtoupper($labelMode);
     }
 }

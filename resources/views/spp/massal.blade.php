@@ -64,7 +64,7 @@
                     <h3 class="font-bold text-slate-900 mb-4">Pengaturan Pembayaran Bersama</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Nominal Per Santri (Rp)</label>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Nominal Per Santri Rupiah</label>
                             <input type="number" name="nominal" min="1" step="1000" value="{{ old('nominal', $defaultNominal) }}" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 text-sm" required>
                         </div>
                         <div>
