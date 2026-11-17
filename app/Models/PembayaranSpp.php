@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\SppService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -42,9 +43,6 @@ class PembayaranSpp extends Model
         return $this->belongsTo(User::class, 'dicatat_oleh');
     }
 
-    /**
-     * Label periode dalam Bahasa Indonesia, misal "November 2026".
-     */
     protected function periodeLabel(): Attribute
     {
         return Attribute::make(
@@ -55,13 +53,28 @@ class PembayaranSpp extends Model
         );
     }
 
-    /**
-     * Format nominal dalam Rupiah, misal "Rp 150.000".
-     */
     protected function nominalRupiah(): Attribute
     {
         return Attribute::make(
             get: fn () => 'Rp ' . number_format($this->nominal, 0, ',', '.')
+        );
+    }
+
+    protected function nomorKuitansi(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $periode = sprintf('%04d%02d', $this->tahun, $this->bulan);
+                $nomor = sprintf('%04d', $this->id);
+                return "KW-{$periode}-{$nomor}";
+            }
+        );
+    }
+
+    protected function terbilang(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => SppService::terbilangRupiah($this->nominal)
         );
     }
 

@@ -240,4 +240,63 @@ class SppTest extends TestCase
 
         $this->assertDatabaseHas('users', ['id' => $petugas->id]);
     }
+
+    public function test_admin_dan_bendahara_dapat_melihat_dan_mencetak_kuitansi_spp(): void
+    {
+        $pembayaran = PembayaranSpp::create([
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 11,
+            'tahun' => 2026,
+            'nominal' => 150000,
+            'tgl_bayar' => now()->toDateString(),
+            'dicatat_oleh' => $this->admin->id,
+            'ket' => 'Lunas Tunai',
+        ]);
+
+        $response = $this->actingAs($this->admin)->get(route('spp.kuitansi', $pembayaran));
+        $response->assertStatus(200);
+        $response->assertViewIs('spp.kuitansi');
+        $response->assertSee($pembayaran->nomor_kuitansi);
+        $response->assertSee($this->siswa1->nama_siswa);
+        $response->assertSee('Seratus Lima Puluh Ribu Rupiah');
+        $response->assertSee('Lunas Tunai');
+
+        $responseBendahara = $this->actingAs($this->bendahara)->get(route('spp.kuitansi', $pembayaran));
+        $responseBendahara->assertStatus(200);
+    }
+
+    public function test_guru_non_admin_ditolak_melihat_kuitansi_spp(): void
+    {
+        $pembayaran = PembayaranSpp::create([
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 11,
+            'tahun' => 2026,
+            'nominal' => 150000,
+            'tgl_bayar' => now()->toDateString(),
+            'dicatat_oleh' => $this->admin->id,
+        ]);
+
+        $response = $this->actingAs($this->guru)->get(route('spp.kuitansi', $pembayaran));
+        $response->assertStatus(403);
+    }
+
+    public function test_terbilang_rupiah_dan_nomor_kuitansi_bekerja_dengan_benar(): void
+    {
+        $this->assertEquals('Nol Rupiah', SppService::terbilangRupiah(0));
+        $this->assertEquals('Seratus Lima Puluh Ribu Rupiah', SppService::terbilangRupiah(150000));
+        $this->assertEquals('Dua Juta Lima Ratus Ribu Rupiah', SppService::terbilangRupiah(2500000));
+        $this->assertEquals('Tujuh Puluh Lima Ribu Rupiah', SppService::terbilangRupiah(75000));
+
+        $pembayaran = PembayaranSpp::create([
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 5,
+            'tahun' => 2026,
+            'nominal' => 200000,
+            'tgl_bayar' => now()->toDateString(),
+            'dicatat_oleh' => $this->admin->id,
+        ]);
+
+        $this->assertStringStartsWith('KW-202605-', $pembayaran->nomor_kuitansi);
+        $this->assertEquals('Dua Ratus Ribu Rupiah', $pembayaran->terbilang);
+    }
 }

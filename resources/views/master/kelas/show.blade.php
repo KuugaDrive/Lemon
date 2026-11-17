@@ -1,34 +1,31 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <a href="{{ route('master.kelas.index') }}" class="text-slate-400 hover:text-slate-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                </a>
-                <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                    Detail Kelas: {{ $kelas->nama_kelas }}
-                </h2>
-            </div>
-
-            <div class="flex items-center gap-2">
-                <a href="{{ route('master.kelas.edit', $kelas) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
-                    <span>Ubah Kelas</span>
-                </a>
-            </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('master.kelas.index') }}" class="text-slate-400 hover:text-slate-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+            </a>
+            <h2 class="font-semibold text-xl text-slate-800 leading-tight">
+                Detail Kelas: {{ $kelas->nama_kelas }}
+            </h2>
         </div>
     </x-slot>
 
     <div class="space-y-6">
-        <!-- Info Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Kelas Info -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 md:col-span-2">
-                <h3 class="text-base font-semibold text-slate-900 mb-3">Informasi Kelas</h3>
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base font-semibold text-slate-900">Informasi Kelas</h3>
+                    @role('admin')
+                        <a href="{{ route('master.kelas.edit', $kelas) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                            <span>Ubah Kelas</span>
+                        </a>
+                    @endrole
+                </div>
                 <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div>
                         <dt class="text-slate-500 font-medium">Nama Kelas</dt>

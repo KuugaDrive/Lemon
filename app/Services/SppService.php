@@ -10,9 +10,6 @@ use Illuminate\Support\Collection;
 
 class SppService
 {
-    /**
-     * Ambil daftar santri yang menunggak / belum membayar SPP untuk periode bulan & tahun tertentu.
-     */
     public static function tunggakan(int $bulan, int $tahun, ?int $kelasId = null): array
     {
         $defaultNominal = (int) Pengaturan::get('spp_nominal_default', 150000);
@@ -24,7 +21,6 @@ class SppService
             $query->where('kelas_id', $kelasId);
         }
 
-        // Cari siswa yang BELUM memiliki catatan pembayaran di (bulan, tahun) terpilih
         $query->whereDoesntHave('pembayaranSpps', function ($q) use ($bulan, $tahun) {
             $q->where('bulan', $bulan)->where('tahun', $tahun);
         });
@@ -45,9 +41,6 @@ class SppService
         ];
     }
 
-    /**
-     * Ambil riwayat pembayaran SPP seorang santri.
-     */
     public static function riwayat(Siswa $siswa): Collection
     {
         return $siswa->pembayaranSpps()
@@ -55,5 +48,44 @@ class SppService
             ->orderBy('tahun', 'desc')
             ->orderBy('bulan', 'desc')
             ->get();
+    }
+
+    public static function terbilang(int $angka): string
+    {
+        $angka = abs($angka);
+        $baca = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh', 'Sebelas'];
+
+        if ($angka < 12) {
+            $hasil = $baca[$angka];
+        } elseif ($angka < 20) {
+            $hasil = self::terbilang($angka - 10) . ' Belas';
+        } elseif ($angka < 100) {
+            $hasil = self::terbilang((int) ($angka / 10)) . ' Puluh ' . self::terbilang($angka % 10);
+        } elseif ($angka < 200) {
+            $hasil = 'Seratus ' . self::terbilang($angka - 100);
+        } elseif ($angka < 1000) {
+            $hasil = self::terbilang((int) ($angka / 100)) . ' Ratus ' . self::terbilang($angka % 100);
+        } elseif ($angka < 2000) {
+            $hasil = 'Seribu ' . self::terbilang($angka - 1000);
+        } elseif ($angka < 1000000) {
+            $hasil = self::terbilang((int) ($angka / 1000)) . ' Ribu ' . self::terbilang($angka % 1000);
+        } elseif ($angka < 1000000000) {
+            $hasil = self::terbilang((int) ($angka / 1000000)) . ' Juta ' . self::terbilang($angka % 1000000);
+        } elseif ($angka < 1000000000000) {
+            $hasil = self::terbilang((int) ($angka / 1000000000)) . ' Miliar ' . self::terbilang($angka % 1000000000);
+        } else {
+            $hasil = '';
+        }
+
+        return trim(preg_replace('/\s+/', ' ', $hasil));
+    }
+
+    public static function terbilangRupiah(int $angka): string
+    {
+        if ($angka === 0) {
+            return 'Nol Rupiah';
+        }
+
+        return self::terbilang($angka) . ' Rupiah';
     }
 }
