@@ -108,6 +108,20 @@ class SiswaController extends Controller
      */
     public function destroy(Siswa $siswa): RedirectResponse
     {
+        if (
+            $siswa->presensis()->exists() ||
+            $siswa->setoranIqros()->exists() ||
+            $siswa->setoranQurans()->exists() ||
+            $siswa->hafalanDoas()->exists() ||
+            $siswa->hafalanHadists()->exists() ||
+            $siswa->hafalanSurats()->exists() ||
+            $siswa->bacaBukus()->exists() ||
+            $siswa->pembayaranSpps()->exists()
+        ) {
+            return redirect()->route('master.siswa.index')
+                ->with('error', "Santri {$siswa->nama_siswa} tidak dapat dihapus karena telah memiliki data riwayat setoran/presensi/SPP.");
+        }
+
         try {
             $nama = $siswa->nama_siswa;
             $siswa->delete();
@@ -116,7 +130,7 @@ class SiswaController extends Controller
                 ->with('success', "Data santri {$nama} berhasil dihapus.");
         } catch (QueryException $e) {
             return redirect()->route('master.siswa.index')
-                ->with('error', 'Santri tidak dapat dihapus karena masih memiliki relasi transaksi.');
+                ->with('error', 'Santri tidak dapat dihapus karena masih memiliki relasi data terkait.');
         }
     }
 }

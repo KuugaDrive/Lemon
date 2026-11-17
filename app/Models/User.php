@@ -60,6 +60,41 @@ class User extends Authenticatable
         return $this->belongsToMany(Kelas::class, 'guru_kelas', 'user_id', 'kelas_id')->withTimestamps();
     }
 
+    public function setoranIqros(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SetoranIqro::class, 'guru_id');
+    }
+
+    public function setoranQurans(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SetoranQuran::class, 'guru_id');
+    }
+
+    public function hafalanDoas(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(HafalanDoa::class, 'guru_id');
+    }
+
+    public function hafalanHadists(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(HafalanHadist::class, 'guru_id');
+    }
+
+    public function hafalanSurats(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(HafalanSurat::class, 'guru_id');
+    }
+
+    public function bacaBukus(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BacaBuku::class, 'guru_id');
+    }
+
+    public function pembayaranSpps(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PembayaranSpp::class, 'dicatat_oleh');
+    }
+
     /**
      * Cek apakah user memiliki akses ke data siswa tertentu.
      */

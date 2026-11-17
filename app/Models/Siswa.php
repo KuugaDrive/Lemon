@@ -31,6 +31,49 @@ class Siswa extends Model
     }
 
     /**
+     * Riwayat presensi santri.
+     */
+    public function presensis(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Presensi::class, 'siswa_id');
+    }
+
+    public function setoranIqros(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SetoranIqro::class, 'siswa_id');
+    }
+
+    public function setoranQurans(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SetoranQuran::class, 'siswa_id');
+    }
+
+    public function hafalanDoas(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(HafalanDoa::class, 'siswa_id');
+    }
+
+    public function hafalanHadists(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(HafalanHadist::class, 'siswa_id');
+    }
+
+    public function hafalanSurats(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(HafalanSurat::class, 'siswa_id');
+    }
+
+    public function bacaBukus(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BacaBuku::class, 'siswa_id');
+    }
+
+    public function pembayaranSpps(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PembayaranSpp::class, 'siswa_id');
+    }
+
+    /**
      * Scope untuk membatasi siswa berdasarkan role pengguna:
      * - Admin melihat semua siswa
      * - Guru hanya melihat siswa di kelas yang diampunya

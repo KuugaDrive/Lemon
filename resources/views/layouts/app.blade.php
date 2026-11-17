@@ -113,6 +113,145 @@
                         </svg>
                         <span>Data Santri / Siswa</span>
                     </a>
+
+                    <!-- Section: Presensi -->
+                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Presensi Harian
+                    </div>
+
+                    <a href="{{ route('presensi.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.index') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">📝</span>
+                        <span>Input Presensi</span>
+                    </a>
+
+                    <a href="{{ route('presensi.rekap') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.rekap') || request()->routeIs('presensi.siswa') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">📊</span>
+                        <span>Rekap Presensi</span>
+                    </a>
+
+                    <!-- Section: Setoran & Hafalan -->
+                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Setoran & Hafalan
+                    </div>
+
+                    <a href="{{ route('setoran.iqro.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.iqro.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">📖</span>
+                        <span>Setoran Iqro</span>
+                    </a>
+
+                    <a href="{{ route('setoran.quran.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.quran.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">📗</span>
+                        <span>Setoran Al-Qur'an</span>
+                    </a>
+
+                    <a href="{{ route('hafalan.doa.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.doa.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">🤲</span>
+                        <span>Hafalan Doa</span>
+                    </a>
+
+                    <a href="{{ route('hafalan.hadist.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.hadist.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">💬</span>
+                        <span>Hafalan Hadits</span>
+                    </a>
+
+                    <a href="{{ route('hafalan.surat.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.surat.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">📜</span>
+                        <span>Hafalan Surat</span>
+                    </a>
+
+                    <a href="{{ route('baca-buku.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('baca-buku.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">🔤</span>
+                        <span>Baca Buku / Hijaiyah</span>
+                    </a>
+                    @endhasanyrole
+
+                    @role('admin')
+                    <!-- Section: Katalog Materi (Admin only) -->
+                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Katalog Materi
+                    </div>
+
+                    <a href="{{ route('katalog.iqro.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.iqro.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">📖</span>
+                        <span>Katalog Iqro</span>
+                    </a>
+
+                    <a href="{{ route('katalog.surat.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.surat.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">📜</span>
+                        <span>Surat Al-Qur'an</span>
+                    </a>
+
+                    <a href="{{ route('katalog.doa.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.doa.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">🤲</span>
+                        <span>Doa Harian</span>
+                    </a>
+
+                    <a href="{{ route('katalog.hadist.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.hadist.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">💬</span>
+                        <span>Hadits Pendek</span>
+                    </a>
+
+                    <a href="{{ route('katalog.alfabet.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.alfabet.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">🔤</span>
+                        <span>Huruf Hijaiyah</span>
+                    </a>
+                    @endrole
+
+                    @can('kelola-spp')
+                    <!-- Section: Keuangan SPP (Admin / Bendahara) -->
+                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Keuangan SPP
+                    </div>
+
+                    <a href="{{ route('spp.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.index') || request()->routeIs('spp.create') || request()->routeIs('spp.edit') || request()->routeIs('spp.riwayat') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">💳</span>
+                        <span>Pembayaran SPP</span>
+                    </a>
+
+                    <a href="{{ route('spp.tunggakan') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.tunggakan') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">⚠️</span>
+                        <span>Tunggakan SPP</span>
+                    </a>
+
+                    <a href="{{ route('spp.massal') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.massal') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">👥</span>
+                        <span>Input Massal</span>
+                    </a>
+
+                    <a href="{{ route('spp.pengaturan') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.pengaturan') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">⚙️</span>
+                        <span>Pengaturan SPP</span>
+                    </a>
+                    @endcan
+
+                    @hasanyrole('admin|guru')
+                    <!-- Section: Laporan Cetak -->
+                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Laporan
+                    </div>
+
+                    <a href="{{ route('laporan.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('laporan.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <span class="text-base">🖨️</span>
+                        <span>Cetak Laporan PDF</span>
+                    </a>
                     @endhasanyrole
                 </nav>
 

@@ -132,6 +132,11 @@ class GuruController extends Controller
             }
         }
 
+        if ($guru->pembayaranSpps()->exists()) {
+            return redirect()->route('master.guru.index')
+                ->with('error', "Pengguna {$guru->name} tidak dapat dihapus karena tercatat sebagai pencatat transaksi SPP.");
+        }
+
         try {
             $nama = $guru->name;
             $guru->kelas()->detach();
