@@ -50,7 +50,7 @@
             </div>
 
             <div>
-                <label for="ket" class="block text-sm font-medium text-slate-700">Keterangan / Adab (Opsional)</label>
+                <label for="ket" class="block text-sm font-medium text-slate-700">Keterangan atau Adab</label>
                 <input type="text" id="ket" name="ket" value="{{ old('ket', $doa->ket) }}"
                        class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                 @error('ket')

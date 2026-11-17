@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-            Pusat Cetak Laporan (PDF)
+            Pusat Cetak Laporan PDF
         </h2>
     </x-slot>
 
@@ -10,7 +10,7 @@
             <div class="mb-6 pb-4 border-b border-slate-100">
                 <h3 class="font-bold text-slate-900 text-lg">Pilih Parameter Laporan</h3>
                 <p class="text-xs text-slate-500 mt-1">
-                    Pilih jenis modul, target laporan (per santri atau rekap kelas), serta periode tanggal untuk mencetak dokumen PDF resmi.
+                    Pilih jenis modul, target laporan per santri atau rekap kelas, serta periode tanggal untuk mencetak dokumen PDF resmi.
                 </p>
             </div>
 
@@ -67,7 +67,7 @@
                         <option value="">-- Pilih Santri --</option>
                         @foreach($siswas as $s)
                             <option value="{{ $s->id }}" {{ old('siswa_id') == $s->id ? 'selected' : '' }}>
-                                {{ $s->nama_siswa }} (NIS: {{ $s->nis }}) — {{ $s->kelas?->nama_kelas }}
+                                {{ $s->nama_siswa }} &bull; NIS {{ $s->nis }} &bull; {{ $s->kelas?->nama_kelas }}
                             </option>
                         @endforeach
                     </select>
@@ -116,7 +116,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                         </svg>
-                        <span>Tampilkan PDF (Tab Baru)</span>
+                        <span>Buka PDF</span>
                     </button>
                     <button type="submit" name="download" value="1" class="px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-50 text-sm font-semibold text-slate-700 transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

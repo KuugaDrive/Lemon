@@ -24,7 +24,7 @@
             <!-- NIP & Nama -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="nip" class="block text-sm font-medium text-slate-700">NIP (Nomor Induk Pegawai) <span class="text-rose-500">*</span></label>
+                    <label for="nip" class="block text-sm font-medium text-slate-700">Nomor Induk Pegawai NIP <span class="text-rose-500">*</span></label>
                     <input type="text" id="nip" name="nip" value="{{ old('nip') }}" required autofocus
                            placeholder="Contoh: 19850101..." 
                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
@@ -34,7 +34,7 @@
                 </div>
 
                 <div>
-                    <label for="name" class="block text-sm font-medium text-slate-700">Nama Lengkap &amp; Gelar <span class="text-rose-500">*</span></label>
+                    <label for="name" class="block text-sm font-medium text-slate-700">Nama Lengkap dan Gelar <span class="text-rose-500">*</span></label>
                     <input type="text" id="name" name="name" value="{{ old('name') }}" required
                            placeholder="Contoh: Ustadzah Fatimah, S.Pd." 
                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
@@ -47,7 +47,7 @@
             <!-- Email & No. HP -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="email" class="block text-sm font-medium text-slate-700">Email (Opsional)</label>
+                    <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
                     <input type="email" id="email" name="email" value="{{ old('email') }}"
                            placeholder="nama@contoh.com" 
                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
@@ -94,7 +94,7 @@
                 <label class="block text-sm font-medium text-slate-700 mb-1">
                     Peran / Role Pengguna <span class="text-rose-500">*</span>
                 </label>
-                <p class="text-xs text-slate-500 mb-3">Satu pengguna boleh memiliki beberapa peran (misal: Guru merangkap Admin).</p>
+                <p class="text-xs text-slate-500 mb-3">Satu pengguna boleh memiliki beberapa peran, misal Guru merangkap Admin.</p>
                 <div class="flex flex-wrap gap-4">
                     @foreach($roles as $role)
                         <label class="inline-flex items-center gap-2 p-3 border rounded-lg cursor-pointer transition-colors {{ in_array($role->name, old('roles', ['guru'])) ? 'border-emerald-500 bg-emerald-50/50' : 'border-slate-200 hover:bg-slate-50' }}">
@@ -103,7 +103,7 @@
                                    class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
                             <div>
                                 <span class="text-sm font-semibold text-slate-800">{{ ucfirst($role->name) }}</span>
-                                <span class="text-xs block text-slate-500">{{ $role->name === 'admin' ? 'Akses penuh ke semua master & data' : 'Akses mengajar siswa di kelasnya' }}</span>
+                                <span class="text-xs block text-slate-500">{{ $role->name === 'admin' ? 'Akses penuh ke semua master dan data' : 'Akses mengajar siswa di kelasnya' }}</span>
                             </div>
                         </label>
                     @endforeach
@@ -116,7 +116,7 @@
             <!-- Kelas yang Diampu -->
             <div class="border-t border-slate-200 pt-4">
                 <label class="block text-sm font-medium text-slate-700 mb-1">
-                    Kelas yang Diampu (Opsional)
+                    Kelas yang Diampu
                 </label>
                 <p class="text-xs text-slate-500 mb-3">Pilih satu atau lebih kelas yang diajar oleh guru ini.</p>
                 @if($kelas->isEmpty())

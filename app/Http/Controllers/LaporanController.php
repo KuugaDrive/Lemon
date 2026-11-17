@@ -31,8 +31,8 @@ class LaporanController extends Controller
             'quran' => 'Setoran Al-Qur\'an',
             'doa' => 'Hafalan Doa Harian',
             'hadist' => 'Hafalan Hadits Pendek',
-            'surat' => 'Hafalan Surat Pendek / Al-Qur\'an',
-            'baca_buku' => 'Baca Buku / Huruf Hijaiyah',
+            'surat' => 'Hafalan Nama Surat',
+            'baca_buku' => 'Baca Buku Alfabet',
         ];
 
         if ($canAccessSpp) {

@@ -25,7 +25,7 @@
             <!-- NIP & Nama -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="nip" class="block text-sm font-medium text-slate-700">NIP (Nomor Induk Pegawai) <span class="text-rose-500">*</span></label>
+                    <label for="nip" class="block text-sm font-medium text-slate-700">Nomor Induk Pegawai NIP <span class="text-rose-500">*</span></label>
                     <input type="text" id="nip" name="nip" value="{{ old('nip', $guru->nip) }}" required
                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                     @error('nip')
@@ -34,7 +34,7 @@
                 </div>
 
                 <div>
-                    <label for="name" class="block text-sm font-medium text-slate-700">Nama Lengkap &amp; Gelar <span class="text-rose-500">*</span></label>
+                    <label for="name" class="block text-sm font-medium text-slate-700">Nama Lengkap dan Gelar <span class="text-rose-500">*</span></label>
                     <input type="text" id="name" name="name" value="{{ old('name', $guru->name) }}" required
                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                     @error('name')
@@ -46,7 +46,7 @@
             <!-- Email & No. HP -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="email" class="block text-sm font-medium text-slate-700">Email (Opsional)</label>
+                    <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
                     <input type="email" id="email" name="email" value="{{ old('email', $guru->email) }}"
                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                     @error('email')

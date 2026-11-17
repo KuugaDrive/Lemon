@@ -5,12 +5,13 @@
     <thead>
         <tr>
             <th style="width: 4%;" class="text-center">No</th>
-            <th style="width: 14%;">Tgl Uji</th>
-            <th style="width: 14%;">NIS</th>
+            <th style="width: 12%;">Tgl Uji</th>
+            <th style="width: 12%;">NIS</th>
             <th>Nama Santri</th>
-            <th style="width: 25%;">Hadits Pendek</th>
-            <th style="width: 10%;" class="text-center">Nilai</th>
-            <th style="width: 15%;">Penguji</th>
+            <th>Wali Santri</th>
+            <th style="width: 22%;">Hadits Pendek</th>
+            <th style="width: 8%;" class="text-center">Nilai</th>
+            <th style="width: 14%;">Penguji</th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +21,7 @@
                 <td>{{ $item->tgl_pengujian->translatedFormat('d M Y') }}</td>
                 <td class="font-mono">{{ $item->siswa->nis }}</td>
                 <td class="font-bold">{{ $item->siswa->nama_siswa }}</td>
+                <td>{{ $item->siswa->nama_wali }}</td>
                 <td>{{ $item->hadist->nama_hadist }}</td>
                 <td class="text-center">
                     <span class="badge-{{ strtolower($item->nilai->value) }}">{{ $item->nilai->value }}</span>
@@ -28,7 +30,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center" style="padding: 16px; color: #94a3b8; font-style: italic;">
+                <td colspan="8" class="text-center" style="padding: 16px; color: #94a3b8; font-style: italic;">
                     Belum ada catatan hafalan hadits pada rentang tanggal ini.
                 </td>
             </tr>

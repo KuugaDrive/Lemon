@@ -24,7 +24,7 @@
                     <select id="siswa_id" name="siswa_id" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('siswa_id') border-rose-500 @enderror" required>
                         @foreach($siswas as $s)
                             <option value="{{ $s->id }}" {{ old('siswa_id', $hafalanDoa->siswa_id) == $s->id ? 'selected' : '' }}>
-                                {{ $s->nama_siswa }} (NIS: {{ $s->nis }}) — {{ $s->kelas?->nama_kelas }}
+                                {{ $s->nama_siswa }} &bull; NIS {{ $s->nis }} &bull; {{ $s->kelas?->nama_kelas }}
                             </option>
                         @endforeach
                     </select>

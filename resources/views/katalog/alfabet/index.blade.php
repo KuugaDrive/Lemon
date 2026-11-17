@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-            Katalog Huruf Hijaiyah &amp; Alfabet (28 Huruf)
+            Kumpulan Alfabet dan Huruf Hijaiyah
         </h2>
     </x-slot>
 

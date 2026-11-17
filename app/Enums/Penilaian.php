@@ -4,18 +4,18 @@ namespace App\Enums;
 
 enum Penilaian: string
 {
-    case BB = 'BB';   // Belum Berkembang
-    case MB = 'MB';   // Mulai Berkembang
-    case BSH = 'BSH'; // Berkembang Sesuai Harapan
-    case BSB = 'BSB'; // Berkembang Sangat Baik
+    case BB = 'BB';
+    case MB = 'MB';
+    case BSH = 'BSH';
+    case BSB = 'BSB';
 
     public function label(): string
     {
         return match ($this) {
-            self::BB => 'BB (Belum Berkembang)',
-            self::MB => 'MB (Mulai Berkembang)',
-            self::BSH => 'BSH (Berkembang Sesuai Harapan)',
-            self::BSB => 'BSB (Berkembang Sangat Baik)',
+            self::BB => 'BB — Belum Berkembang',
+            self::MB => 'MB — Mulai Berkembang',
+            self::BSH => 'BSH — Berkembang Sesuai Harapan',
+            self::BSB => 'BSB — Berkembang Sangat Baik',
         };
     }
 

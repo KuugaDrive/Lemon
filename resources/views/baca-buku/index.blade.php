@@ -14,13 +14,12 @@
     </x-slot>
 
     <div class="space-y-6">
-        <!-- Filter Form -->
         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
             <form method="GET" action="{{ route('baca-buku.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Kelas</label>
                     <select name="kelas_id" class="w-full text-sm py-2 rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500" onchange="this.form.submit()">
-                        <option value="">-- Semua Kelas --</option>
+                        <option value="">Semua Kelas</option>
                         @foreach($kelasList as $k)
                             <option value="{{ $k->id }}" {{ request('kelas_id') == $k->id ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
                         @endforeach
@@ -30,7 +29,7 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Santri</label>
                     <select name="siswa_id" class="w-full text-sm py-2 rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500" onchange="this.form.submit()">
-                        <option value="">-- Semua Santri --</option>
+                        <option value="">Semua Santri</option>
                         @foreach($siswas as $s)
                             <option value="{{ $s->id }}" {{ request('siswa_id') == $s->id ? 'selected' : '' }}>{{ $s->nama_siswa }}</option>
                         @endforeach
@@ -50,7 +49,7 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Nilai</label>
                     <select name="nilai" class="w-full text-sm py-2 rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500" onchange="this.form.submit()">
-                        <option value="">-- Semua Nilai --</option>
+                        <option value="">Semua Nilai</option>
                         @foreach($penilaianList as $p)
                             <option value="{{ $p->value }}" {{ request('nilai') == $p->value ? 'selected' : '' }}>{{ $p->label() }}</option>
                         @endforeach
@@ -61,7 +60,6 @@
 
         <x-legenda-penilaian />
 
-        <!-- Table -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-700">
@@ -69,9 +67,11 @@
                         <tr>
                             <th class="px-6 py-3.5">Tgl Pengujian</th>
                             <th class="px-6 py-3.5">Santri</th>
+                            <th class="px-6 py-3.5">Wali Santri</th>
                             <th class="px-6 py-3.5">Kelas</th>
                             <th class="px-6 py-3.5">Huruf Hijaiyah</th>
-                            <th class="px-6 py-3.5">Jilid & Halaman</th>
+                            <th class="px-6 py-3.5">Jilid</th>
+                            <th class="px-6 py-3.5">Halaman</th>
                             <th class="px-6 py-3.5">Tgl Mulai</th>
                             <th class="px-6 py-3.5 text-center">Nilai</th>
                             <th class="px-6 py-3.5">Keterangan</th>
@@ -81,26 +81,28 @@
                     </thead>
                     <tbody class="divide-y divide-slate-200">
                         @forelse($bacaBukus as $item)
-                            <tr class="hover:bg-slate-50/75 transition-colors">
+                            <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-3.5 font-medium text-slate-900 whitespace-nowrap">
                                     {{ $item->tgl_pengujian->translatedFormat('d M Y') }}
                                 </td>
                                 <td class="px-6 py-3.5">
                                     <div class="font-semibold text-slate-900">{{ $item->siswa->nama_siswa }}</div>
-                                    <div class="text-xs text-slate-400 font-mono">NIS: {{ $item->siswa->nis }}</div>
+                                    <div class="text-xs text-slate-400 font-mono">{{ $item->siswa->nis }}</div>
+                                </td>
+                                <td class="px-6 py-3.5 text-slate-700">
+                                    {{ $item->siswa->nama_wali }}
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap text-slate-600">
-                                    {{ $item->siswa->kelas?->nama_kelas }}
+                                    {{ $item->siswa->kelas?->nama_kelas ?? '-' }}
                                 </td>
                                 <td class="px-6 py-3.5 font-semibold text-slate-800">
                                     {{ $item->alfabet->nama_alfabet }}
-                                    @if($item->alfabet->ket)
-                                        <span class="text-xs text-slate-500 font-normal">({{ $item->alfabet->ket }})</span>
-                                    @endif
                                 </td>
-                                <td class="px-6 py-3.5 whitespace-nowrap">
-                                    <span class="font-medium text-slate-800">{{ $item->jilid }}</span>
-                                    <span class="text-slate-500">— Hal. {{ $item->halaman }}</span>
+                                <td class="px-6 py-3.5 font-medium text-slate-800 whitespace-nowrap">
+                                    {{ $item->jilid }}
+                                </td>
+                                <td class="px-6 py-3.5 text-slate-700 whitespace-nowrap">
+                                    Hal. {{ $item->halaman }}
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap text-slate-500 text-xs">
                                     {{ $item->tgl_hafalan ? $item->tgl_hafalan->translatedFormat('d M Y') : '-' }}
@@ -125,7 +127,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="10" class="px-6 py-8 text-center text-slate-400 italic">
+                                <td colspan="12" class="px-6 py-8 text-center text-slate-400">
                                     Belum ada data baca buku / huruf hijaiyah.
                                 </td>
                             </tr>

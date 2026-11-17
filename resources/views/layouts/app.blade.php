@@ -35,7 +35,11 @@
                 <!-- Logo & Brand -->
                 <div class="h-16 flex items-center justify-between px-6 bg-slate-950/40 border-b border-slate-800">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 font-bold text-white text-lg tracking-wide">
-                        <span class="text-2xl">🍋</span>
+                        <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
                         <div class="leading-tight">
                             <span class="text-emerald-400">Lemon</span>
                             <span class="text-xs block font-normal text-slate-400">PAUD &amp; TPQ</span>
@@ -121,13 +125,17 @@
 
                     <a href="{{ route('presensi.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.index') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">📝</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
                         <span>Input Presensi</span>
                     </a>
 
                     <a href="{{ route('presensi.rekap') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.rekap') || request()->routeIs('presensi.siswa') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">📊</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
                         <span>Rekap Presensi</span>
                     </a>
 
@@ -138,38 +146,50 @@
 
                     <a href="{{ route('setoran.iqro.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.iqro.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">📖</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
                         <span>Setoran Iqro</span>
                     </a>
 
                     <a href="{{ route('setoran.quran.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.quran.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">📗</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        </svg>
                         <span>Setoran Al-Qur'an</span>
                     </a>
 
                     <a href="{{ route('hafalan.doa.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.doa.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">🤲</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
                         <span>Hafalan Doa</span>
                     </a>
 
                     <a href="{{ route('hafalan.hadist.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.hadist.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">💬</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
                         <span>Hafalan Hadits</span>
                     </a>
 
                     <a href="{{ route('hafalan.surat.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.surat.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">📜</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
                         <span>Hafalan Surat</span>
                     </a>
 
                     <a href="{{ route('baca-buku.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('baca-buku.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">🔤</span>
-                        <span>Baca Buku / Hijaiyah</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v14m0 0l-3-3m3 3l3-3m5-6h4m-2-2v4" />
+                        </svg>
+                        <span>Baca Buku Alfabet</span>
                     </a>
                     @endhasanyrole
 
@@ -181,32 +201,42 @@
 
                     <a href="{{ route('katalog.iqro.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.iqro.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">📖</span>
-                        <span>Katalog Iqro</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <span>Kumpulan Iqro</span>
                     </a>
 
                     <a href="{{ route('katalog.surat.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.surat.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">📜</span>
-                        <span>Surat Al-Qur'an</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        <span>Kumpulan Nama Surat</span>
                     </a>
 
                     <a href="{{ route('katalog.doa.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.doa.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">🤲</span>
-                        <span>Doa Harian</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        <span>Kumpulan Doa Harian</span>
                     </a>
 
                     <a href="{{ route('katalog.hadist.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.hadist.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">💬</span>
-                        <span>Hadits Pendek</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        <span>Kumpulan Hadits</span>
                     </a>
 
                     <a href="{{ route('katalog.alfabet.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.alfabet.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">🔤</span>
-                        <span>Huruf Hijaiyah</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v14m0 0l-3-3m3 3l3-3m5-6h4m-2-2v4" />
+                        </svg>
+                        <span>Kumpulan Alfabet</span>
                     </a>
                     @endrole
 
@@ -218,25 +248,34 @@
 
                     <a href="{{ route('spp.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.index') || request()->routeIs('spp.create') || request()->routeIs('spp.edit') || request()->routeIs('spp.riwayat') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">💳</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
                         <span>Pembayaran SPP</span>
                     </a>
 
                     <a href="{{ route('spp.tunggakan') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.tunggakan') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">⚠️</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
                         <span>Tunggakan SPP</span>
                     </a>
 
                     <a href="{{ route('spp.massal') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.massal') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">👥</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                         <span>Input Massal</span>
                     </a>
 
                     <a href="{{ route('spp.pengaturan') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('spp.pengaturan') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">⚙️</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
                         <span>Pengaturan SPP</span>
                     </a>
                     @endcan
@@ -249,7 +288,9 @@
 
                     <a href="{{ route('laporan.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('laporan.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <span class="text-base">🖨️</span>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
                         <span>Cetak Laporan PDF</span>
                     </a>
                     @endhasanyrole

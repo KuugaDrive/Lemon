@@ -24,7 +24,7 @@
                         <option value="">-- Pilih Santri --</option>
                         @foreach($siswas as $s)
                             <option value="{{ $s->id }}" {{ old('siswa_id') == $s->id ? 'selected' : '' }}>
-                                {{ $s->nama_siswa }} (NIS: {{ $s->nis }}) — {{ $s->kelas?->nama_kelas }}
+                                {{ $s->nama_siswa }} &bull; NIS {{ $s->nis }} &bull; {{ $s->kelas?->nama_kelas }}
                             </option>
                         @endforeach
                     </select>

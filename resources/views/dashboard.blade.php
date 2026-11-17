@@ -6,59 +6,211 @@
     </x-slot>
 
     <div class="space-y-6">
-        <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-slate-200">
-            <div class="p-6 text-slate-900">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-4 mb-6">
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-900">Assalamu'alaikum, {{ Auth::user()->name }}!</h3>
-                        <p class="text-sm text-slate-500 mt-1">Selamat datang di Sistem Informasi PAUD &amp; TPQ Lemon.</p>
-                    </div>
-                    <div>
-                        <span class="text-xs uppercase font-semibold text-slate-500 tracking-wider block sm:text-right">Peran Pengguna</span>
-                        <div class="flex sm:justify-end gap-1.5 mt-1">
-                            @foreach(Auth::user()->roles as $role)
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $role->name === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-emerald-100 text-emerald-800' }}">
-                                    {{ ucfirst($role->name) }}
-                                </span>
-                            @endforeach
-                        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">
+                        Assalamu'alaikum, {{ $user->name }}
+                    </h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Sistem Informasi PAUD dan TPQ Lemon &bull; {{ $today->translatedFormat('l, d F Y') }}
+                    </p>
+                </div>
+                <div class="text-left md:text-right">
+                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Peran Pengguna</div>
+                    <div class="text-sm font-semibold text-slate-800 mt-0.5">
+                        NIP {{ $user->nip }} &bull; {{ $isAdmin ? 'Administrator' : 'Guru Pengajar' }}
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h4 class="font-semibold text-slate-800 text-sm mb-3">Informasi Akun Anda</h4>
-                        <dl class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <dt class="text-slate-500">NIP:</dt>
-                                <dd class="font-medium font-mono text-slate-900">{{ Auth::user()->nip }}</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-slate-500">Nama Lengkap:</dt>
-                                <dd class="font-medium text-slate-900">{{ Auth::user()->name }}</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-slate-500">Nomor HP:</dt>
-                                <dd class="font-medium text-slate-900">{{ Auth::user()->no_hp ?? '-' }}</dd>
-                            </div>
-                        </dl>
-                    </div>
-
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h4 class="font-semibold text-slate-800 text-sm mb-3">Kelas yang Diampu</h4>
-                        @if(Auth::user()->kelas->isEmpty())
-                            <p class="text-sm text-slate-500 italic">
-                                {{ Auth::user()->hasRole('admin') ? 'Sebagai Administrator, Anda memiliki hak kelola terhadap seluruh kelas.' : 'Belum ada kelas yang ditetapkan.' }}
-                            </p>
-                        @else
-                            <ul class="list-disc list-inside text-sm text-slate-700 space-y-1">
-                                @foreach(Auth::user()->kelas as $k)
-                                    <li class="font-medium">{{ $k->nama_kelas }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
+        @if($isAdmin)
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Santri Aktif</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalSiswa) }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Seluruh kelas</div>
                 </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Guru Pengajar</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalGuru) }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Staf pendidik</div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Rombel Kelas</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalKelas) }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Kelas aktif</div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Presensi Hari Ini</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ $presensiHadirCount }} / {{ $totalPresensiHariIni }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Santri hadir</div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Setoran Hari Ini</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($setoranHariIniCount) }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Catatan hafalan</div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">SPP Bulan Ini</div>
+                    <div class="text-lg font-bold text-emerald-700 mt-2">Rp {{ number_format($sppBulanIni, 0, ',', '.') }}</div>
+                    <div class="text-xs text-slate-400 mt-1">{{ $today->translatedFormat('F Y') }}</div>
+                </div>
+            </div>
+        @else
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Santri Bimbingan</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalSiswa) }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Kelas yang diampu</div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Kelas Diampu</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalKelas) }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Rombel aktif</div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Presensi Hari Ini</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ $presensiHadirCount }} / {{ $totalPresensiHariIni }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Santri hadir</div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Setoran Hari Ini</div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($setoranHariIniCount) }}</div>
+                    <div class="text-xs text-slate-400 mt-1">Catatan hafalan</div>
+                </div>
+            </div>
+        @endif
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-slate-700 mb-4">
+                Pintasan Transaksi dan Operasional
+            </h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <a href="{{ route('presensi.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Input Presensi</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Kehadiran harian</div>
+                </a>
+
+                <a href="{{ route('setoran.iqro.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Setoran Iqro</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Jilid dan halaman</div>
+                </a>
+
+                <a href="{{ route('setoran.quran.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Setoran Al-Qur'an</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Surat dan ayat</div>
+                </a>
+
+                <a href="{{ route('hafalan.doa.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Hafalan Doa</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Doa harian santri</div>
+                </a>
+
+                <a href="{{ route('hafalan.hadist.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Hafalan Hadits</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Hadits pendek</div>
+                </a>
+
+                <a href="{{ route('hafalan.surat.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Hafalan Surat</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Juz 30 pendek</div>
+                </a>
+
+                <a href="{{ route('baca-buku.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Baca Buku Alfabet</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Kemampuan membaca</div>
+                </a>
+
+                <a href="{{ route('laporan.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                    <div class="font-semibold text-slate-800 text-sm">Cetak Laporan</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Laporan cetak PDF</div>
+                </a>
+
+                @can('kelola-spp')
+                    <a href="{{ route('spp.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                        <div class="font-semibold text-slate-800 text-sm">Pembayaran SPP</div>
+                        <div class="text-xs text-slate-500 mt-0.5">Pencatatan iuran</div>
+                    </a>
+                @endcan
+
+                @role('admin')
+                    <a href="{{ route('master.siswa.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
+                        <div class="font-semibold text-slate-800 text-sm">Data Santri</div>
+                        <div class="text-xs text-slate-500 mt-0.5">Master data siswa</div>
+                    </a>
+                @endrole
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+                <div>
+                    <h4 class="font-semibold text-slate-800 text-base">Status Presensi Kelas Hari Ini</h4>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Pantauan pengisian presensi per kelas tanggal {{ $today->translatedFormat('d F Y') }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-700">
+                    <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-600 border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-3.5 w-12 text-center">No</th>
+                            <th class="px-6 py-3.5">Nama Kelas</th>
+                            @if($isAdmin)
+                                <th class="px-6 py-3.5">Guru Pengampu</th>
+                            @endif
+                            <th class="px-6 py-3.5 text-center">Jumlah Santri</th>
+                            <th class="px-6 py-3.5">Status Presensi</th>
+                            <th class="px-6 py-3.5 text-right">Tindakan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        @forelse($kelasList as $idx => $k)
+                            <tr class="hover:bg-slate-50/75 transition-colors">
+                                <td class="px-6 py-4 text-center font-mono text-xs text-slate-400">{{ $idx + 1 }}</td>
+                                <td class="px-6 py-4 font-bold text-slate-900">{{ $k['nama_kelas'] }}</td>
+                                @if($isAdmin)
+                                    <td class="px-6 py-4 text-slate-600 text-xs">{{ $k['guru_names'] }}</td>
+                                @endif
+                                <td class="px-6 py-4 text-center font-semibold text-slate-800">{{ $k['total_siswa'] }}</td>
+                                <td class="px-6 py-4">
+                                    @if($k['terisi'])
+                                        <span class="text-emerald-700 font-semibold text-xs">
+                                            Tercatat: {{ $k['hadir'] }} Hadir, {{ $k['izin'] }} Izin, {{ $k['sakit'] }} Sakit, {{ $k['alfa'] }} Alfa
+                                        </span>
+                                    @else
+                                        <span class="text-amber-700 font-semibold text-xs">
+                                            Belum diisi
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{{ route('presensi.index', ['kelas_id' => $k['id'], 'tanggal' => $today->toDateString()]) }}" class="inline-flex items-center px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                                        Buka Presensi
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="{{ $isAdmin ? 6 : 5 }}" class="px-6 py-8 text-center text-slate-400 text-xs italic">
+                                    Belum ada data kelas terdaftar.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

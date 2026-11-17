@@ -63,7 +63,7 @@
             </div>
 
             <div>
-                <label for="ket" class="block text-sm font-medium text-slate-700">Keterangan (Opsional)</label>
+                <label for="ket" class="block text-sm font-medium text-slate-700">Keterangan</label>
                 <textarea id="ket" name="ket" rows="2" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">{{ old('ket', $surat->ket) }}</textarea>
                 @error('ket')
                     <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>

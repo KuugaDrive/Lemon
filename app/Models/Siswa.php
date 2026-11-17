@@ -17,22 +17,40 @@ class Siswa extends Model
         'nis',
         'nama_siswa',
         'alamat',
+        'nama_ayah_kandung',
+        'nama_ibu_kandung',
         'nama_orang_tua',
         'no_hp_ortu',
         'kelas_id',
     ];
 
-    /**
-     * Kelas tempat siswa belajar.
-     */
+    protected static function booted(): void
+    {
+        static::saving(function (Siswa $siswa) {
+            if (empty($siswa->nama_orang_tua)) {
+                $parts = array_filter([$siswa->nama_ayah_kandung, $siswa->nama_ibu_kandung]);
+                $siswa->nama_orang_tua = implode(' / ', $parts);
+            }
+            if (empty($siswa->nama_ayah_kandung) && !empty($siswa->nama_orang_tua)) {
+                $siswa->nama_ayah_kandung = $siswa->nama_orang_tua;
+            }
+        });
+    }
+
+    public function getNamaWaliAttribute(): string
+    {
+        if ($this->nama_ayah_kandung && $this->nama_ibu_kandung) {
+            return $this->nama_ayah_kandung . ' / ' . $this->nama_ibu_kandung;
+        }
+
+        return $this->nama_ayah_kandung ?: ($this->nama_ibu_kandung ?: ($this->nama_orang_tua ?? '-'));
+    }
+
     public function kelas(): BelongsTo
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
-    /**
-     * Riwayat presensi santri.
-     */
     public function presensis(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Presensi::class, 'siswa_id');
@@ -73,11 +91,6 @@ class Siswa extends Model
         return $this->hasMany(PembayaranSpp::class, 'siswa_id');
     }
 
-    /**
-     * Scope untuk membatasi siswa berdasarkan role pengguna:
-     * - Admin melihat semua siswa
-     * - Guru hanya melihat siswa di kelas yang diampunya
-     */
     public function scopeVisibleTo(Builder $query, ?User $user = null): Builder
     {
         $user = $user ?? auth()->user();

@@ -25,7 +25,7 @@
                 <!-- Nominal Default -->
                 <div>
                     <label for="spp_nominal_default" class="block text-sm font-semibold text-slate-700 mb-1">
-                        Nominal SPP Default Per Bulan (Rp) <span class="text-rose-500">*</span>
+                        Nominal SPP Default Per Bulan Rupiah <span class="text-rose-500">*</span>
                     </label>
                     <input type="number" id="spp_nominal_default" name="spp_nominal_default" min="1000" step="1000" value="{{ old('spp_nominal_default', $nominalDefault) }}" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('spp_nominal_default') border-rose-500 @enderror" required>
                     <p class="text-xs text-slate-400 mt-1">Contoh: 150000 untuk Rp 150.000,-</p>
