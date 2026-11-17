@@ -43,10 +43,10 @@ class DashboardController extends Controller
 
             $setoranHariIniCount = SetoranIqro::whereDate('tanggal', $today)->count()
                 + SetoranQuran::whereDate('tanggal', $today)->count()
-                + HafalanDoa::whereDate('tanggal', $today)->count()
-                + HafalanHadist::whereDate('tanggal', $today)->count()
-                + HafalanSurat::whereDate('tanggal', $today)->count()
-                + BacaBuku::whereDate('tanggal', $today)->count();
+                + HafalanDoa::whereDate('tgl_pengujian', $today)->count()
+                + HafalanHadist::whereDate('tgl_pengujian', $today)->count()
+                + HafalanSurat::whereDate('tgl_pengujian', $today)->count()
+                + BacaBuku::whereDate('tgl_pengujian', $today)->count();
 
             $kelasList = Kelas::with(['gurus', 'siswas'])->get()->map(function ($kelas) use ($today) {
                 $siswaIds = $kelas->siswas->pluck('id');
@@ -96,10 +96,10 @@ class DashboardController extends Controller
 
         $setoranHariIniCount = SetoranIqro::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
             + SetoranQuran::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
-            + HafalanDoa::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
-            + HafalanHadist::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
-            + HafalanSurat::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
-            + BacaBuku::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count();
+            + HafalanDoa::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count()
+            + HafalanHadist::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count()
+            + HafalanSurat::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count()
+            + BacaBuku::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count();
 
         $kelasList = $kelasUser->map(function ($kelas) use ($today) {
             $siswaIds = $kelas->siswas->pluck('id');

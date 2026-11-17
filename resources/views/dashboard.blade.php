@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="space-y-6">
-        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+ <div class="bg-purple-100 rounded-xl border border-purple-200 p-6 shadow-sm">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h3 class="text-xl font-bold text-slate-900">
@@ -27,37 +27,37 @@
 
         @if($isAdmin)
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="bg-blue-100 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Santri Aktif</div>
                     <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalSiswa) }}</div>
                     <div class="text-xs text-slate-400 mt-1">Seluruh kelas</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="bg-blue-100 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Guru Pengajar</div>
                     <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalGuru) }}</div>
                     <div class="text-xs text-slate-400 mt-1">Staf pendidik</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="bg-blue-100 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Rombel Kelas</div>
                     <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($totalKelas) }}</div>
                     <div class="text-xs text-slate-400 mt-1">Kelas aktif</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="bg-emerald-100 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Presensi Hari Ini</div>
                     <div class="text-2xl font-bold text-slate-900 mt-2">{{ $presensiHadirCount }} / {{ $totalPresensiHariIni }}</div>
                     <div class="text-xs text-slate-400 mt-1">Santri hadir</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="bg-emerald-100 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Setoran Hari Ini</div>
                     <div class="text-2xl font-bold text-slate-900 mt-2">{{ number_format($setoranHariIniCount) }}</div>
                     <div class="text-xs text-slate-400 mt-1">Catatan hafalan</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="bg-green-100 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <div class="text-xs font-semibold uppercase tracking-wider text-slate-500">SPP Bulan Ini</div>
                     <div class="text-lg font-bold text-emerald-700 mt-2">Rp {{ number_format($sppBulanIni, 0, ',', '.') }}</div>
                     <div class="text-xs text-slate-400 mt-1">{{ $today->translatedFormat('F Y') }}</div>
@@ -91,68 +91,7 @@
             </div>
         @endif
 
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-            <h4 class="text-sm font-semibold uppercase tracking-wider text-slate-700 mb-4">
-                Pintasan Transaksi dan Operasional
-            </h4>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                <a href="{{ route('presensi.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Input Presensi</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Kehadiran harian</div>
-                </a>
-
-                <a href="{{ route('setoran.iqro.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Setoran Iqro</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Jilid dan halaman</div>
-                </a>
-
-                <a href="{{ route('setoran.quran.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Setoran Al-Qur'an</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Surat dan ayat</div>
-                </a>
-
-                <a href="{{ route('hafalan.doa.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Hafalan Doa</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Doa harian santri</div>
-                </a>
-
-                <a href="{{ route('hafalan.hadist.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Hafalan Hadits</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Hadits pendek</div>
-                </a>
-
-                <a href="{{ route('hafalan.surat.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Hafalan Surat</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Juz 30 pendek</div>
-                </a>
-
-                <a href="{{ route('baca-buku.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Baca Buku Alfabet</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Kemampuan membaca</div>
-                </a>
-
-                <a href="{{ route('laporan.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                    <div class="font-semibold text-slate-800 text-sm">Cetak Laporan</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Laporan cetak PDF</div>
-                </a>
-
-                @can('kelola-spp')
-                    <a href="{{ route('spp.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                        <div class="font-semibold text-slate-800 text-sm">Pembayaran SPP</div>
-                        <div class="text-xs text-slate-500 mt-0.5">Pencatatan iuran</div>
-                    </a>
-                @endcan
-
-                @role('admin')
-                    <a href="{{ route('master.siswa.index') }}" class="p-3.5 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 transition-colors block">
-                        <div class="font-semibold text-slate-800 text-sm">Data Santri</div>
-                        <div class="text-xs text-slate-500 mt-0.5">Master data siswa</div>
-                    </a>
-                @endrole
-            </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-white-100 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
                 <div>
                     <h4 class="font-semibold text-slate-800 text-base">Status Presensi Kelas Hari Ini</h4>

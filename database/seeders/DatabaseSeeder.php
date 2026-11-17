@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AlfabetSeeder::class,
             DoaSeeder::class,
             HadistSeeder::class,
+            SetoranHafalanSeeder::class,
         ]);
     }
 }
