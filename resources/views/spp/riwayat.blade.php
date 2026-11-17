@@ -71,6 +71,7 @@
                                     {{ $item->pencatat?->name }}
                                 </td>
                                 <td class="px-6 py-3.5 text-right whitespace-nowrap space-x-2">
+                                    <a href="{{ route('spp.kuitansi', $item) }}" target="_blank" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900">Kuitansi</a>
                                     <a href="{{ route('spp.edit', $item) }}" class="text-xs font-semibold text-amber-600 hover:text-amber-800">Ubah</a>
                                     <form method="POST" action="{{ route('spp.destroy', $item) }}" class="inline" onsubmit="return confirm('Hapus catatan pembayaran ini?');">
                                         @csrf

@@ -19,9 +19,6 @@ use Illuminate\View\View;
 
 class SppController extends Controller
 {
-    /**
-     * Daftar seluruh transaksi SPP.
-     */
     public function index(Request $request): View
     {
         $query = PembayaranSpp::with(['siswa.kelas', 'pencatat']);
@@ -48,7 +45,6 @@ class SppController extends Controller
             });
         }
 
-        // Hitung total nominal pada filter aktif sebelum paginasi
         $totalNominal = (clone $query)->sum('nominal');
 
         $pembayarans = $query->latest('tgl_bayar')->latest('id')->paginate(15)->withQueryString();
@@ -58,9 +54,6 @@ class SppController extends Controller
         return view('spp.index', compact('pembayarans', 'kelasList', 'totalNominal'));
     }
 
-    /**
-     * Form pembayaran SPP satuan.
-     */
     public function create(Request $request): View
     {
         $kelasList = Kelas::orderBy('nama_kelas')->get();
@@ -81,9 +74,6 @@ class SppController extends Controller
         ));
     }
 
-    /**
-     * Simpan pembayaran SPP satuan.
-     */
     public function store(StoreSppRequest $request): RedirectResponse
     {
         $data = $request->validated();
@@ -92,12 +82,24 @@ class SppController extends Controller
         $pembayaran = PembayaranSpp::create($data);
 
         return redirect()->route('spp.index')
-            ->with('success', "Pembayaran SPP {$pembayaran->siswa->nama_siswa} periode {$pembayaran->periode_label} berhasil dicatat.");
+            ->with('success', "Pembayaran SPP {$pembayaran->siswa->nama_siswa} periode {$pembayaran->periode_label} berhasil dicatat.")
+            ->with('kuitansi_id', $pembayaran->id);
     }
 
-    /**
-     * Form input SPP massal satu kelas.
-     */
+    public function kuitansi(PembayaranSpp $spp): View
+    {
+        $spp->load(['siswa.kelas', 'pencatat']);
+
+        $profil = [
+            'nama_lembaga' => Pengaturan::get('nama_lembaga', 'PAUD / TPQ Lemon'),
+            'alamat_lembaga' => Pengaturan::get('alamat_lembaga', 'Jl. Pendidikan Karakter Anak No. 7, Jakarta'),
+            'no_telp_lembaga' => Pengaturan::get('no_telp_lembaga', '0812-3456-7890'),
+            'nama_kepala' => Pengaturan::get('nama_kepala', 'H. Muhammad Yusuf, M.Pd.'),
+        ];
+
+        return view('spp.kuitansi', compact('spp', 'profil'));
+    }
+
     public function massal(Request $request): View
     {
         $kelasList = Kelas::orderBy('nama_kelas')->get();
@@ -134,9 +136,6 @@ class SppController extends Controller
         ));
     }
 
-    /**
-     * Proses simpan pembayaran massal.
-     */
     public function storeMassal(MassalSppRequest $request): RedirectResponse
     {
         $validated = $request->validated();
@@ -151,7 +150,6 @@ class SppController extends Controller
 
         DB::transaction(function () use ($validated, $bulan, $tahun, $nominal, $tglBayar, $ket, $dicatatOleh, &$count) {
             foreach ($validated['siswa_ids'] as $siswaId) {
-                // Abaikan jika sudah pernah bayar periode ini
                 $exists = PembayaranSpp::where('siswa_id', $siswaId)
                     ->where('bulan', $bulan)
                     ->where('tahun', $tahun)
@@ -178,18 +176,12 @@ class SppController extends Controller
             ->with('success', "Berhasil mencatat pembayaran SPP massal untuk {$count} santri pada periode {$namaBulan} {$tahun}.");
     }
 
-    /**
-     * Form edit pembayaran.
-     */
     public function edit(PembayaranSpp $spp): View
     {
         $spp->load('siswa.kelas');
         return view('spp.edit', compact('spp'));
     }
 
-    /**
-     * Perbarui data pembayaran.
-     */
     public function update(UpdateSppRequest $request, PembayaranSpp $spp): RedirectResponse
     {
         $spp->update($request->validated());
@@ -198,9 +190,6 @@ class SppController extends Controller
             ->with('success', "Catatan SPP {$spp->siswa->nama_siswa} berhasil diperbarui.");
     }
 
-    /**
-     * Hapus pembayaran.
-     */
     public function destroy(PembayaranSpp $spp): RedirectResponse
     {
         $nama = $spp->siswa->nama_siswa;
@@ -212,9 +201,6 @@ class SppController extends Controller
             ->with('success', "Catatan pembayaran SPP {$nama} periode {$periode} berhasil dihapus.");
     }
 
-    /**
-     * Rekapitulasi tunggakan SPP.
-     */
     public function tunggakan(Request $request): View
     {
         $kelasList = Kelas::orderBy('nama_kelas')->get();
@@ -236,9 +222,6 @@ class SppController extends Controller
         ));
     }
 
-    /**
-     * Riwayat pembayaran per santri.
-     */
     public function riwayat(Siswa $siswa): View
     {
         $riwayats = SppService::riwayat($siswa);
@@ -247,9 +230,6 @@ class SppController extends Controller
         return view('spp.riwayat', compact('siswa', 'riwayats', 'totalTerbayar'));
     }
 
-    /**
-     * Halaman pengaturan SPP.
-     */
     public function pengaturan(): View
     {
         $nominalDefault = Pengaturan::get('spp_nominal_default', 150000);
@@ -258,9 +238,6 @@ class SppController extends Controller
         return view('spp.pengaturan', compact('nominalDefault', 'jatuhTempo'));
     }
 
-    /**
-     * Simpan pengaturan default SPP.
-     */
     public function simpanPengaturan(PengaturanSppRequest $request): RedirectResponse
     {
         $validated = $request->validated();

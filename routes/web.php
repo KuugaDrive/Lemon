@@ -70,7 +70,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('baca-buku', \App\Http\Controllers\BacaBukuController::class)->except(['show']);
     });
 
-    // Pembayaran SPP: Khusus Admin / Pengguna dengan hak kelola-spp
     Route::middleware(['can:kelola-spp'])->prefix('spp')->name('spp.')->group(function () {
         Route::get('/', [\App\Http\Controllers\SppController::class, 'index'])->name('index');
         Route::get('/create', [\App\Http\Controllers\SppController::class, 'create'])->name('create');
@@ -81,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pengaturan', [\App\Http\Controllers\SppController::class, 'pengaturan'])->name('pengaturan');
         Route::post('/pengaturan', [\App\Http\Controllers\SppController::class, 'simpanPengaturan'])->name('pengaturan.simpan');
         Route::get('/siswa/{siswa}', [\App\Http\Controllers\SppController::class, 'riwayat'])->name('riwayat');
+        Route::get('/{spp}/kuitansi', [\App\Http\Controllers\SppController::class, 'kuitansi'])->name('kuitansi');
         Route::get('/{spp}/edit', [\App\Http\Controllers\SppController::class, 'edit'])->name('edit');
         Route::put('/{spp}', [\App\Http\Controllers\SppController::class, 'update'])->name('update');
         Route::delete('/{spp}', [\App\Http\Controllers\SppController::class, 'destroy'])->name('destroy');
