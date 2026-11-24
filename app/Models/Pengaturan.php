@@ -15,6 +15,27 @@ class Pengaturan extends Model
 
     public static function get(string $key, $default = null)
     {
+        if ($key === 'alamat_lembaga') {
+            $kepsek = User::getKepsek();
+            if ($kepsek && !empty($kepsek->alamat)) {
+                return $kepsek->alamat;
+            }
+        }
+
+        if ($key === 'nama_kepala') {
+            $kepsek = User::getKepsek();
+            if ($kepsek && !empty($kepsek->name)) {
+                return $kepsek->name;
+            }
+        }
+
+        if ($key === 'no_telp_lembaga') {
+            $kepsek = User::getKepsek();
+            if ($kepsek && !empty($kepsek->no_hp)) {
+                return $kepsek->no_hp;
+            }
+        }
+
         $setting = static::where('kunci', $key)->first();
         if ($setting !== null) {
             return $setting->nilai;
@@ -30,6 +51,36 @@ class Pengaturan extends Model
         ];
 
         return $defaults[$key] ?? $default;
+    }
+
+    public static function getAlamatLembaga(): string
+    {
+        $kepsek = User::getKepsek();
+        if ($kepsek && !empty($kepsek->alamat)) {
+            return $kepsek->alamat;
+        }
+
+        $setting = static::where('kunci', 'alamat_lembaga')->first();
+        if ($setting !== null && !empty($setting->nilai)) {
+            return $setting->nilai;
+        }
+
+        return 'Jl. H. Nirin No. 63, RT.3/RW.5, Petukangan Selatan, Kec. Pesanggrahan, Kota Jakarta Selatan, DKI Jakarta 12270';
+    }
+
+    public static function getNoTelpLembaga(): string
+    {
+        $kepsek = User::getKepsek();
+        if ($kepsek && !empty($kepsek->no_hp)) {
+            return $kepsek->no_hp;
+        }
+
+        $setting = static::where('kunci', 'no_telp_lembaga')->first();
+        if ($setting !== null && !empty($setting->nilai)) {
+            return $setting->nilai;
+        }
+
+        return '0812-3456-7890';
     }
 
     public static function getNamaKepala(): string

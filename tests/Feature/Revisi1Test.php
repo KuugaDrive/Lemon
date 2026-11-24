@@ -402,5 +402,37 @@ class Revisi1Test extends TestCase
     {
         $realAlamat = 'Jl. H. Nirin No. 63, RT.3/RW.5, Petukangan Selatan, Kec. Pesanggrahan, Kota Jakarta Selatan, DKI Jakarta 12270';
         $this->assertEquals($realAlamat, Pengaturan::get('alamat_lembaga'));
+        $this->assertEquals($realAlamat, Pengaturan::getAlamatLembaga());
+
+        // Buat role kepsek dan user kepsek dengan alamat khusus
+        Role::firstOrCreate(['name' => 'kepsek', 'guard_name' => 'web']);
+        $customAlamat = 'Jl. Villa Anggrek No. 88, Kebayoran Lama, Jakarta Selatan';
+        $userKepsek = User::factory()->create([
+            'nip' => 'KEPSEK_ADDR_TEST',
+            'name' => 'H. Mukhlis, M.Pd.',
+            'alamat' => $customAlamat,
+        ]);
+        $userKepsek->assignRole('kepsek');
+
+        // Pastikan alamat lembaga ditarik dari alamat user kepsek
+        $this->assertEquals($customAlamat, Pengaturan::get('alamat_lembaga'));
+        $this->assertEquals($customAlamat, Pengaturan::getAlamatLembaga());
+
+        // Pastikan surat tunggakan dan kuitansi dapat diakses
+        $resSurat = $this->actingAs($this->admin)->get(route('spp.surat-tunggakan', [
+            'siswa' => $this->siswa->id,
+            'bulan' => 5,
+            'tahun' => 2026,
+        ]));
+        $resSurat->assertOk();
+
+        // Buat satu pembayaran spp untuk tes kuitansi HTML
+        $pembayaran = PembayaranSpp::factory()->create([
+            'siswa_id' => $this->siswa->id,
+            'dicatat_oleh' => $this->admin->id,
+        ]);
+        $resKuitansi = $this->actingAs($this->admin)->get(route('spp.kuitansi', $pembayaran->id));
+        $resKuitansi->assertOk();
+        $resKuitansi->assertSee($customAlamat);
     }
 }

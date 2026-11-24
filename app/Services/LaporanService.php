@@ -27,8 +27,8 @@ class LaporanService
 
         $profil = [
             'nama_lembaga' => Pengaturan::get('nama_lembaga', 'Binar Sunnah School'),
-            'alamat_lembaga' => Pengaturan::get('alamat_lembaga', 'Jl. H. Nirin No. 63, RT.3/RW.5, Petukangan Selatan, Kec. Pesanggrahan, Kota Jakarta Selatan, DKI Jakarta 12270'),
-            'no_telp_lembaga' => Pengaturan::get('no_telp_lembaga', '0812-3456-7890'),
+            'alamat_lembaga' => Pengaturan::getAlamatLembaga(),
+            'no_telp_lembaga' => Pengaturan::getNoTelpLembaga(),
             'nama_kepala' => Pengaturan::getNamaKepala(),
             'nip_kepala' => Pengaturan::getNipKepala(),
         ];
