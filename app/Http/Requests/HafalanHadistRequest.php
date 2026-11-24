@@ -16,7 +16,10 @@ class HafalanHadistRequest extends FormRequest
             return false;
         }
 
-        $record = $this->route('hafalan_hadist');
+        $record = $this->route('hafalan_hadist') ?? $this->route('hadist');
+        if (is_numeric($record)) {
+            $record = \App\Models\HafalanHadist::find($record);
+        }
         if ($record && ! $user->canAccessSiswa($record->siswa)) {
             return false;
         }

@@ -22,6 +22,7 @@ class SiswaFactory extends Factory
             'nama_ayah_kandung' => $ayah,
             'nama_ibu_kandung' => $ibu,
             'nama_orang_tua' => $ayah,
+            'nama_wali' => fake()->boolean(25) ? fake()->name() : null,
             'no_hp_ortu' => fake()->phoneNumber(),
             'kelas_id' => Kelas::factory(),
         ];

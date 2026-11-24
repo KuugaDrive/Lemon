@@ -7,7 +7,7 @@
                 </svg>
             </a>
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Tambah Catatan Hafalan Surat
+                Tambah Catatan Setoran Surat
             </h2>
         </div>
     </x-slot>
@@ -42,11 +42,33 @@
                         <option value="">-- Pilih Surat --</option>
                         @foreach($surats as $su)
                             <option value="{{ $su->id }}" {{ old('surat_id') == $su->id ? 'selected' : '' }}>
-                                {{ $su->nomor }}. {{ $su->nama_surat }} ({{ $su->jumlah_ayat }} ayat, Juz {{ $su->juz }})
+                                {{ $su->nomor }}. {{ $su->nama_surat }} {{ $su->nama_arab ? '- '.$su->nama_arab : '' }} ({{ $su->jumlah_ayat }} ayat, Juz {{ $su->juz }})
                             </option>
                         @endforeach
                     </select>
                     @error('surat_id') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <!-- Rentang Ayat (Opsional) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div>
+                        <label for="ayat_mulai" class="block text-sm font-semibold text-slate-700 mb-1">
+                            Ayat Mulai <span class="text-xs text-slate-400 font-normal">(opsional)</span>
+                        </label>
+                        <input type="number" id="ayat_mulai" name="ayat_mulai" min="1" value="{{ old('ayat_mulai') }}" placeholder="Contoh: 1" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('ayat_mulai') border-rose-500 @enderror">
+                        @error('ayat_mulai') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label for="ayat_selesai" class="block text-sm font-semibold text-slate-700 mb-1">
+                            Ayat Selesai <span class="text-xs text-slate-400 font-normal">(opsional)</span>
+                        </label>
+                        <input type="number" id="ayat_selesai" name="ayat_selesai" min="1" value="{{ old('ayat_selesai') }}" placeholder="Contoh: 10" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('ayat_selesai') border-rose-500 @enderror">
+                        @error('ayat_selesai') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="sm:col-span-2 text-xs text-slate-500">
+                        * Kosongkan jika setoran mencakup seluruh ayat dalam surat yang dipilih.
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">

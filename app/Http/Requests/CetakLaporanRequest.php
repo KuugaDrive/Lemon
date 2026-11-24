@@ -47,7 +47,7 @@ class CetakLaporanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'jenis' => ['required', Rule::in(['presensi', 'iqro', 'quran', 'doa', 'hadist', 'surat', 'baca_buku', 'spp'])],
+            'jenis' => ['required', Rule::in(['presensi', 'iqro', 'quran', 'doa', 'hadist', 'baca_buku', 'spp'])],
             'mode' => ['required', Rule::in(['siswa', 'kelas'])],
             'siswa_id' => ['required_if:mode,siswa', 'nullable', 'exists:siswas,id'],
             'kelas_id' => ['required_if:mode,kelas', 'nullable', 'exists:kelas,id'],

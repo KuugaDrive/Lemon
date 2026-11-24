@@ -21,7 +21,7 @@
                 <td>{{ $item->tgl_pengujian->translatedFormat('d M Y') }}</td>
                 <td class="font-mono">{{ $item->siswa->nis }}</td>
                 <td class="font-bold">{{ $item->siswa->nama_siswa }}</td>
-                <td>{{ $item->siswa->nama_wali }}</td>
+                <td>{{ $item->siswa->wali_tampil }}</td>
                 <td>{{ $item->doa->nama_doa }}</td>
                 <td class="text-center">
                     <span class="badge-{{ strtolower($item->nilai->value) }}">{{ $item->nilai->value }}</span>

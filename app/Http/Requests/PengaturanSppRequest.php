@@ -6,6 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PengaturanSppRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('spp_nominal_default')) {
+            $nominal = preg_replace('/[^\d]/', '', (string) $this->input('spp_nominal_default'));
+            $this->merge(['spp_nominal_default' => $nominal !== '' ? (int) $nominal : null]);
+        }
+    }
+
     public function authorize(): bool
     {
         $user = $this->user();
@@ -15,7 +23,7 @@ class PengaturanSppRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'spp_nominal_default' => ['required', 'integer', 'min:1000'],
+            'spp_nominal_default' => ['required', 'integer', 'min:1', 'max:100000000'],
             'spp_jatuh_tempo_hari' => ['required', 'integer', 'between:1,31'],
         ];
     }

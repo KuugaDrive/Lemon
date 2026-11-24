@@ -85,6 +85,11 @@ class SetoranQuranController extends Controller
 
     public function edit(SetoranQuran $setoranQuran): View
     {
+        if (! $setoranQuran->exists) {
+            $id = request()->route('setoran_quran') ?? request()->route('quran');
+            $setoranQuran = SetoranQuran::findOrFail($id);
+        }
+
         $user = auth()->user();
         if (! $user->canAccessSiswa($setoranQuran->siswa)) {
             abort(403, 'Anda tidak memiliki akses ke data setoran santri ini.');
@@ -99,6 +104,11 @@ class SetoranQuranController extends Controller
 
     public function update(SetoranQuranRequest $request, SetoranQuran $setoranQuran): RedirectResponse
     {
+        if (! $setoranQuran->exists) {
+            $id = request()->route('setoran_quran') ?? request()->route('quran');
+            $setoranQuran = SetoranQuran::findOrFail($id);
+        }
+
         $setoranQuran->update($request->validated());
 
         return redirect()->route('setoran.quran.index')->with('success', 'Catatan setoran Al-Qur\'an berhasil diperbarui.');
@@ -106,6 +116,11 @@ class SetoranQuranController extends Controller
 
     public function destroy(SetoranQuran $setoranQuran): RedirectResponse
     {
+        if (! $setoranQuran->exists) {
+            $id = request()->route('setoran_quran') ?? request()->route('quran');
+            $setoranQuran = SetoranQuran::findOrFail($id);
+        }
+
         if (! auth()->user()->canAccessSiswa($setoranQuran->siswa)) {
             abort(403, 'Anda tidak memiliki akses untuk menghapus data setoran santri ini.');
         }

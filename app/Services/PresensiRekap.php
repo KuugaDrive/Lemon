@@ -42,7 +42,16 @@ class PresensiRekap
             ->get()
             ->keyBy('siswa_id');
 
-        return $siswas->map(function ($siswa) use ($aggregates) {
+        // Ambil data detail presensi untuk kebutuhan pop-up
+        $records = DB::table('presensis')
+            ->select('id', 'siswa_id', 'tanggal', 'status', 'ket')
+            ->whereIn('siswa_id', $siswas->pluck('id'))
+            ->whereBetween('tanggal', [$startDate, $endDate])
+            ->orderBy('tanggal')
+            ->get()
+            ->groupBy('siswa_id');
+
+        return $siswas->map(function ($siswa) use ($aggregates, $records) {
             $agg = $aggregates->get($siswa->id);
             $hadir = (int) ($agg->hadir ?? 0);
             $izin = (int) ($agg->izin ?? 0);
@@ -50,6 +59,24 @@ class PresensiRekap
             $alfa = (int) ($agg->alfa ?? 0);
             $totalHari = (int) ($agg->total_hari ?? 0);
             $persentase = $totalHari > 0 ? round(($hadir / $totalHari) * 100, 1) : 0;
+
+            $siswaRecords = $records->get($siswa->id, collect());
+            $formatRecord = function ($rec) {
+                return [
+                    'id' => $rec->id,
+                    'tanggal' => \Carbon\Carbon::parse($rec->tanggal)->toDateString(),
+                    'tanggal_format' => \Carbon\Carbon::parse($rec->tanggal)->translatedFormat('d F Y'),
+                    'status' => $rec->status,
+                    'ket' => $rec->ket ?? '',
+                ];
+            };
+
+            $details = [
+                'hadir' => $siswaRecords->where('status', 'hadir')->map($formatRecord)->values(),
+                'izin' => $siswaRecords->where('status', 'izin')->map($formatRecord)->values(),
+                'sakit' => $siswaRecords->where('status', 'sakit')->map($formatRecord)->values(),
+                'alfa' => $siswaRecords->where('status', 'alfa')->map($formatRecord)->values(),
+            ];
 
             return (object) [
                 'siswa' => $siswa,
@@ -59,6 +86,7 @@ class PresensiRekap
                 'alfa' => $alfa,
                 'total_hari' => $totalHari,
                 'persentase' => $persentase,
+                'details' => $details,
             ];
         });
     }

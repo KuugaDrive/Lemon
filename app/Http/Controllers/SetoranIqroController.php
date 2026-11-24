@@ -85,6 +85,11 @@ class SetoranIqroController extends Controller
 
     public function edit(SetoranIqro $setoranIqro): View
     {
+        if (! $setoranIqro->exists) {
+            $id = request()->route('setoran_iqro') ?? request()->route('iqro');
+            $setoranIqro = SetoranIqro::findOrFail($id);
+        }
+
         $user = auth()->user();
         if (! $user->canAccessSiswa($setoranIqro->siswa)) {
             abort(403, 'Anda tidak memiliki akses ke data setoran santri ini.');
@@ -99,6 +104,11 @@ class SetoranIqroController extends Controller
 
     public function update(SetoranIqroRequest $request, SetoranIqro $setoranIqro): RedirectResponse
     {
+        if (! $setoranIqro->exists) {
+            $id = request()->route('setoran_iqro') ?? request()->route('iqro');
+            $setoranIqro = SetoranIqro::findOrFail($id);
+        }
+
         $setoranIqro->update($request->validated());
 
         return redirect()->route('setoran.iqro.index')->with('success', 'Catatan setoran Iqro berhasil diperbarui.');
@@ -106,6 +116,11 @@ class SetoranIqroController extends Controller
 
     public function destroy(SetoranIqro $setoranIqro): RedirectResponse
     {
+        if (! $setoranIqro->exists) {
+            $id = request()->route('setoran_iqro') ?? request()->route('iqro');
+            $setoranIqro = SetoranIqro::findOrFail($id);
+        }
+
         if (! auth()->user()->canAccessSiswa($setoranIqro->siswa)) {
             abort(403, 'Anda tidak memiliki akses untuk menghapus data setoran santri ini.');
         }

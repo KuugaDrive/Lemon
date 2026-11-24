@@ -57,6 +57,7 @@ class GuruController extends Controller
         $user = User::create([
             'nip' => $validated['nip'],
             'name' => $validated['name'],
+            'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
             'email' => $validated['email'] ?? null,
             'alamat' => $validated['alamat'] ?? null,
             'no_hp' => $validated['no_hp'] ?? null,
@@ -95,6 +96,7 @@ class GuruController extends Controller
         $data = [
             'nip' => $validated['nip'],
             'name' => $validated['name'],
+            'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
             'email' => $validated['email'] ?? null,
             'alamat' => $validated['alamat'] ?? null,
             'no_hp' => $validated['no_hp'] ?? null,

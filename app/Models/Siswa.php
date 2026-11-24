@@ -16,13 +16,27 @@ class Siswa extends Model
     protected $fillable = [
         'nis',
         'nama_siswa',
+        'jenis_kelamin',
         'alamat',
         'nama_ayah_kandung',
         'nama_ibu_kandung',
         'nama_orang_tua',
+        'nama_wali',
         'no_hp_ortu',
         'kelas_id',
     ];
+
+    /**
+     * Label jenis kelamin: Laki-laki / Perempuan.
+     */
+    public function getJenisKelaminLabelAttribute(): string
+    {
+        return match ($this->jenis_kelamin) {
+            'L' => 'Laki-laki',
+            'P' => 'Perempuan',
+            default => '-',
+        };
+    }
 
     protected static function booted(): void
     {
@@ -37,13 +51,20 @@ class Siswa extends Model
         });
     }
 
-    public function getNamaWaliAttribute(): string
+    /**
+     * Nama wali yang tampil: jika nama_wali terisi maka tampilkan, jika kosong tampilkan nama_orang_tua.
+     */
+    public function getWaliTampilAttribute(): string
     {
-        if ($this->nama_ayah_kandung && $this->nama_ibu_kandung) {
-            return $this->nama_ayah_kandung . ' / ' . $this->nama_ibu_kandung;
+        if (! empty($this->nama_wali)) {
+            return $this->nama_wali;
         }
 
-        return $this->nama_ayah_kandung ?: ($this->nama_ibu_kandung ?: ($this->nama_orang_tua ?? '-'));
+        if (! empty($this->nama_orang_tua)) {
+            return $this->nama_orang_tua;
+        }
+
+        return '-';
     }
 
     public function kelas(): BelongsTo
@@ -99,7 +120,7 @@ class Siswa extends Model
             return $query->whereRaw('1 = 0');
         }
 
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('admin') || $user->hasRole('kepsek')) {
             return $query;
         }
 

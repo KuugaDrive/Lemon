@@ -85,6 +85,11 @@ class HafalanDoaController extends Controller
 
     public function edit(HafalanDoa $hafalanDoa): View
     {
+        if (! $hafalanDoa->exists) {
+            $id = request()->route('hafalan_doa') ?? request()->route('doa');
+            $hafalanDoa = HafalanDoa::findOrFail($id);
+        }
+
         $user = auth()->user();
         if (! $user->canAccessSiswa($hafalanDoa->siswa)) {
             abort(403, 'Anda tidak memiliki akses ke data hafalan santri ini.');
@@ -99,6 +104,11 @@ class HafalanDoaController extends Controller
 
     public function update(HafalanDoaRequest $request, HafalanDoa $hafalanDoa): RedirectResponse
     {
+        if (! $hafalanDoa->exists) {
+            $id = request()->route('hafalan_doa') ?? request()->route('doa');
+            $hafalanDoa = HafalanDoa::findOrFail($id);
+        }
+
         $hafalanDoa->update($request->validated());
 
         return redirect()->route('hafalan.doa.index')->with('success', 'Catatan hafalan Doa berhasil diperbarui.');
@@ -106,6 +116,11 @@ class HafalanDoaController extends Controller
 
     public function destroy(HafalanDoa $hafalanDoa): RedirectResponse
     {
+        if (! $hafalanDoa->exists) {
+            $id = request()->route('hafalan_doa') ?? request()->route('doa');
+            $hafalanDoa = HafalanDoa::findOrFail($id);
+        }
+
         if (! auth()->user()->canAccessSiswa($hafalanDoa->siswa)) {
             abort(403, 'Anda tidak memiliki akses untuk menghapus data hafalan santri ini.');
         }

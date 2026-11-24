@@ -19,7 +19,8 @@
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 mt-1">
                     <span>NIS: <strong class="font-mono text-slate-700">{{ $siswa->nis }}</strong></span>
                     <span>Kelas: <strong class="text-slate-700">{{ $siswa->kelas?->nama_kelas }}</strong></span>
-                    <span>Wali: <strong class="text-slate-700">{{ $siswa->nama_wali }}</strong> &bull; {{ $siswa->no_hp_ortu ?: '-' }}</span>
+                    <span>Orang Tua: <strong class="text-slate-700">{{ $siswa->nama_orang_tua ?: ($siswa->nama_ayah_kandung ?: '-') }}</strong></span>
+                    <span>Wali: <strong class="text-slate-700">{{ $siswa->nama_wali ?: '-' }}</strong> &bull; {{ $siswa->no_hp_ortu ?: '-' }}</span>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -58,7 +59,14 @@
                         @forelse($riwayats as $item)
                             <tr class="hover:bg-slate-50/75 transition-colors">
                                 <td class="px-6 py-3.5 font-medium text-slate-900 whitespace-nowrap">
-                                    {{ $item->tgl_bayar->translatedFormat('d F Y') }}
+                                    <div class="flex items-center gap-2">
+                                        <span>{{ $item->tgl_bayar->translatedFormat('d F Y') }}</span>
+                                        @if($item->is_telat)
+                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-700 border border-rose-200">
+                                                Telat
+                                            </span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">

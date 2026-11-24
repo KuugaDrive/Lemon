@@ -17,7 +17,7 @@
             <tr>
                 <td class="text-center font-mono">{{ $idx + 1 }}</td>
                 <td>{{ $item->tgl_pengujian->translatedFormat('d F Y') }}</td>
-                <td class="font-bold">{{ $item->surat->nomor }}. {{ $item->surat->nama_surat }} ({{ $item->surat->jumlah_ayat }} ayat)</td>
+                <td class="font-bold">{{ $item->surat->nomor }}. {{ $item->surat->nama_surat }} ({{ $item->rentang_ayat }})</td>
                 <td>{{ $item->tgl_hafalan ? $item->tgl_hafalan->translatedFormat('d F Y') : '-' }}</td>
                 <td class="text-center">
                     <span class="badge-{{ strtolower($item->nilai->value) }}">{{ $item->nilai->value }}</span>

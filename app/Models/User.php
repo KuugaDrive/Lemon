@@ -23,11 +23,24 @@ class User extends Authenticatable
     protected $fillable = [
         'nip',
         'name',
+        'jenis_kelamin',
         'email',
         'alamat',
         'no_hp',
         'password',
     ];
+
+    /**
+     * Label jenis kelamin: Laki-laki / Perempuan.
+     */
+    public function getJenisKelaminLabelAttribute(): string
+    {
+        return match ($this->jenis_kelamin) {
+            'L' => 'Laki-laki',
+            'P' => 'Perempuan',
+            default => '-',
+        };
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -50,6 +63,22 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Dapatkan user yang memiliki peran Kepala Sekolah (Kepsek).
+     */
+    public static function getKepsek(): ?self
+    {
+        try {
+            if (!\Spatie\Permission\Models\Role::where('name', 'kepsek')->exists()) {
+                return null;
+            }
+
+            return static::role('kepsek')->first();
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     /**
@@ -98,8 +127,12 @@ class User extends Authenticatable
     /**
      * Cek apakah user memiliki akses ke data siswa tertentu.
      */
-    public function canAccessSiswa(Siswa $siswa): bool
+    public function canAccessSiswa(?Siswa $siswa): bool
     {
+        if (! $siswa) {
+            return false;
+        }
+
         if ($this->hasRole('admin')) {
             return true;
         }
@@ -114,8 +147,12 @@ class User extends Authenticatable
     /**
      * Cek apakah user memiliki akses ke data kelas tertentu.
      */
-    public function canAccessKelas(Kelas $kelas): bool
+    public function canAccessKelas(?Kelas $kelas): bool
     {
+        if (! $kelas) {
+            return false;
+        }
+
         if ($this->hasRole('admin')) {
             return true;
         }

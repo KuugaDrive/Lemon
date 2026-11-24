@@ -9,7 +9,7 @@
             <th style="width: 12%;">NIS</th>
             <th>Nama Santri</th>
             <th>Wali Santri</th>
-            <th style="width: 16%;">Huruf Hijaiyah</th>
+            <th style="width: 16%;">Materi Huruf</th>
             <th style="width: 16%;">Jilid & Halaman</th>
             <th style="width: 8%;" class="text-center">Nilai</th>
             <th style="width: 14%;">Penguji</th>
@@ -22,8 +22,8 @@
                 <td>{{ $item->tgl_pengujian->translatedFormat('d M Y') }}</td>
                 <td class="font-mono">{{ $item->siswa->nis }}</td>
                 <td class="font-bold">{{ $item->siswa->nama_siswa }}</td>
-                <td>{{ $item->siswa->nama_wali }}</td>
-                <td>{{ $item->alfabet->nama_alfabet }}</td>
+                <td>{{ $item->siswa->wali_tampil }}</td>
+                <td>{{ $item->huruf_tampil }}</td>
                 <td>{{ $item->jilid }} — Hal. {{ $item->halaman }}</td>
                 <td class="text-center">
                     <span class="badge-{{ strtolower($item->nilai->value) }}">{{ $item->nilai->value }}</span>

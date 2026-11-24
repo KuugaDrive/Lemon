@@ -42,20 +42,39 @@
                 </div>
             </div>
 
-            <div>
-                <label for="kelas_id" class="block text-sm font-medium text-slate-700">Kelas <span class="text-rose-500">*</span></label>
-                <select id="kelas_id" name="kelas_id" required
-                        class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
-                    <option value="">Pilih Kelas</option>
-                    @foreach($kelasList as $kelas)
-                        <option value="{{ $kelas->id }}" {{ old('kelas_id') == $kelas->id ? 'selected' : '' }}>
-                            {{ $kelas->nama_kelas }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('kelas_id')
-                    <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
-                @enderror
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Jenis Kelamin <span class="text-rose-500">*</span></label>
+                    <div class="flex items-center gap-6 mt-1 pt-1">
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="jenis_kelamin" value="L" class="text-emerald-600 focus:ring-emerald-500" {{ old('jenis_kelamin', 'L') === 'L' ? 'checked' : '' }}>
+                            <span class="text-sm text-slate-700">Laki-laki</span>
+                        </label>
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="jenis_kelamin" value="P" class="text-emerald-600 focus:ring-emerald-500" {{ old('jenis_kelamin') === 'P' ? 'checked' : '' }}>
+                            <span class="text-sm text-slate-700">Perempuan</span>
+                        </label>
+                    </div>
+                    @error('jenis_kelamin')
+                        <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="kelas_id" class="block text-sm font-medium text-slate-700">Kelas <span class="text-rose-500">*</span></label>
+                    <select id="kelas_id" name="kelas_id" required
+                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
+                        <option value="">Pilih Kelas</option>
+                        @foreach($kelasList as $kelas)
+                            <option value="{{ $kelas->id }}" {{ old('kelas_id') == $kelas->id ? 'selected' : '' }}>
+                                {{ $kelas->nama_kelas }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('kelas_id')
+                        <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
             <div class="border-b border-slate-200 pb-3 pt-2">
@@ -82,6 +101,16 @@
                         <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
                     @enderror
                 </div>
+            </div>
+
+            <div>
+                <label for="nama_wali" class="block text-sm font-medium text-slate-700">Nama Wali <span class="text-xs text-slate-400 font-normal">(opsional, jika diasuh selain orang tua)</span></label>
+                <input type="text" id="nama_wali" name="nama_wali" value="{{ old('nama_wali') }}"
+                       placeholder="Masukkan nama wali (bila ada)" 
+                       class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
+                @error('nama_wali')
+                    <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>

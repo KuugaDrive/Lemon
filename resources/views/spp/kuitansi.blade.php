@@ -57,15 +57,18 @@
 
     <div class="max-w-3xl mx-auto bg-white p-8 border-2 border-slate-800 shadow-sm rounded-lg print-container">
         <div class="border-b-2 border-slate-800 pb-4 mb-4 flex items-start justify-between">
-            <div>
-                <div class="text-xl font-bold tracking-tight text-slate-900 uppercase">
-                    {{ $profil['nama_lembaga'] }}
-                </div>
-                <div class="text-xs text-slate-600 mt-1">
-                    {{ $profil['alamat_lembaga'] }}
-                </div>
-                <div class="text-xs text-slate-600">
-                    Telepon: {{ $profil['no_telp_lembaga'] }}
+            <div class="flex items-center gap-3.5">
+                <img src="{{ asset('storage/logo-binar-693.png') }}" alt="Binar Sunnah School" class="h-12 w-auto object-contain">
+                <div>
+                    <div class="text-xl font-bold tracking-tight text-slate-900 uppercase">
+                        {{ $profil['nama_lembaga'] }}
+                    </div>
+                    <div class="text-xs text-slate-600 mt-1">
+                        {{ $profil['alamat_lembaga'] }}
+                    </div>
+                    <div class="text-xs text-slate-600">
+                        Telepon: {{ $profil['no_telp_lembaga'] }}
+                    </div>
                 </div>
             </div>
             <div class="text-right">
@@ -90,7 +93,7 @@
         <div class="space-y-2.5 text-sm my-5">
             <div class="grid grid-cols-12 gap-2">
                 <div class="col-span-4 text-slate-600 font-medium">Telah Terima Dari</div>
-                <div class="col-span-8 font-semibold text-slate-900">: {{ $spp->siswa->nama_wali }}</div>
+                <div class="col-span-8 font-semibold text-slate-900">: {{ $spp->siswa->wali_tampil }}</div>
             </div>
             <div class="grid grid-cols-12 gap-2">
                 <div class="col-span-4 text-slate-600 font-medium">Nama Santri</div>
@@ -127,7 +130,7 @@
         <div class="grid grid-cols-2 gap-8 text-center pt-4 text-sm">
             <div>
                 <div class="text-xs text-slate-600 mb-16">Penyetor</div>
-                <div class="font-semibold text-slate-900 underline">{{ $spp->siswa->nama_wali }}</div>
+                <div class="font-semibold text-slate-900 underline">{{ $spp->siswa->wali_tampil }}</div>
                 <div class="text-xs text-slate-500 mt-0.5">Orang Tua / Wali Santri</div>
             </div>
             <div>

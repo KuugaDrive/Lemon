@@ -44,30 +44,43 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('doa', \App\Http\Controllers\DoaController::class)->except(['show']);
         Route::resource('hadist', \App\Http\Controllers\HadistController::class)->except(['show']);
         Route::resource('alfabet', \App\Http\Controllers\AlfabetController::class)->except(['show']);
+        Route::resource('alfabet-latin', \App\Http\Controllers\AlfabetLatinController::class)
+            ->parameters(['alfabet-latin' => 'alfabet_latin'])
+            ->except(['show']);
     });
 
     // Presensi Harian: Admin & Guru
     Route::middleware(['role:admin|guru'])->group(function () {
         Route::get('/presensi', [\App\Http\Controllers\PresensiController::class, 'index'])->name('presensi.index');
         Route::post('/presensi', [\App\Http\Controllers\PresensiController::class, 'store'])->name('presensi.store');
+        Route::post('/presensi/quick-update', [\App\Http\Controllers\PresensiController::class, 'quickUpdate'])->name('presensi.quick-update');
         Route::get('/presensi/rekap', [\App\Http\Controllers\PresensiController::class, 'rekap'])->name('presensi.rekap');
         Route::get('/presensi/siswa/{siswa}', [\App\Http\Controllers\PresensiController::class, 'showSiswa'])->name('presensi.siswa');
     });
 
-    // Setoran & Hafalan (6 Modul): Admin & Guru
+    // Setoran & Hafalan (5 Modul): Admin & Guru
     Route::middleware(['role:admin|guru'])->group(function () {
         Route::prefix('setoran')->name('setoran.')->group(function () {
-            Route::resource('iqro', \App\Http\Controllers\SetoranIqroController::class)->except(['show']);
-            Route::resource('quran', \App\Http\Controllers\SetoranQuranController::class)->except(['show']);
+            Route::resource('iqro', \App\Http\Controllers\SetoranIqroController::class)
+                ->parameters(['iqro' => 'setoran_iqro'])
+                ->except(['show']);
+            Route::resource('quran', \App\Http\Controllers\SetoranQuranController::class)
+                ->parameters(['quran' => 'setoran_quran'])
+                ->except(['show']);
         });
 
         Route::prefix('hafalan')->name('hafalan.')->group(function () {
-            Route::resource('doa', \App\Http\Controllers\HafalanDoaController::class)->except(['show']);
-            Route::resource('hadist', \App\Http\Controllers\HafalanHadistController::class)->except(['show']);
-            Route::resource('surat', \App\Http\Controllers\HafalanSuratController::class)->except(['show']);
+            Route::resource('doa', \App\Http\Controllers\HafalanDoaController::class)
+                ->parameters(['doa' => 'hafalan_doa'])
+                ->except(['show']);
+            Route::resource('hadist', \App\Http\Controllers\HafalanHadistController::class)
+                ->parameters(['hadist' => 'hafalan_hadist'])
+                ->except(['show']);
         });
 
-        Route::resource('baca-buku', \App\Http\Controllers\BacaBukuController::class)->except(['show']);
+        Route::resource('baca-buku', \App\Http\Controllers\BacaBukuController::class)
+            ->parameters(['baca-buku' => 'baca_buku'])
+            ->except(['show']);
     });
 
     Route::middleware(['can:kelola-spp'])->prefix('spp')->name('spp.')->group(function () {
@@ -80,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pengaturan', [\App\Http\Controllers\SppController::class, 'pengaturan'])->name('pengaturan');
         Route::post('/pengaturan', [\App\Http\Controllers\SppController::class, 'simpanPengaturan'])->name('pengaturan.simpan');
         Route::get('/siswa/{siswa}', [\App\Http\Controllers\SppController::class, 'riwayat'])->name('riwayat');
+        Route::get('/siswa/{siswa}/surat-tunggakan', [\App\Http\Controllers\SppController::class, 'suratTunggakan'])->name('surat-tunggakan');
         Route::get('/{spp}/kuitansi', [\App\Http\Controllers\SppController::class, 'kuitansi'])->name('kuitansi');
         Route::get('/{spp}/edit', [\App\Http\Controllers\SppController::class, 'edit'])->name('edit');
         Route::put('/{spp}', [\App\Http\Controllers\SppController::class, 'update'])->name('update');
@@ -95,6 +109,35 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/migrasi-lemon', function () {
+    if (request('key') !== 'lemon-migration-2026') {
+        abort(403, 'Akses Ditolak');
+    }
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    $out1 = \Illuminate\Support\Facades\Artisan::output();
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'SuratSeeder', '--force' => true]);
+    $out2 = \Illuminate\Support\Facades\Artisan::output();
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'AlfabetLatinSeeder', '--force' => true]);
+    $out3 = \Illuminate\Support\Facades\Artisan::output();
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    return response("<pre>MIGRASI:\n$out1\nSEEDER SURAT:\n$out2\nSEEDER ALFABET LATIN:\n$out3\nSELESAI!</pre>");
+});
+
+Route::get('/bersihkan-lemon', function () {
+    if (request('key') !== 'lemon-clean-2026') {
+        abort(403, 'Akses Ditolak');
+    }
+    $params = ['--force' => true];
+    if (request('keep_master') == '1') {
+        $params['--keep-master'] = true;
+    }
+    \Illuminate\Support\Facades\Artisan::call('lemon:bersihkan-data', $params);
+    $out = \Illuminate\Support\Facades\Artisan::output();
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    return response("<pre>PEMBERSIHAN DATA:\n$out\nSELESAI!\nLogin admin: NIP: admin | Password: password</pre>");
 });
 
 require __DIR__.'/auth.php';

@@ -15,6 +15,7 @@ class RoleSeeder extends Seeder
     {
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         Role::firstOrCreate(['name' => 'guru']);
+        Role::firstOrCreate(['name' => 'kepsek']);
 
         $permissionSpp = Permission::firstOrCreate(['name' => 'kelola-spp']);
         $adminRole->givePermissionTo($permissionSpp);

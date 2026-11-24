@@ -246,6 +246,49 @@ class PresensiTest extends TestCase
         $this->assertEquals(0, $rowA1->alfa);
         $this->assertEquals(4, $rowA1->total_hari);
         $this->assertEquals(50, $rowA1->persentase); // 2/4 = 50%
+        $this->assertCount(1, $rowA1->details['izin']);
+        $this->assertEquals($d3, $rowA1->details['izin'][0]['tanggal']);
+    }
+
+    public function test_quick_update_presensi_berhasil(): void
+    {
+        $presensi = Presensi::create([
+            'siswa_id' => $this->siswaA1->id,
+            'guru_id' => $this->guru1->id,
+            'tanggal' => '2026-11-15',
+            'status' => StatusPresensi::Izin,
+            'ket' => 'Izin awal',
+        ]);
+
+        $response = $this->actingAs($this->guru1)->post(route('presensi.quick-update'), [
+            'presensi_id' => $presensi->id,
+            'status' => 'sakit',
+            'ket' => 'Ternyata sakit demam',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $presensi->refresh();
+        $this->assertEquals(StatusPresensi::Sakit, $presensi->status);
+        $this->assertEquals('Ternyata sakit demam', $presensi->ket);
+    }
+
+    public function test_guru_tidak_bisa_quick_update_siswa_kelas_lain(): void
+    {
+        $presensiB = Presensi::create([
+            'siswa_id' => $this->siswaB1->id,
+            'guru_id' => $this->guru2->id,
+            'tanggal' => '2026-11-15',
+            'status' => StatusPresensi::Izin,
+        ]);
+
+        $response = $this->actingAs($this->guru1)->post(route('presensi.quick-update'), [
+            'presensi_id' => $presensiB->id,
+            'status' => 'hadir',
+        ]);
+
+        $response->assertForbidden();
     }
 
     public function test_siswa_dengan_riwayat_presensi_tidak_dapat_dihapus(): void

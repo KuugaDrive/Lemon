@@ -7,7 +7,7 @@
                 </svg>
             </a>
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Tambah Huruf ke Katalog
+                Tambah Huruf Hijaiyah ke Kumpulan Materi
             </h2>
         </div>
     </x-slot>
@@ -17,8 +17,8 @@
             @csrf
 
             <div class="border-b border-slate-200 pb-4">
-                <h3 class="text-base font-semibold text-slate-900">Data Huruf / Alfabet</h3>
-                <p class="text-sm text-slate-500">Tambahkan nama latin dan huruf hijaiyah/alfabet.</p>
+                <h3 class="text-base font-semibold text-slate-900">Data Huruf Hijaiyah</h3>
+                <p class="text-sm text-slate-500">Tambahkan nama latin dan huruf hijaiyah.</p>
             </div>
 
             <div>

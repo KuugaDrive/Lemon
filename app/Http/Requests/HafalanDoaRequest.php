@@ -16,7 +16,10 @@ class HafalanDoaRequest extends FormRequest
             return false;
         }
 
-        $record = $this->route('hafalan_doa');
+        $record = $this->route('hafalan_doa') ?? $this->route('doa');
+        if (is_numeric($record)) {
+            $record = \App\Models\HafalanDoa::find($record);
+        }
         if ($record && ! $user->canAccessSiswa($record->siswa)) {
             return false;
         }

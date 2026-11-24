@@ -7,7 +7,7 @@
                 </svg>
             </a>
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Tambah Catatan Setoran Al-Qur'an
+                Tambah Catatan Setoran Nama Surat
             </h2>
         </div>
     </x-slot>
@@ -43,7 +43,7 @@
                             <option value="">-- Pilih Surat --</option>
                             @foreach($surats as $su)
                                 <option value="{{ $su->id }}" {{ old('surat_id') == $su->id ? 'selected' : '' }}>
-                                    {{ $su->nomor }}. {{ $su->nama_surat }} &bull; {{ $su->jumlah_ayat }} ayat &bull; Juz {{ $su->juz }}
+                                    {{ $su->nomor }}. {{ $su->nama_surat }} {{ $su->nama_arab ? '- '.$su->nama_arab : '' }} ({{ $su->jumlah_ayat }} ayat, Juz {{ $su->juz }})
                                 </option>
                             @endforeach
                         </select>

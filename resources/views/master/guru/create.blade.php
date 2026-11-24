@@ -44,6 +44,24 @@
                 </div>
             </div>
 
+            <!-- Jenis Kelamin -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Jenis Kelamin <span class="text-rose-500">*</span></label>
+                <div class="flex items-center gap-6 mt-1">
+                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="jenis_kelamin" value="L" class="text-emerald-600 focus:ring-emerald-500" {{ old('jenis_kelamin', 'L') === 'L' ? 'checked' : '' }}>
+                        <span class="text-sm text-slate-700">Laki-laki</span>
+                    </label>
+                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="jenis_kelamin" value="P" class="text-emerald-600 focus:ring-emerald-500" {{ old('jenis_kelamin') === 'P' ? 'checked' : '' }}>
+                        <span class="text-sm text-slate-700">Perempuan</span>
+                    </label>
+                </div>
+                @error('jenis_kelamin')
+                    <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Email & No. HP -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -79,11 +97,31 @@
             </div>
 
             <!-- Kata Sandi -->
-            <div>
+            <div x-data="{ showPass: false }">
                 <label for="password" class="block text-sm font-medium text-slate-700">Kata Sandi Akun <span class="text-rose-500">*</span></label>
-                <input type="password" id="password" name="password" required
-                       placeholder="Minimal 6 karakter" 
-                       class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
+                <div class="relative mt-1 rounded-lg shadow-sm">
+                    <input :type="showPass ? 'text' : 'password'" 
+                           id="password" 
+                           name="password" 
+                           required
+                           value=""
+                           autocomplete="new-password"
+                           placeholder="Minimal 6 karakter" 
+                           class="block w-full pr-10 rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
+                    <button type="button" 
+                            @click="showPass = !showPass" 
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none"
+                            tabindex="-1"
+                            :title="showPass ? 'Sembunyikan kata sandi' : 'Lihat kata sandi'">
+                        <svg x-show="!showPass" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg x-show="showPass" x-cloak class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
                 @error('password')
                     <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
                 @enderror
@@ -94,7 +132,7 @@
                 <label class="block text-sm font-medium text-slate-700 mb-1">
                     Peran / Role Pengguna <span class="text-rose-500">*</span>
                 </label>
-                <p class="text-xs text-slate-500 mb-3">Satu pengguna boleh memiliki beberapa peran, misal Guru merangkap Admin.</p>
+                <p class="text-xs text-slate-500 mb-3">Satu pengguna boleh memiliki beberapa peran, misal Guru merangkap Admin atau Kepsek.</p>
                 <div class="flex flex-wrap gap-4">
                     @foreach($roles as $role)
                         <label class="inline-flex items-center gap-2 p-3 border rounded-lg cursor-pointer transition-colors {{ in_array($role->name, old('roles', ['guru'])) ? 'border-emerald-500 bg-emerald-50/50' : 'border-slate-200 hover:bg-slate-50' }}">
@@ -102,8 +140,16 @@
                                    {{ in_array($role->name, old('roles', ['guru'])) ? 'checked' : '' }}
                                    class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
                             <div>
-                                <span class="text-sm font-semibold text-slate-800">{{ ucfirst($role->name) }}</span>
-                                <span class="text-xs block text-slate-500">{{ $role->name === 'admin' ? 'Akses penuh ke semua master dan data' : 'Akses mengajar siswa di kelasnya' }}</span>
+                                <span class="text-sm font-semibold text-slate-800">{{ $role->name === 'kepsek' ? 'Kepala Sekolah (Kepsek)' : ucfirst($role->name) }}</span>
+                                <span class="text-xs block text-slate-500">
+                                    @if($role->name === 'admin')
+                                        Akses penuh ke semua master &amp; data
+                                    @elseif($role->name === 'kepsek')
+                                        Kepala Sekolah (penandatangan surat &amp; laporan)
+                                    @else
+                                        Akses mengajar siswa di kelasnya
+                                    @endif
+                                </span>
                             </div>
                         </label>
                     @endforeach

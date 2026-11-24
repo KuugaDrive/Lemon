@@ -49,7 +49,7 @@ class Kelas extends Model
             return $query->whereRaw('1 = 0');
         }
 
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('admin') || $user->hasRole('kepsek')) {
             return $query;
         }
 

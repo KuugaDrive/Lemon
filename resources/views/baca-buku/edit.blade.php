@@ -7,7 +7,7 @@
                 </svg>
             </a>
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Ubah Catatan Baca Buku Alfabet
+                Ubah Catatan Setoran Alfabet
             </h2>
         </div>
     </x-slot>
@@ -33,12 +33,35 @@
                     @error('siswa_id') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                <!-- Alfabet / Hijaiyah -->
+                @php
+                    $isLatin = old('jenis_huruf', $bacaBuku->alfabet_latin_id ? 'latin' : 'hijaiyah') === 'latin';
+                @endphp
+
+                <!-- Pilihan Jenis Huruf -->
                 <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Jenis Huruf <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50/50">
+                            <input type="radio" name="jenis_huruf" value="hijaiyah" class="text-emerald-600 focus:ring-emerald-500" {{ ! $isLatin ? 'checked' : '' }} onchange="toggleJenisHuruf('hijaiyah')">
+                            <span class="text-sm font-medium text-slate-800">Huruf Hijaiyah (ا-ي)</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50/50">
+                            <input type="radio" name="jenis_huruf" value="latin" class="text-emerald-600 focus:ring-emerald-500" {{ $isLatin ? 'checked' : '' }} onchange="toggleJenisHuruf('latin')">
+                            <span class="text-sm font-medium text-slate-800">Huruf Latin (A-Z)</span>
+                        </label>
+                    </div>
+                    @error('jenis_huruf') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <!-- Dropdown Huruf Hijaiyah -->
+                <div id="container-hijaiyah">
                     <label for="alfabet_id" class="block text-sm font-semibold text-slate-700 mb-1">
                         Huruf Hijaiyah <span class="text-rose-500">*</span>
                     </label>
-                    <select id="alfabet_id" name="alfabet_id" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('alfabet_id') border-rose-500 @enderror" required>
+                    <select id="alfabet_id" name="alfabet_id" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('alfabet_id') border-rose-500 @enderror">
+                        <option value="">-- Pilih Huruf Hijaiyah --</option>
                         @foreach($alfabets as $a)
                             <option value="{{ $a->id }}" {{ old('alfabet_id', $bacaBuku->alfabet_id) == $a->id ? 'selected' : '' }}>
                                 {{ $a->nama_alfabet }} {{ $a->ket ? '&bull; ' . $a->ket : '' }}
@@ -46,6 +69,22 @@
                         @endforeach
                     </select>
                     @error('alfabet_id') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <!-- Dropdown Huruf Latin -->
+                <div id="container-latin" class="hidden">
+                    <label for="alfabet_latin_id" class="block text-sm font-semibold text-slate-700 mb-1">
+                        Huruf Latin (A-Z) <span class="text-rose-500">*</span>
+                    </label>
+                    <select id="alfabet_latin_id" name="alfabet_latin_id" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('alfabet_latin_id') border-rose-500 @enderror">
+                        <option value="">-- Pilih Huruf Latin --</option>
+                        @foreach($alfabetLatins as $al)
+                            <option value="{{ $al->id }}" {{ old('alfabet_latin_id', $bacaBuku->alfabet_latin_id) == $al->id ? 'selected' : '' }}>
+                                {{ $al->huruf }} {{ $al->ket ? '('.$al->ket.')' : '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('alfabet_latin_id') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -123,4 +162,30 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function toggleJenisHuruf(jenis) {
+            const boxHijaiyah = document.getElementById('container-hijaiyah');
+            const boxLatin = document.getElementById('container-latin');
+            const selectHijaiyah = document.getElementById('alfabet_id');
+            const selectLatin = document.getElementById('alfabet_latin_id');
+
+            if (jenis === 'latin') {
+                boxHijaiyah.classList.add('hidden');
+                boxLatin.classList.remove('hidden');
+                selectHijaiyah.value = '';
+            } else {
+                boxLatin.classList.add('hidden');
+                boxHijaiyah.classList.remove('hidden');
+                selectLatin.value = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkedRadio = document.querySelector('input[name="jenis_huruf"]:checked');
+            if (checkedRadio) {
+                toggleJenisHuruf(checkedRadio.value);
+            }
+        });
+    </script>
 </x-app-layout>

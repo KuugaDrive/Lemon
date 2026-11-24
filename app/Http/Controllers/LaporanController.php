@@ -28,11 +28,10 @@ class LaporanController extends Controller
         $jenisOptions = [
             'presensi' => 'Presensi Harian',
             'iqro' => 'Setoran Iqro',
-            'quran' => 'Setoran Al-Qur\'an',
-            'doa' => 'Hafalan Doa Harian',
-            'hadist' => 'Hafalan Hadits Pendek',
-            'surat' => 'Hafalan Nama Surat',
-            'baca_buku' => 'Baca Buku Alfabet',
+            'quran' => 'Setoran Nama Surat',
+            'doa' => 'Setoran Doa Harian',
+            'hadist' => 'Setoran Hadist',
+            'baca_buku' => 'Setoran Alfabet',
         ];
 
         if ($canAccessSpp) {

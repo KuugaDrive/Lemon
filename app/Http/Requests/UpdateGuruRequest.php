@@ -23,12 +23,13 @@ class UpdateGuruRequest extends FormRequest
         return [
             'nip' => ['required', 'string', 'max:50', Rule::unique('users', 'nip')->ignore($guruId)],
             'name' => ['required', 'string', 'max:255'],
+            'jenis_kelamin' => ['nullable', 'in:L,P'],
             'email' => ['nullable', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($guruId)],
             'alamat' => ['nullable', 'string'],
             'no_hp' => ['nullable', 'string', 'max:30'],
             'password' => ['nullable', 'string', 'min:6'],
             'roles' => ['required', 'array', 'min:1'],
-            'roles.*' => ['required', 'string', 'in:admin,guru'],
+            'roles.*' => ['required', 'string', 'in:admin,guru,kepsek'],
             'kelas_ids' => ['nullable', 'array'],
             'kelas_ids.*' => ['exists:kelas,id'],
         ];
@@ -62,6 +63,7 @@ class UpdateGuruRequest extends FormRequest
         return [
             'nip' => 'NIP',
             'name' => 'nama lengkap',
+            'jenis_kelamin' => 'jenis kelamin',
             'email' => 'alamat email',
             'alamat' => 'alamat',
             'no_hp' => 'nomor HP',

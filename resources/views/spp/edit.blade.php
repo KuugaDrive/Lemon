@@ -65,7 +65,7 @@
                         <label for="nominal" class="block text-sm font-semibold text-slate-700 mb-1">
                             Nominal Rupiah <span class="text-rose-500">*</span>
                         </label>
-                        <input type="number" id="nominal" name="nominal" min="1" step="1000" value="{{ old('nominal', $spp->nominal) }}" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 @error('nominal') border-rose-500 @enderror" required>
+                        <x-input-rupiah name="nominal" id="nominal" :value="$spp->nominal" required class="@error('nominal') border-rose-500 @enderror" />
                         @error('nominal') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
                     </div>
 

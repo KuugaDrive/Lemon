@@ -6,9 +6,19 @@ use App\Enums\Penilaian;
 use App\Models\Siswa;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class BacaBukuRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if ($this->input('jenis_huruf') === 'latin') {
+            $this->merge(['alfabet_id' => null]);
+        } elseif ($this->input('jenis_huruf') === 'hijaiyah') {
+            $this->merge(['alfabet_latin_id' => null]);
+        }
+    }
+
     public function authorize(): bool
     {
         $user = $this->user();
@@ -16,7 +26,10 @@ class BacaBukuRequest extends FormRequest
             return false;
         }
 
-        $record = $this->route('baca_buku');
+        $record = $this->route('baca_buku') ?? $this->route('baca-buku');
+        if (is_numeric($record)) {
+            $record = \App\Models\BacaBuku::find($record);
+        }
         if ($record && ! $user->canAccessSiswa($record->siswa)) {
             return false;
         }
@@ -35,7 +48,9 @@ class BacaBukuRequest extends FormRequest
     {
         return [
             'siswa_id' => ['required', 'exists:siswas,id'],
-            'alfabet_id' => ['required', 'exists:alfabets,id'],
+            'jenis_huruf' => ['nullable', 'in:hijaiyah,latin'],
+            'alfabet_id' => ['nullable', 'exists:alfabets,id', 'required_without:alfabet_latin_id', 'prohibits:alfabet_latin_id'],
+            'alfabet_latin_id' => ['nullable', 'exists:alfabet_latins,id', 'required_without:alfabet_id', 'prohibits:alfabet_id'],
             'jilid' => ['required', 'string', 'max:50'],
             'halaman' => ['required', 'integer', 'min:1', 'max:1000'],
             'tgl_hafalan' => ['nullable', 'date', 'before_or_equal:today'],
@@ -45,13 +60,33 @@ class BacaBukuRequest extends FormRequest
         ];
     }
 
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            $hasHijaiyah = ! empty($this->input('alfabet_id'));
+            $hasLatin = ! empty($this->input('alfabet_latin_id'));
+
+            if (! $hasHijaiyah && ! $hasLatin) {
+                $validator->errors()->add('jenis_huruf', 'Pilih salah satu jenis huruf (Huruf Hijaiyah atau Huruf Latin).');
+            }
+
+            if ($hasHijaiyah && $hasLatin) {
+                $validator->errors()->add('jenis_huruf', 'Hanya boleh memilih salah satu antara Huruf Hijaiyah atau Huruf Latin.');
+            }
+        });
+    }
+
     public function messages(): array
     {
         return [
             'siswa_id.required' => 'Santri wajib dipilih.',
             'siswa_id.exists' => 'Santri yang dipilih tidak valid.',
-            'alfabet_id.required' => 'Huruf Hijaiyah wajib dipilih.',
+            'alfabet_id.required_without' => 'Huruf Hijaiyah atau Huruf Latin wajib dipilih.',
+            'alfabet_latin_id.required_without' => 'Huruf Hijaiyah atau Huruf Latin wajib dipilih.',
+            'alfabet_id.prohibits' => 'Hanya boleh memilih salah satu jenis huruf.',
+            'alfabet_latin_id.prohibits' => 'Hanya boleh memilih salah satu jenis huruf.',
             'alfabet_id.exists' => 'Huruf Hijaiyah yang dipilih tidak valid.',
+            'alfabet_latin_id.exists' => 'Huruf Latin yang dipilih tidak valid.',
             'jilid.required' => 'Jilid wajib diisi.',
             'jilid.max' => 'Jilid maksimal 50 karakter.',
             'halaman.required' => 'Halaman wajib diisi.',

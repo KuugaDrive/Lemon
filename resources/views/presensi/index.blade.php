@@ -99,24 +99,25 @@
                                         $currentStatus = $saved ? $saved->status->value : 'hadir';
                                         $currentKet = $saved ? $saved->ket : '';
                                     @endphp
-                                    <tr class="hover:bg-slate-50/75 transition-colors">
+                                    <tr class="hover:bg-slate-50/75 transition-colors presensi-row {{ $currentStatus === 'alfa' ? 'bg-rose-50/50' : '' }}" id="row-{{ $index }}">
                                         <td class="px-4 py-3 text-center text-slate-400 font-mono text-xs">
                                             {{ $index + 1 }}
                                             <input type="hidden" name="presensi[{{ $index }}][siswa_id]" value="{{ $siswa->id }}">
                                         </td>
                                         <td class="px-6 py-3">
-                                            <div class="font-semibold text-slate-900">{{ $siswa->nama_siswa }}</div>
-                                            <div class="text-xs text-slate-400 font-mono">NIS: {{ $siswa->nis }}</div>
+                                            <div class="font-semibold siswa-nama {{ $currentStatus === 'alfa' ? 'text-rose-600 font-bold' : 'text-slate-900' }}">{{ $siswa->nama_siswa }}</div>
+                                            <div class="text-xs siswa-nis {{ $currentStatus === 'alfa' ? 'text-rose-500' : 'text-slate-400' }} font-mono">NIS: {{ $siswa->nis }}</div>
                                         </td>
                                         <td class="px-6 py-3">
                                             <div class="flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
                                                 @foreach($statuses as $st)
-                                                    <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-colors {{ $currentStatus === $st->value ? $st->badgeClass() : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50' }}">
+                                                    <label class="status-label inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-colors {{ $currentStatus === $st->value ? ($st->value === 'alfa' ? 'bg-rose-100 text-rose-800 border-rose-300 font-bold' : $st->badgeClass()) : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50' }}">
                                                         <input type="radio" 
                                                                name="presensi[{{ $index }}][status]" 
                                                                value="{{ $st->value }}" 
                                                                class="status-radio-{{ $st->value }} text-emerald-600 focus:ring-emerald-500"
-                                                               {{ $currentStatus === $st->value ? 'checked' : '' }}>
+                                                               {{ $currentStatus === $st->value ? 'checked' : '' }}
+                                                               onchange="handleStatusChange(this)">
                                                         <span>{{ $st->label() }}</span>
                                                     </label>
                                                 @endforeach
@@ -152,14 +153,73 @@
         @endif
     </div>
 
-    <!-- Script Set Semua Hadir -->
+    <!-- Script Presensi: Dinamis Alfa Merah & Set Semua Hadir -->
     <script>
+        function updateRowAlfaState(radio) {
+            const row = radio.closest('tr');
+            if (!row) return;
+
+            const namaEl = row.querySelector('.siswa-nama');
+            const nisEl = row.querySelector('.siswa-nis');
+            const labels = row.querySelectorAll('.status-label');
+
+            labels.forEach(label => {
+                const input = label.querySelector('input[type="radio"]');
+                if (input && input.checked) {
+                    if (input.value === 'hadir') {
+                        label.className = 'status-label inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-colors bg-emerald-100 text-emerald-800 border-emerald-300';
+                    } else if (input.value === 'sakit') {
+                        label.className = 'status-label inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-colors bg-amber-100 text-amber-800 border-amber-300';
+                    } else if (input.value === 'izin') {
+                        label.className = 'status-label inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-colors bg-blue-100 text-blue-800 border-blue-300';
+                    } else if (input.value === 'alfa') {
+                        label.className = 'status-label inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-colors bg-rose-100 text-rose-800 border-rose-300 font-bold';
+                    }
+                } else {
+                    label.className = 'status-label inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-colors border-slate-200 bg-white text-slate-600 hover:bg-slate-50';
+                }
+            });
+
+            if (radio.value === 'alfa') {
+                if (namaEl) {
+                    namaEl.classList.remove('text-slate-900');
+                    namaEl.classList.add('text-rose-600', 'font-bold');
+                }
+                if (nisEl) {
+                    nisEl.classList.remove('text-slate-400');
+                    nisEl.classList.add('text-rose-500');
+                }
+                row.classList.add('bg-rose-50/50');
+            } else {
+                if (namaEl) {
+                    namaEl.classList.remove('text-rose-600', 'font-bold');
+                    namaEl.classList.add('text-slate-900');
+                }
+                if (nisEl) {
+                    nisEl.classList.remove('text-rose-500');
+                    nisEl.classList.add('text-slate-400');
+                }
+                row.classList.remove('bg-rose-50/50');
+            }
+        }
+
+        function handleStatusChange(radio) {
+            updateRowAlfaState(radio);
+        }
+
         function setSemuaHadir() {
             const hadirRadios = document.querySelectorAll('.status-radio-hadir');
             hadirRadios.forEach(radio => {
                 radio.checked = true;
-                radio.dispatchEvent(new Event('change'));
+                updateRowAlfaState(radio);
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkedRadios = document.querySelectorAll('input[type="radio"][name^="presensi"]:checked');
+            checkedRadios.forEach(radio => {
+                updateRowAlfaState(radio);
+            });
+        });
     </script>
 </x-app-layout>

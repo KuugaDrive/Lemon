@@ -14,6 +14,7 @@ class SuratFactory extends Factory
         return [
             'nomor' => fake()->unique()->numberBetween(1, 114),
             'nama_surat' => 'Surat ' . fake()->word(),
+            'nama_arab' => 'الفاتحة',
             'juz' => fake()->numberBetween(1, 30),
             'jumlah_ayat' => fake()->numberBetween(3, 286),
             'ket' => fake()->sentence(),

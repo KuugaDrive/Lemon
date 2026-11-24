@@ -299,4 +299,57 @@ class SppTest extends TestCase
         $this->assertStringStartsWith('KW-202605-', $pembayaran->nomor_kuitansi);
         $this->assertEquals('Dua Ratus Ribu Rupiah', $pembayaran->terbilang);
     }
+
+    public function test_is_telat_pada_pembayaran_spp_melewati_jatuh_tempo(): void
+    {
+        Pengaturan::set('spp_jatuh_tempo_hari', 10);
+
+        // Bayar tanggal 5 (tepat waktu)
+        $bayarTepat = PembayaranSpp::create([
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 11,
+            'tahun' => 2026,
+            'nominal' => 150000,
+            'tgl_bayar' => '2026-11-05',
+            'dicatat_oleh' => $this->admin->id,
+        ]);
+        $this->assertFalse($bayarTepat->is_telat);
+
+        // Bayar tanggal 24 (telat)
+        $bayarTelat = PembayaranSpp::create([
+            'siswa_id' => $this->siswa2->id,
+            'bulan' => 11,
+            'tahun' => 2026,
+            'nominal' => 150000,
+            'tgl_bayar' => '2026-11-24',
+            'dicatat_oleh' => $this->admin->id,
+        ]);
+        $this->assertTrue($bayarTelat->is_telat);
+
+        $response = $this->actingAs($this->admin)->get(route('spp.index'));
+        $response->assertOk();
+        $response->assertSee('Telat');
+        $response->assertSee('Nama Orang Tua');
+    }
+
+    public function test_cetak_surat_tunggakan_pdf_berhasil(): void
+    {
+        $response = $this->actingAs($this->admin)->get(route('spp.surat-tunggakan', [
+            'siswa' => $this->siswa1->id,
+            'bulan' => 11,
+            'tahun' => 2026,
+        ]));
+
+        $response->assertOk();
+        $response->assertHeader('content-type', 'application/pdf');
+        $this->assertNotEmpty($response->getContent());
+
+        // Guru non-admin ditolak
+        $responseGuru = $this->actingAs($this->guru)->get(route('spp.surat-tunggakan', [
+            'siswa' => $this->siswa1->id,
+            'bulan' => 11,
+            'tahun' => 2026,
+        ]));
+        $responseGuru->assertForbidden();
+    }
 }

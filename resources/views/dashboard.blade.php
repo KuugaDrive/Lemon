@@ -13,7 +13,7 @@
                         Assalamu'alaikum, {{ $user->name }}
                     </h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Sistem Informasi PAUD dan TPQ Lemon &bull; {{ $today->translatedFormat('l, d F Y') }}
+                        Sistem Informasi Binar Sunnah School &bull; {{ $today->translatedFormat('l, d F Y') }}
                     </p>
                 </div>
                 <div class="text-left md:text-right">

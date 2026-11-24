@@ -23,7 +23,7 @@
                 <td>{{ $item->tanggal->translatedFormat('d M Y') }}</td>
                 <td class="font-mono">{{ $item->siswa->nis }}</td>
                 <td class="font-bold">{{ $item->siswa->nama_siswa }}</td>
-                <td>{{ $item->siswa->nama_wali }}</td>
+                <td>{{ $item->siswa->wali_tampil }}</td>
                 <td>{{ $item->surat->nama_surat }}</td>
                 <td class="text-center">{{ $item->juz }}</td>
                 <td class="text-center">{{ $item->ayat_mulai }}-{{ $item->ayat_selesai }}</td>

@@ -18,7 +18,10 @@ class SetoranIqroRequest extends FormRequest
             return false;
         }
 
-        $record = $this->route('setoran_iqro');
+        $record = $this->route('setoran_iqro') ?? $this->route('iqro');
+        if (is_numeric($record)) {
+            $record = \App\Models\SetoranIqro::find($record);
+        }
         if ($record && ! $user->canAccessSiswa($record->siswa)) {
             return false;
         }

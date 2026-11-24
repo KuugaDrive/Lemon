@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $currentMonth = (int) $today->format('n');
         $currentYear = (int) $today->year;
 
-        $isAdmin = $user->hasRole('admin');
+        $isAdmin = $user->hasRole('admin') || $user->hasRole('kepsek');
 
         if ($isAdmin) {
             $totalSiswa = Siswa::count();
@@ -45,7 +45,6 @@ class DashboardController extends Controller
                 + SetoranQuran::whereDate('tanggal', $today)->count()
                 + HafalanDoa::whereDate('tgl_pengujian', $today)->count()
                 + HafalanHadist::whereDate('tgl_pengujian', $today)->count()
-                + HafalanSurat::whereDate('tgl_pengujian', $today)->count()
                 + BacaBuku::whereDate('tgl_pengujian', $today)->count();
 
             $kelasList = Kelas::with(['gurus', 'siswas'])->get()->map(function ($kelas) use ($today) {
@@ -98,7 +97,6 @@ class DashboardController extends Controller
             + SetoranQuran::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
             + HafalanDoa::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count()
             + HafalanHadist::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count()
-            + HafalanSurat::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count()
             + BacaBuku::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count();
 
         $kelasList = $kelasUser->map(function ($kelas) use ($today) {

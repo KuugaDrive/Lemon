@@ -16,6 +16,7 @@ class Surat extends Model
     protected $fillable = [
         'nomor',
         'nama_surat',
+        'nama_arab',
         'juz',
         'jumlah_ayat',
         'ket',
@@ -26,6 +27,13 @@ class Surat extends Model
         'juz' => 'integer',
         'jumlah_ayat' => 'integer',
     ];
+
+    public function getNamaLengkapAttribute(): string
+    {
+        return $this->nama_arab
+            ? "{$this->nomor}. {$this->nama_surat} - {$this->nama_arab}"
+            : "{$this->nomor}. {$this->nama_surat}";
+    }
 
     public function scopeSearch(Builder $query, ?string $term): Builder
     {

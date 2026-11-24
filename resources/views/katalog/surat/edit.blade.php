@@ -33,13 +33,23 @@
                 </div>
 
                 <div>
-                    <label for="nama_surat" class="block text-sm font-medium text-slate-700">Nama Surat <span class="text-rose-500">*</span></label>
+                    <label for="nama_surat" class="block text-sm font-medium text-slate-700">Nama Latin <span class="text-rose-500">*</span></label>
                     <input type="text" id="nama_surat" name="nama_surat" value="{{ old('nama_surat', $surat->nama_surat) }}" required
                            class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                     @error('nama_surat')
                         <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
                     @enderror
                 </div>
+            </div>
+
+            <div>
+                <label for="nama_arab" class="block text-sm font-medium text-slate-700">Nama Tulisan Arab</label>
+                <input type="text" id="nama_arab" name="nama_arab" value="{{ old('nama_arab', $surat->nama_arab) }}" dir="rtl"
+                       placeholder="Contoh: البقرة" 
+                       class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm font-serif text-lg">
+                @error('nama_arab')
+                    <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

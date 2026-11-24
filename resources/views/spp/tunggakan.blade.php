@@ -82,6 +82,7 @@
                             <th class="px-4 py-3.5 text-center w-12">No</th>
                             <th class="px-6 py-3.5">Santri</th>
                             <th class="px-6 py-3.5">Kelas</th>
+                            <th class="px-6 py-3.5">Nama Orang Tua</th>
                             <th class="px-6 py-3.5">Wali Santri</th>
                             <th class="px-6 py-3.5">Kontak WhatsApp</th>
                             <th class="px-6 py-3.5 text-center">Status</th>
@@ -108,8 +109,11 @@
                                 <td class="px-6 py-3.5 whitespace-nowrap text-slate-600">
                                     {{ $siswa->kelas?->nama_kelas }}
                                 </td>
-                                <td class="px-6 py-3.5 text-slate-700">
-                                    {{ $siswa->nama_orang_tua }}
+                                <td class="px-6 py-3.5 text-slate-700 whitespace-nowrap">
+                                    {{ $siswa->nama_orang_tua ?: ($siswa->nama_ayah_kandung ?: '-') }}
+                                </td>
+                                <td class="px-6 py-3.5 text-slate-700 whitespace-nowrap">
+                                    {{ $siswa->nama_wali ?: '-' }}
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap">
                                     @if($siswa->no_hp_ortu)
@@ -129,17 +133,25 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-3.5 text-right whitespace-nowrap">
-                                    <a href="{{ route('spp.create', ['siswa_id' => $siswa->id, 'bulan' => $bulan, 'tahun' => $tahun]) }}" class="inline-flex items-center px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors gap-1">
-                                        <span>Bayar Sekarang</span>
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                        </svg>
-                                    </a>
+                                    <div class="inline-flex items-center gap-2">
+                                        <a href="{{ route('spp.surat-tunggakan', ['siswa' => $siswa->id, 'bulan' => $bulan, 'tahun' => $tahun]) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 text-xs font-semibold rounded-lg shadow-sm transition-colors gap-1.5" title="Cetak Surat Tunggakan PDF">
+                                            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                            </svg>
+                                            <span>Surat Tunggakan</span>
+                                        </a>
+                                        <a href="{{ route('spp.create', ['siswa_id' => $siswa->id, 'bulan' => $bulan, 'tahun' => $tahun]) }}" class="inline-flex items-center px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors gap-1">
+                                            <span>Bayar Sekarang</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-8 text-center text-emerald-600 font-medium">
+                                <td colspan="8" class="px-6 py-8 text-center text-emerald-600 font-medium">
                                     Alhamdulillah, semua santri sudah melunasi SPP untuk periode {{ $namaBulan }} {{ $tahun }}!
                                 </td>
                             </tr>

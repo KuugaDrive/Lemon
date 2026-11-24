@@ -106,6 +106,40 @@ class PresensiController extends Controller
     }
 
     /**
+     * Update cepat status & catatan presensi santri dari pop-up rekap.
+     */
+    public function quickUpdate(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'presensi_id' => ['required', 'exists:presensis,id'],
+            'status' => ['required', 'in:hadir,izin,sakit,alfa'],
+            'ket' => ['nullable', 'string', 'max:255'],
+        ], [
+            'presensi_id.required' => 'ID Presensi tidak valid.',
+            'status.required' => 'Status kehadiran wajib dipilih.',
+            'status.in' => 'Status kehadiran tidak valid.',
+            'ket.max' => 'Catatan maksimal 255 karakter.',
+        ]);
+
+        $presensi = Presensi::with('siswa')->findOrFail($validated['presensi_id']);
+
+        if (! auth()->user()->canAccessSiswa($presensi->siswa)) {
+            abort(403, 'Anda tidak memiliki hak akses untuk mengubah presensi santri ini.');
+        }
+
+        $presensi->update([
+            'status' => $validated['status'],
+            'ket' => $validated['ket'],
+            'guru_id' => auth()->id(),
+        ]);
+
+        $formattedTanggal = Carbon::parse($presensi->tanggal)->translatedFormat('d F Y');
+        $namaSiswa = $presensi->siswa->nama_siswa;
+
+        return back()->with('success', "Presensi {$namaSiswa} tanggal {$formattedTanggal} berhasil diperbarui.");
+    }
+
+    /**
      * Halaman rekapitulasi kehadiran per kelas.
      */
     public function rekap(Request $request): View

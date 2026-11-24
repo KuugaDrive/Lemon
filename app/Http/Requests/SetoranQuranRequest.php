@@ -18,7 +18,10 @@ class SetoranQuranRequest extends FormRequest
             return false;
         }
 
-        $record = $this->route('setoran_quran');
+        $record = $this->route('setoran_quran') ?? $this->route('quran');
+        if (is_numeric($record)) {
+            $record = \App\Models\SetoranQuran::find($record);
+        }
         if ($record && ! $user->canAccessSiswa($record->siswa)) {
             return false;
         }

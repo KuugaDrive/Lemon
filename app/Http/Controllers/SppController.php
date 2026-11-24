@@ -230,6 +230,97 @@ class SppController extends Controller
         return view('spp.riwayat', compact('siswa', 'riwayats', 'totalTerbayar'));
     }
 
+    /**
+     * Cetak Surat Pemberitahuan Tunggakan SPP dalam bentuk PDF.
+     */
+    public function suratTunggakan(Request $request, Siswa $siswa): \Illuminate\Http\Response
+    {
+        $bulan = (int) ($request->input('bulan') ?: now()->month);
+        $tahun = (int) ($request->input('tahun') ?: now()->year);
+
+        $siswa->load(['kelas.gurus']);
+
+        $defaultNominal = (int) Pengaturan::get('spp_nominal_default', 150000);
+        $jatuhTempo = (int) Pengaturan::get('spp_jatuh_tempo_hari', 10);
+
+        $paidMonths = PembayaranSpp::where('siswa_id', $siswa->id)
+            ->where('tahun', $tahun)
+            ->where('bulan', '<=', $bulan)
+            ->pluck('bulan')
+            ->toArray();
+
+        $unpaidList = [];
+        for ($m = 1; $m <= $bulan; $m++) {
+            if (! in_array($m, $paidMonths)) {
+                $namaBulanM = Carbon::createFromDate($tahun, $m, 1)->translatedFormat('F');
+                $unpaidList[] = [
+                    'bulan' => $m,
+                    'tahun' => $tahun,
+                    'periode_label' => "{$namaBulanM} {$tahun}",
+                    'jatuh_tempo' => "{$jatuhTempo} {$namaBulanM} {$tahun}",
+                    'nominal' => $defaultNominal,
+                    'nominal_rupiah' => 'Rp ' . number_format($defaultNominal, 0, ',', '.'),
+                ];
+            }
+        }
+
+        if (empty($unpaidList)) {
+            $namaBulanM = Carbon::createFromDate($tahun, $bulan, 1)->translatedFormat('F');
+            $unpaidList[] = [
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'periode_label' => "{$namaBulanM} {$tahun}",
+                'jatuh_tempo' => "{$jatuhTempo} {$namaBulanM} {$tahun}",
+                'nominal' => $defaultNominal,
+                'nominal_rupiah' => 'Rp ' . number_format($defaultNominal, 0, ',', '.'),
+            ];
+        }
+
+        $totalKeseluruhan = array_sum(array_column($unpaidList, 'nominal'));
+        $totalKeseluruhanRupiah = 'Rp ' . number_format($totalKeseluruhan, 0, ',', '.');
+        $terbilang = SppService::terbilangRupiah($totalKeseluruhan);
+
+        $guruPengampu = $siswa->kelas?->gurus->pluck('name')->implode(', ') ?: '-';
+        $namaOrtu = $siswa->nama_orang_tua ?: ($siswa->nama_ayah_kandung ?: ($siswa->nama_wali ?: 'Bapak / Ibu Wali Santri'));
+
+        $profil = [
+            'nama_lembaga' => Pengaturan::get('nama_lembaga', 'Binar Sunnah School'),
+            'alamat_lembaga' => Pengaturan::get('alamat_lembaga', 'Jl. H. Nirin No. 63, RT.3/RW.5, Petukangan Selatan, Kec. Pesanggrahan, Kota Jakarta Selatan, DKI Jakarta 12270'),
+            'no_telp_lembaga' => Pengaturan::get('no_telp_lembaga', '0812-3456-7890'),
+            'nama_kepala' => Pengaturan::getNamaKepala(),
+            'nip_kepala' => Pengaturan::getNipKepala(),
+        ];
+
+        $logoPath = null;
+        if (extension_loaded('gd')) {
+            $candidate = storage_path('app/public/logo-binar-693.png');
+            if (file_exists($candidate)) {
+                $logoPath = $candidate;
+            }
+        }
+
+        $nomorSurat = sprintf('%03d/SPP-BSS/%s/%d', $siswa->id, Carbon::createFromDate($tahun, $bulan, 1)->format('m'), $tahun);
+        $tglSurat = Carbon::now()->translatedFormat('d F Y');
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('spp.pdf.surat_tunggakan', compact(
+            'siswa',
+            'bulan',
+            'tahun',
+            'unpaidList',
+            'totalKeseluruhan',
+            'totalKeseluruhanRupiah',
+            'terbilang',
+            'guruPengampu',
+            'namaOrtu',
+            'profil',
+            'logoPath',
+            'nomorSurat',
+            'tglSurat'
+        ))->setPaper('a4', 'portrait');
+
+        return $pdf->stream("surat-tunggakan-{$siswa->nis}-{$bulan}-{$tahun}.pdf");
+    }
+
     public function pengaturan(): View
     {
         $nominalDefault = Pengaturan::get('spp_nominal_default', 150000);

@@ -80,11 +80,16 @@ class HafalanSuratController extends Controller
 
         HafalanSurat::create($data);
 
-        return redirect()->route('hafalan.surat.index')->with('success', 'Catatan hafalan Surat berhasil ditambahkan.');
+        return redirect()->route('hafalan.surat.index')->with('success', 'Catatan setoran Surat berhasil ditambahkan.');
     }
 
     public function edit(HafalanSurat $hafalanSurat): View
     {
+        if (! $hafalanSurat->exists) {
+            $id = request()->route('hafalan_surat') ?? request()->route('surat');
+            $hafalanSurat = HafalanSurat::findOrFail($id);
+        }
+
         $user = auth()->user();
         if (! $user->canAccessSiswa($hafalanSurat->siswa)) {
             abort(403, 'Anda tidak memiliki akses ke data hafalan santri ini.');
@@ -99,19 +104,29 @@ class HafalanSuratController extends Controller
 
     public function update(HafalanSuratRequest $request, HafalanSurat $hafalanSurat): RedirectResponse
     {
+        if (! $hafalanSurat->exists) {
+            $id = request()->route('hafalan_surat') ?? request()->route('surat');
+            $hafalanSurat = HafalanSurat::findOrFail($id);
+        }
+
         $hafalanSurat->update($request->validated());
 
-        return redirect()->route('hafalan.surat.index')->with('success', 'Catatan hafalan Surat berhasil diperbarui.');
+        return redirect()->route('hafalan.surat.index')->with('success', 'Catatan setoran Surat berhasil diperbarui.');
     }
 
     public function destroy(HafalanSurat $hafalanSurat): RedirectResponse
     {
+        if (! $hafalanSurat->exists) {
+            $id = request()->route('hafalan_surat') ?? request()->route('surat');
+            $hafalanSurat = HafalanSurat::findOrFail($id);
+        }
+
         if (! auth()->user()->canAccessSiswa($hafalanSurat->siswa)) {
             abort(403, 'Anda tidak memiliki akses untuk menghapus data hafalan santri ini.');
         }
 
         $hafalanSurat->delete();
 
-        return redirect()->route('hafalan.surat.index')->with('success', 'Catatan hafalan Surat berhasil dihapus.');
+        return redirect()->route('hafalan.surat.index')->with('success', 'Catatan setoran Surat berhasil dihapus.');
     }
 }

@@ -56,9 +56,11 @@
                         <tr>
                             <th class="px-6 py-4">NIS</th>
                             <th class="px-6 py-4">Nama Santri</th>
+                            <th class="px-3 py-4 text-center">L/P</th>
                             <th class="px-6 py-4">Kelas</th>
                             <th class="px-6 py-4">Ayah Kandung</th>
                             <th class="px-6 py-4">Ibu Kandung</th>
+                            <th class="px-6 py-4">Wali</th>
                             <th class="px-6 py-4">No HP Ortu</th>
                             <th class="px-6 py-4 text-center">Aksi</th>
                         </tr>
@@ -74,6 +76,19 @@
                                         {{ $siswa->nama_siswa }}
                                     </a>
                                 </td>
+                                <td class="px-3 py-4 text-center whitespace-nowrap">
+                                    @if($siswa->jenis_kelamin === 'P')
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-pink-100 text-pink-700 border border-pink-200" title="Perempuan">
+                                            P
+                                        </span>
+                                    @elseif($siswa->jenis_kelamin === 'L')
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200" title="Laki-laki">
+                                            L
+                                        </span>
+                                    @else
+                                        <span class="text-slate-400 font-mono text-xs">-</span>
+                                    @endif
+                                </td>
                                 <td class="px-6 py-4 text-slate-700 whitespace-nowrap">
                                     {{ $siswa->kelas->nama_kelas ?? '-' }}
                                 </td>
@@ -82,6 +97,9 @@
                                 </td>
                                 <td class="px-6 py-4 text-slate-700">
                                     {{ $siswa->nama_ibu_kandung ?: '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-slate-700">
+                                    {{ $siswa->nama_wali ?: '-' }}
                                 </td>
                                 <td class="px-6 py-4 text-slate-600 whitespace-nowrap">
                                     {{ $siswa->no_hp_ortu ?? '-' }}
@@ -117,7 +135,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-slate-500">
+                                <td colspan="9" class="px-6 py-12 text-center text-slate-500">
                                     <div class="flex flex-col items-center justify-center">
                                         <svg class="w-12 h-12 text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>

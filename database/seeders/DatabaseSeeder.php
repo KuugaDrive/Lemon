@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             IqroSeeder::class,
             SuratSeeder::class,
             AlfabetSeeder::class,
+            AlfabetLatinSeeder::class,
             DoaSeeder::class,
             HadistSeeder::class,
             SetoranHafalanSeeder::class,

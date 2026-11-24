@@ -64,7 +64,8 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Nominal Per Santri Rupiah</label>
-                            <input type="number" name="nominal" min="1" step="1000" value="{{ old('nominal', $defaultNominal) }}" class="w-full rounded-lg border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 text-sm" required>
+                            <x-input-rupiah name="nominal" id="nominal" :value="$defaultNominal" required class="@error('nominal') border-rose-500 @enderror" />
+                            @error('nominal') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Tanggal Pembayaran</label>

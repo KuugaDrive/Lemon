@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-            Baca Buku Alfabet
+            Setoran Alfabet
         </h2>
     </x-slot>
 
     <div class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h3 class="text-lg font-bold text-slate-900">Daftar Catatan Baca Buku Alfabet</h3>
+                <h3 class="text-lg font-bold text-slate-900">Daftar Catatan Setoran Alfabet</h3>
                 <p class="text-sm text-slate-500">Catatan bimbingan dan penilaian kemampuan membaca alfabet santri.</p>
             </div>
             <a href="{{ route('baca-buku.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors whitespace-nowrap self-start sm:self-auto">
@@ -73,7 +73,7 @@
                             <th class="px-6 py-3.5">Santri</th>
                             <th class="px-6 py-3.5">Wali Santri</th>
                             <th class="px-6 py-3.5">Kelas</th>
-                            <th class="px-6 py-3.5">Huruf Hijaiyah</th>
+                            <th class="px-6 py-3.5">Huruf</th>
                             <th class="px-6 py-3.5">Jilid</th>
                             <th class="px-6 py-3.5">Halaman</th>
                             <th class="px-6 py-3.5">Tgl Mulai</th>
@@ -94,13 +94,13 @@
                                     <div class="text-xs text-slate-400 font-mono">{{ $item->siswa->nis }}</div>
                                 </td>
                                 <td class="px-6 py-3.5 text-slate-700">
-                                    {{ $item->siswa->nama_wali }}
+                                    {{ $item->siswa->wali_tampil }}
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap text-slate-600">
                                     {{ $item->siswa->kelas?->nama_kelas ?? '-' }}
                                 </td>
                                 <td class="px-6 py-3.5 font-semibold text-slate-800">
-                                    {{ $item->alfabet->nama_alfabet }}
+                                    {{ $item->huruf_tampil }}
                                 </td>
                                 <td class="px-6 py-3.5 font-medium text-slate-800 whitespace-nowrap">
                                     {{ $item->jilid }}

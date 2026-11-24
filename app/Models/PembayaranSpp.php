@@ -78,6 +78,19 @@ class PembayaranSpp extends Model
         );
     }
 
+    protected function isTelat(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $jatuhTempoHari = (int) Pengaturan::get('spp_jatuh_tempo_hari', 10);
+                $daysInMonth = Carbon::createFromDate($this->tahun, $this->bulan, 1)->daysInMonth;
+                $maxDay = min($jatuhTempoHari, $daysInMonth);
+                $dueDate = Carbon::createFromDate($this->tahun, $this->bulan, $maxDay)->startOfDay();
+                return $this->tgl_bayar->startOfDay()->greaterThan($dueDate);
+            }
+        );
+    }
+
     public function scopePeriode(Builder $query, int $bulan, int $tahun): Builder
     {
         return $query->where('bulan', $bulan)->where('tahun', $tahun);

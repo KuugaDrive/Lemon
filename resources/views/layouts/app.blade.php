@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Lemon') }} - Sistem Informasi PAUD & TPQ</title>
+        <title>{{ config('app.name', 'Binar Sunnah School') }} - Sistem Informasi Sekolah</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -33,16 +33,12 @@
                    class="fixed inset-y-0 left-0 z-50 w-154 bg-slate-900 text-slate-200 transition-transform duration-300 ease-in-out flex flex-col shadow-xl lg:static lg:inset-auto lg:translate-x-0">
                 
                 <!-- Logo & Brand -->
-                <div class="h-16 flex items-center justify-between px-6 bg-slate-950/40 border-b border-slate-800">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 font-bold text-white text-lg tracking-wide">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
+                <div class="h-16 flex items-center justify-between px-5 bg-slate-950/40 border-b border-slate-800">
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 font-bold text-white text-base tracking-wide">
+                        <img src="{{ asset('storage/logo-binar-693.png') }}" alt="Binar Sunnah School" class="h-9 w-auto object-contain bg-white rounded-md p-1 shadow-sm">
                         <div class="leading-tight">
-                            <span class="text-emerald-400">Lemon</span>
-                            <span class="text-xs block font-normal text-slate-400">PAUD &amp; TPQ</span>
+                            <span class="text-amber-400 font-bold block text-sm">Binar Sunnah</span>
+                            <span class="text-xs font-normal text-slate-300">School</span>
                         </div>
                     </a>
                     <button @click="sidebarOpen = false" class="lg:hidden text-slate-400 hover:text-white">
@@ -117,86 +113,12 @@
                         </svg>
                         <span>Data Santri / Siswa</span>
                     </a>
-
-                    <!-- Section: Presensi -->
-                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                        Presensi Harian
-                    </div>
-
-                    <a href="{{ route('presensi.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.index') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                        </svg>
-                        <span>Input Presensi</span>
-                    </a>
-
-                    <a href="{{ route('presensi.rekap') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.rekap') || request()->routeIs('presensi.siswa') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        <span>Rekap Presensi</span>
-                    </a>
-
-                    <!-- Section: Setoran & Hafalan -->
-                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                        Setoran & Hafalan
-                    </div>
-
-                    <a href="{{ route('setoran.iqro.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.iqro.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        <span>Setoran Iqro</span>
-                    </a>
-
-                    <a href="{{ route('setoran.quran.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.quran.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        </svg>
-                        <span>Setoran Al-Qur'an</span>
-                    </a>
-
-                    <a href="{{ route('hafalan.doa.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.doa.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                        <span>Hafalan Doa</span>
-                    </a>
-
-                    <a href="{{ route('hafalan.hadist.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.hadist.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                        <span>Hafalan Hadits</span>
-                    </a>
-
-                    <a href="{{ route('hafalan.surat.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.surat.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span>Hafalan Surat</span>
-                    </a>
-
-                    <a href="{{ route('baca-buku.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('baca-buku.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v14m0 0l-3-3m3 3l3-3m5-6h4m-2-2v4" />
-                        </svg>
-                        <span>Baca Buku Alfabet</span>
-                    </a>
                     @endhasanyrole
 
                     @role('admin')
-                    <!-- Section: Katalog Materi (Admin only) -->
+                    <!-- Section: Kumpulan Materi (Admin only) -->
                     <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                        Katalog Materi
+                        Kumpulan Materi
                     </div>
 
                     <a href="{{ route('katalog.iqro.index') }}" 
@@ -236,9 +158,85 @@
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v14m0 0l-3-3m3 3l3-3m5-6h4m-2-2v4" />
                         </svg>
+                        <span>Huruf Hijaiyah</span>
+                    </a>
+
+                    <a href="{{ route('katalog.alfabet-latin.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('katalog.alfabet-latin.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                        </svg>
                         <span>Kumpulan Alfabet</span>
                     </a>
                     @endrole
+
+                    @hasanyrole('admin|guru')
+                    <!-- Section: Presensi -->
+                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Presensi Harian
+                    </div>
+
+                    <a href="{{ route('presensi.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.index') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                        <span>Input Presensi</span>
+                    </a>
+
+                    <a href="{{ route('presensi.rekap') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('presensi.rekap') || request()->routeIs('presensi.siswa') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span>Rekap Presensi</span>
+                    </a>
+
+                    <!-- Section: Setoran & Hafalan -->
+                    <div class="pt-4 pb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        Setoran & Hafalan
+                    </div>
+
+                    <a href="{{ route('setoran.iqro.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.iqro.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <span>Setoran Iqro</span>
+                    </a>
+
+                    <a href="{{ route('setoran.quran.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('setoran.quran.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        </svg>
+                        <span>Setoran Nama Surat</span>
+                    </a>
+
+                    <a href="{{ route('hafalan.doa.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.doa.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        <span>Setoran Doa Harian</span>
+                    </a>
+
+                    <a href="{{ route('hafalan.hadist.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('hafalan.hadist.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        <span>Setoran Hadist</span>
+                    </a>
+
+                    <a href="{{ route('baca-buku.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('baca-buku.*') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v14m0 0l-3-3m3 3l3-3m5-6h4m-2-2v4" />
+                        </svg>
+                        <span>Setoran Alfabet</span>
+                    </a>
+                    @endhasanyrole
 
                     @can('kelola-spp')
                     <!-- Section: Keuangan SPP (Admin / Bendahara) -->
@@ -323,7 +321,7 @@
                         @isset($header)
                             <div>{{ $header }}</div>
                         @else
-                            <h1 class="text-lg font-semibold text-slate-800">Lemon PAUD/TPQ</h1>
+                            <h1 class="text-lg font-semibold text-slate-800">Binar Sunnah School</h1>
                         @endisset
                     </div>
 

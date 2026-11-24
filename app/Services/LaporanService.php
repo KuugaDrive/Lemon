@@ -26,10 +26,11 @@ class LaporanService
         $sampaiTanggal = $params['sampai_tanggal'];
 
         $profil = [
-            'nama_lembaga' => Pengaturan::get('nama_lembaga', 'PAUD / TPQ Lemon'),
-            'alamat_lembaga' => Pengaturan::get('alamat_lembaga', 'Jl. Pendidikan Karakter Anak No. 7, Jakarta'),
+            'nama_lembaga' => Pengaturan::get('nama_lembaga', 'Binar Sunnah School'),
+            'alamat_lembaga' => Pengaturan::get('alamat_lembaga', 'Jl. H. Nirin No. 63, RT.3/RW.5, Petukangan Selatan, Kec. Pesanggrahan, Kota Jakarta Selatan, DKI Jakarta 12270'),
             'no_telp_lembaga' => Pengaturan::get('no_telp_lembaga', '0812-3456-7890'),
-            'nama_kepala' => Pengaturan::get('nama_kepala', 'H. Muhammad Yusuf, M.Pd.'),
+            'nama_kepala' => Pengaturan::getNamaKepala(),
+            'nip_kepala' => Pengaturan::getNipKepala(),
         ];
 
         $periodeStr = Carbon::parse($dariTanggal)->translatedFormat('d M Y') . ' s/d ' . Carbon::parse($sampaiTanggal)->translatedFormat('d M Y');
@@ -38,7 +39,7 @@ class LaporanService
         $kelas = null;
         $items = collect();
         $rekapData = null;
-        $isScored = in_array($jenis, ['iqro', 'quran', 'doa', 'hadist', 'surat', 'baca_buku']);
+        $isScored = in_array($jenis, ['iqro', 'quran', 'doa', 'hadist', 'baca_buku']);
         $orientation = $mode === 'kelas' ? 'landscape' : 'portrait';
 
         if ($mode === 'siswa') {
@@ -200,11 +201,10 @@ class LaporanService
         $labelJenis = match ($jenis) {
             'presensi' => 'Presensi dan Kehadiran Santri',
             'iqro' => 'Perkembangan Setoran Iqro',
-            'quran' => 'Perkembangan Setoran Al-Qur\'an',
-            'doa' => 'Hafalan Doa Harian',
-            'hadist' => 'Hafalan Hadits Pendek',
-            'surat' => 'Hafalan Nama Surat',
-            'baca_buku' => 'Baca Buku Alfabet',
+            'quran' => 'Setoran Nama Surat',
+            'doa' => 'Setoran Doa Harian',
+            'hadist' => 'Setoran Hadist',
+            'baca_buku' => 'Setoran Alfabet',
             'spp' => 'Pembayaran Iuran SPP',
             default => 'Laporan Akademik',
         };

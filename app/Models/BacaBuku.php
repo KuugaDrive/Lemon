@@ -18,6 +18,7 @@ class BacaBuku extends Model
         'siswa_id',
         'guru_id',
         'alfabet_id',
+        'alfabet_latin_id',
         'jilid',
         'halaman',
         'tgl_hafalan',
@@ -45,6 +46,24 @@ class BacaBuku extends Model
     public function alfabet(): BelongsTo
     {
         return $this->belongsTo(Alfabet::class, 'alfabet_id');
+    }
+
+    public function alfabetLatin(): BelongsTo
+    {
+        return $this->belongsTo(AlfabetLatin::class, 'alfabet_latin_id');
+    }
+
+    public function getHurufTampilAttribute(): string
+    {
+        if ($this->alfabetLatin) {
+            return $this->alfabetLatin->huruf . ' (Latin)';
+        }
+
+        if ($this->alfabet) {
+            return $this->alfabet->nama_alfabet . ($this->alfabet->ket ? ' - '.$this->alfabet->ket : '') . ' (Hijaiyah)';
+        }
+
+        return '-';
     }
 
     public function scopeVisibleTo(Builder $query, ?User $user = null): Builder

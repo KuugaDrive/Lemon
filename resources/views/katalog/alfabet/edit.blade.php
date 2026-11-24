@@ -7,7 +7,7 @@
                 </svg>
             </a>
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Ubah Huruf: {{ $alfabet->nama_alfabet }}
+                Ubah Huruf Hijaiyah: {{ $alfabet->nama_alfabet }}
             </h2>
         </div>
     </x-slot>
@@ -18,8 +18,8 @@
             @method('PUT')
 
             <div class="border-b border-slate-200 pb-4">
-                <h3 class="text-base font-semibold text-slate-900">Perbarui Data Huruf</h3>
-                <p class="text-sm text-slate-500">Sesuaikan nama huruf dan simbol Arab.</p>
+                <h3 class="text-base font-semibold text-slate-900">Perbarui Data Huruf Hijaiyah</h3>
+                <p class="text-sm text-slate-500">Sesuaikan nama latin dan huruf hijaiyah.</p>
             </div>
 
             <div>

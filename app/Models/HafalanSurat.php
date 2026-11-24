@@ -18,6 +18,8 @@ class HafalanSurat extends Model
         'siswa_id',
         'guru_id',
         'surat_id',
+        'ayat_mulai',
+        'ayat_selesai',
         'tgl_hafalan',
         'tgl_pengujian',
         'nilai',
@@ -25,10 +27,23 @@ class HafalanSurat extends Model
     ];
 
     protected $casts = [
+        'ayat_mulai' => 'integer',
+        'ayat_selesai' => 'integer',
         'tgl_hafalan' => 'date',
         'tgl_pengujian' => 'date',
         'nilai' => Penilaian::class,
     ];
+
+    public function getRentangAyatAttribute(): string
+    {
+        if ($this->ayat_mulai && $this->ayat_selesai) {
+            return $this->ayat_mulai == $this->ayat_selesai
+                ? "Ayat {$this->ayat_mulai}"
+                : "Ayat {$this->ayat_mulai}-{$this->ayat_selesai}";
+        }
+
+        return 'Seluruh Surat';
+    }
 
     public function siswa(): BelongsTo
     {

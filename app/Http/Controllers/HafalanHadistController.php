@@ -85,6 +85,11 @@ class HafalanHadistController extends Controller
 
     public function edit(HafalanHadist $hafalanHadist): View
     {
+        if (! $hafalanHadist->exists) {
+            $id = request()->route('hafalan_hadist') ?? request()->route('hadist');
+            $hafalanHadist = HafalanHadist::findOrFail($id);
+        }
+
         $user = auth()->user();
         if (! $user->canAccessSiswa($hafalanHadist->siswa)) {
             abort(403, 'Anda tidak memiliki akses ke data hafalan santri ini.');
@@ -99,6 +104,11 @@ class HafalanHadistController extends Controller
 
     public function update(HafalanHadistRequest $request, HafalanHadist $hafalanHadist): RedirectResponse
     {
+        if (! $hafalanHadist->exists) {
+            $id = request()->route('hafalan_hadist') ?? request()->route('hadist');
+            $hafalanHadist = HafalanHadist::findOrFail($id);
+        }
+
         $hafalanHadist->update($request->validated());
 
         return redirect()->route('hafalan.hadist.index')->with('success', 'Catatan hafalan Hadits berhasil diperbarui.');
@@ -106,6 +116,11 @@ class HafalanHadistController extends Controller
 
     public function destroy(HafalanHadist $hafalanHadist): RedirectResponse
     {
+        if (! $hafalanHadist->exists) {
+            $id = request()->route('hafalan_hadist') ?? request()->route('hadist');
+            $hafalanHadist = HafalanHadist::findOrFail($id);
+        }
+
         if (! auth()->user()->canAccessSiswa($hafalanHadist->siswa)) {
             abort(403, 'Anda tidak memiliki akses untuk menghapus data hafalan santri ini.');
         }

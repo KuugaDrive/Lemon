@@ -120,6 +120,7 @@
                         <tr>
                             <th class="px-6 py-3.5">Tgl Bayar</th>
                             <th class="px-6 py-3.5">Santri</th>
+                            <th class="px-6 py-3.5">Nama Orang Tua</th>
                             <th class="px-6 py-3.5">Wali Santri</th>
                             <th class="px-6 py-3.5">Kelas</th>
                             <th class="px-6 py-3.5">Periode</th>
@@ -133,7 +134,14 @@
                         @forelse($pembayarans as $item)
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-3.5 font-medium text-slate-900 whitespace-nowrap">
-                                    {{ $item->tgl_bayar->translatedFormat('d M Y') }}
+                                    <div class="flex items-center gap-2">
+                                        <span>{{ $item->tgl_bayar->translatedFormat('d M Y') }}</span>
+                                        @if($item->is_telat)
+                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-700 border border-rose-200" title="Pembayaran melewati batas jatuh tempo">
+                                                Telat
+                                            </span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="px-6 py-3.5">
                                     <a href="{{ route('spp.riwayat', $item->siswa) }}" class="font-semibold text-slate-900 hover:text-emerald-700 hover:underline">
@@ -141,8 +149,11 @@
                                     </a>
                                     <div class="text-xs text-slate-400 font-mono">{{ $item->siswa->nis }}</div>
                                 </td>
-                                <td class="px-6 py-3.5 text-slate-700">
-                                    {{ $item->siswa->nama_wali }}
+                                <td class="px-6 py-3.5 text-slate-700 whitespace-nowrap">
+                                    {{ $item->siswa->nama_orang_tua ?: ($item->siswa->nama_ayah_kandung ?: '-') }}
+                                </td>
+                                <td class="px-6 py-3.5 text-slate-700 whitespace-nowrap">
+                                    {{ $item->siswa->nama_wali ?: '-' }}
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap text-slate-600">
                                     {{ $item->siswa->kelas?->nama_kelas ?? '-' }}
@@ -171,7 +182,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="px-6 py-8 text-center text-slate-400">
+                                <td colspan="10" class="px-6 py-8 text-center text-slate-400">
                                     Belum ada data pembayaran SPP.
                                 </td>
                             </tr>

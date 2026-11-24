@@ -37,7 +37,8 @@
                     <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-600 border-b border-slate-200">
                         <tr>
                             <th class="px-6 py-4 text-center">No.</th>
-                            <th class="px-6 py-4">Nama Surat</th>
+                            <th class="px-6 py-4">Nama Latin</th>
+                            <th class="px-6 py-4 text-right">Nama Arab</th>
                             <th class="px-6 py-4 text-center">Juz Utama</th>
                             <th class="px-6 py-4 text-center">Jumlah Ayat</th>
                             <th class="px-6 py-4">Keterangan</th>
@@ -49,6 +50,7 @@
                             <tr class="hover:bg-slate-50/75 transition-colors">
                                 <td class="px-6 py-4 text-center font-mono font-bold text-slate-900">{{ $surat->nomor }}</td>
                                 <td class="px-6 py-4 font-semibold text-slate-900">{{ $surat->nama_surat }}</td>
+                                <td class="px-6 py-4 text-right font-serif text-lg font-bold text-emerald-800" dir="rtl">{{ $surat->nama_arab ?? '-' }}</td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-800 border border-slate-200">
                                         Juz {{ $surat->juz }}
@@ -81,7 +83,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-8 text-center text-slate-400 italic">Belum ada data surat.</td>
+                                <td colspan="7" class="px-6 py-8 text-center text-slate-400 italic">Belum ada data surat.</td>
                             </tr>
                         @endforelse
                     </tbody>

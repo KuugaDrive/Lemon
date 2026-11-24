@@ -175,7 +175,7 @@ class LaporanTest extends TestCase
 
     public function test_cetak_laporan_pdf_semua_modul_mode_siswa_berhasil(): void
     {
-        $modules = ['presensi', 'iqro', 'quran', 'doa', 'hadist', 'surat', 'baca_buku', 'spp'];
+        $modules = ['presensi', 'iqro', 'quran', 'doa', 'hadist', 'baca_buku', 'spp'];
         $dari = now()->startOfMonth()->toDateString();
         $sampai = now()->toDateString();
 
@@ -196,7 +196,7 @@ class LaporanTest extends TestCase
 
     public function test_cetak_laporan_pdf_semua_modul_mode_kelas_berhasil(): void
     {
-        $modules = ['presensi', 'iqro', 'quran', 'doa', 'hadist', 'surat', 'baca_buku', 'spp'];
+        $modules = ['presensi', 'iqro', 'quran', 'doa', 'hadist', 'baca_buku', 'spp'];
         $dari = now()->startOfMonth()->toDateString();
         $sampai = now()->toDateString();
 

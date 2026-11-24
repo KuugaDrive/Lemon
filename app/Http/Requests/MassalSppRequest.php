@@ -6,6 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class MassalSppRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('nominal')) {
+            $nominal = preg_replace('/[^\d]/', '', (string) $this->input('nominal'));
+            $this->merge(['nominal' => $nominal !== '' ? (int) $nominal : null]);
+        }
+    }
+
     public function authorize(): bool
     {
         $user = $this->user();
@@ -18,7 +26,7 @@ class MassalSppRequest extends FormRequest
             'kelas_id' => ['required', 'exists:kelas,id'],
             'bulan' => ['required', 'integer', 'between:1,12'],
             'tahun' => ['required', 'integer', 'between:2020,2100'],
-            'nominal' => ['required', 'integer', 'min:1'],
+            'nominal' => ['required', 'integer', 'min:1', 'max:100000000'],
             'tgl_bayar' => ['required', 'date', 'before_or_equal:today'],
             'siswa_ids' => ['required', 'array', 'min:1'],
             'siswa_ids.*' => ['exists:siswas,id'],

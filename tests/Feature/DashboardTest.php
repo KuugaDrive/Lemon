@@ -174,15 +174,6 @@ class DashboardTest extends TestCase
             'nilai' => Penilaian::BSH,
         ]);
 
-        HafalanSurat::create([
-            'siswa_id' => $siswaA->id,
-            'guru_id' => $this->guru->id,
-            'surat_id' => $surat->id,
-            'tgl_hafalan' => $today,
-            'tgl_pengujian' => $today,
-            'nilai' => Penilaian::BSH,
-        ]);
-
         BacaBuku::create([
             'siswa_id' => $siswaB->id,
             'guru_id' => $this->admin->id,
@@ -194,14 +185,14 @@ class DashboardTest extends TestCase
             'nilai' => Penilaian::BSH,
         ]);
 
-        // Admin sees all 6 records
+        // Admin sees all 5 records
         $responseAdmin = $this->actingAs($this->admin)->get('/dashboard');
         $responseAdmin->assertStatus(200);
-        $responseAdmin->assertViewHas('setoranHariIniCount', 6);
+        $responseAdmin->assertViewHas('setoranHariIniCount', 5);
 
-        // Guru (assigned to kelasA where siswaA is) sees only the 5 records for siswaA
+        // Guru (assigned to kelasA where siswaA is) sees only the 4 records for siswaA
         $responseGuru = $this->actingAs($this->guru)->get('/dashboard');
         $responseGuru->assertStatus(200);
-        $responseGuru->assertViewHas('setoranHariIniCount', 5);
+        $responseGuru->assertViewHas('setoranHariIniCount', 4);
     }
 }

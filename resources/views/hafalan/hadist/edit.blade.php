@@ -7,7 +7,7 @@
                 </svg>
             </a>
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Ubah Catatan Hafalan Hadits Pendek
+                Ubah Catatan Setoran Hadist
             </h2>
         </div>
     </x-slot>

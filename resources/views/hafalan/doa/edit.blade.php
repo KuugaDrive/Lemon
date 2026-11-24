@@ -7,7 +7,7 @@
                 </svg>
             </a>
             <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-                Ubah Catatan Hafalan Doa Harian
+                Ubah Catatan Setoran Doa Harian
             </h2>
         </div>
     </x-slot>

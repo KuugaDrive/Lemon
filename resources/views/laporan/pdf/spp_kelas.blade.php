@@ -30,7 +30,7 @@
                 <td>{{ $item->tgl_bayar->translatedFormat('d M Y') }}</td>
                 <td class="font-mono">{{ $item->siswa->nis }}</td>
                 <td class="font-bold">{{ $item->siswa->nama_siswa }}</td>
-                <td>{{ $item->siswa->nama_wali }}</td>
+                <td>{{ $item->siswa->wali_tampil }}</td>
                 <td>{{ $item->periode_label }}</td>
                 <td class="text-right font-mono">{{ $item->nominal_rupiah }}</td>
                 <td>{{ $item->ket ?: '-' }}</td>

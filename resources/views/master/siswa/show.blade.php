@@ -29,6 +29,10 @@
                             <dd class="font-medium text-slate-900 mt-0.5">{{ $siswa->nama_siswa }}</dd>
                         </div>
                         <div>
+                            <dt class="text-slate-500">Jenis Kelamin</dt>
+                            <dd class="font-medium text-slate-900 mt-0.5">{{ $siswa->jenis_kelamin_label }}</dd>
+                        </div>
+                        <div>
                             <dt class="text-slate-500">Kelas</dt>
                             <dd class="font-medium text-slate-900 mt-0.5">{{ $siswa->kelas->nama_kelas ?? '-' }}</dd>
                         </div>
@@ -51,6 +55,10 @@
                         <div>
                             <dt class="text-slate-500">Nama Ibu Kandung</dt>
                             <dd class="font-medium text-slate-900 mt-0.5">{{ $siswa->nama_ibu_kandung ?: '-' }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-slate-500">Nama Wali</dt>
+                            <dd class="font-medium text-slate-900 mt-0.5">{{ $siswa->nama_wali ?: '-' }}</dd>
                         </div>
                         <div>
                             <dt class="text-slate-500">Nomor HP Ortu</dt>

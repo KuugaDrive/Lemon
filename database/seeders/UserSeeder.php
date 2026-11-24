@@ -66,5 +66,19 @@ class UserSeeder extends Seeder
         if (!empty($kelasToSync)) {
             $guru2->kelas()->syncWithoutDetaching($kelasToSync);
         }
+
+        // 4. Kepala Sekolah (NIP: KEPSEK01, Role: kepsek)
+        $kepsek = User::firstOrCreate(
+            ['nip' => 'KEPSEK01'],
+            [
+                'name' => 'H. Muhammad Yusuf, M.Pd.',
+                'email' => 'kepsek@lemon.test',
+                'alamat' => 'Jl. H. Nirin No. 63, RT.3/RW.5, Petukangan Selatan, Kec. Pesanggrahan, Kota Jakarta Selatan, DKI Jakarta 12270',
+                'no_hp' => '0812-3456-7890',
+                'password' => Hash::make('password'),
+                'jenis_kelamin' => 'L',
+            ]
+        );
+        $kepsek->syncRoles(['kepsek']);
     }
 }

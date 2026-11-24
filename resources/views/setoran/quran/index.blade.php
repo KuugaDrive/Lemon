@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-            Setoran Al-Qur'an
+            Setoran Nama Surat
         </h2>
     </x-slot>
 
     <div class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h3 class="text-lg font-bold text-slate-900">Daftar Setoran Al-Qur'an</h3>
-                <p class="text-sm text-slate-500">Catatan riwayat setoran hafalan dan tilawah Al-Qur'an santri.</p>
+                <h3 class="text-lg font-bold text-slate-900">Daftar Setoran Nama Surat</h3>
+                <p class="text-sm text-slate-500">Catatan riwayat setoran hafalan dan tilawah surat Al-Qur'an santri.</p>
             </div>
             <a href="{{ route('setoran.quran.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors whitespace-nowrap self-start sm:self-auto">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +100,10 @@
                                     {{ $item->siswa->kelas?->nama_kelas ?? '-' }}
                                 </td>
                                 <td class="px-6 py-3.5 font-semibold text-slate-800 whitespace-nowrap">
-                                    {{ $item->surat->nomor }}. {{ $item->surat->nama_surat }}
+                                    <div>{{ $item->surat->nomor }}. {{ $item->surat->nama_surat }}</div>
+                                    @if($item->surat->nama_arab)
+                                        <div class="text-xs font-serif font-bold text-emerald-700" dir="rtl">{{ $item->surat->nama_arab }}</div>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-3.5 text-slate-700 whitespace-nowrap">
                                     {{ $item->ayat_mulai }} s/d {{ $item->ayat_selesai }}

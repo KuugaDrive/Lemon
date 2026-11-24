@@ -145,7 +145,14 @@
     <!-- KOP LEMBAGA -->
     <table class="header-table">
         <tr>
-            <td style="text-align: center;">
+            <td style="width: 80px; vertical-align: middle; text-align: center;">
+                @if(extension_loaded('gd') && file_exists(public_path('storage/logo-binar-693.png')))
+                    <img src="{{ public_path('storage/logo-binar-693.png') }}" style="height: 55px; max-width: 85px;">
+                @elseif(extension_loaded('gd') && file_exists(public_path('images/logo-binar-693.png')))
+                    <img src="{{ public_path('images/logo-binar-693.png') }}" style="height: 55px; max-width: 85px;">
+                @endif
+            </td>
+            <td style="text-align: center; vertical-align: middle;">
                 <div class="lembaga-name">{{ $profil['nama_lembaga'] }}</div>
                 <div class="lembaga-meta">{{ $profil['alamat_lembaga'] }} | Kontak/WA: {{ $profil['no_telp_lembaga'] }}</div>
             </td>
@@ -168,8 +175,8 @@
             <tr>
                 <td class="meta-label">NIS</td>
                 <td>: <span class="font-mono">{{ $siswa->nis }}</span></td>
-                <td class="meta-label">Nama Wali</td>
-                <td>: {{ $siswa->nama_orang_tua }} ({{ $siswa->no_hp_ortu ?: '-' }})</td>
+                <td class="meta-label">Wali Santri</td>
+                <td>: {{ $siswa->wali_tampil }} ({{ $siswa->no_hp_ortu ?: '-' }})</td>
             </tr>
         @else
             <tr>
@@ -211,16 +218,20 @@
             </td>
             <td>
                 Jakarta, {{ now()->translatedFormat('d F Y') }}<br>
-                Kepala Lembaga<br>
+                Kepala Sekolah<br>
                 <div class="signature-space"></div>
                 <span class="signature-name">{{ $profil['nama_kepala'] }}</span><br>
-                <span>Pimpinan Lembaga</span>
+                @if(!empty($profil['nip_kepala']))
+                    <span>NIP. {{ $profil['nip_kepala'] }}</span>
+                @else
+                    <span>Pimpinan Lembaga</span>
+                @endif
             </td>
         </tr>
     </table>
 
     <div class="footer-note">
-        Dicetak secara otomatis melalui Sistem Informasi PAUD/TPQ Lemon pada {{ now()->translatedFormat('d F Y H:i:s') }}
+        Dicetak secara otomatis melalui Sistem Informasi Binar Sunnah School pada {{ now()->translatedFormat('d F Y H:i:s') }}
     </div>
 </body>
 </html>

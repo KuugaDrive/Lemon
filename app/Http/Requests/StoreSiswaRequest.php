@@ -30,10 +30,12 @@ class StoreSiswaRequest extends FormRequest
         return [
             'nis' => ['required', 'string', 'max:50', 'unique:siswas,nis'],
             'nama_siswa' => ['required', 'string', 'max:255'],
+            'jenis_kelamin' => ['nullable', 'in:L,P'],
             'alamat' => ['nullable', 'string'],
             'nama_ayah_kandung' => ['nullable', 'string', 'max:255'],
             'nama_ibu_kandung' => ['nullable', 'string', 'max:255'],
             'nama_orang_tua' => ['nullable', 'string', 'max:255'],
+            'nama_wali' => ['nullable', 'string', 'max:255'],
             'no_hp_ortu' => ['nullable', 'string', 'max:30'],
             'kelas_id' => ['required', 'exists:kelas,id'],
         ];
@@ -53,10 +55,12 @@ class StoreSiswaRequest extends FormRequest
         return [
             'nis' => 'NIS',
             'nama_siswa' => 'nama santri',
+            'jenis_kelamin' => 'jenis kelamin',
             'alamat' => 'alamat',
             'nama_ayah_kandung' => 'nama ayah kandung',
             'nama_ibu_kandung' => 'nama ibu kandung',
             'nama_orang_tua' => 'nama orang tua',
+            'nama_wali' => 'nama wali',
             'no_hp_ortu' => 'nomor HP orang tua',
             'kelas_id' => 'kelas',
         ];
