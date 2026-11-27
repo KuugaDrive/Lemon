@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['can:kelola-spp'])->prefix('spp')->name('spp.')->group(function () {
         Route::get('/', [\App\Http\Controllers\SppController::class, 'index'])->name('index');
         Route::get('/create', [\App\Http\Controllers\SppController::class, 'create'])->name('create');
+        Route::get('/cek-tagihan', [\App\Http\Controllers\SppController::class, 'cekTagihan'])->name('cek-tagihan');
         Route::post('/', [\App\Http\Controllers\SppController::class, 'store'])->name('store');
         Route::get('/massal', [\App\Http\Controllers\SppController::class, 'massal'])->name('massal');
         Route::post('/massal', [\App\Http\Controllers\SppController::class, 'storeMassal'])->name('massal.store');

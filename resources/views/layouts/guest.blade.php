@@ -9,6 +9,8 @@
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="{{ asset('images/logo-sekolah.png') }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo-sekolah.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

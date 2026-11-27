@@ -49,4 +49,20 @@ class MassalSppRequest extends FormRequest
             'siswa_ids.min' => 'Minimal pilih 1 santri untuk diproses.',
         ];
     }
+
+    public function withValidator(\Illuminate\Validation\Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            $defaultNominal = (int) \App\Models\Pengaturan::get('spp_nominal_default', 150000);
+            $inputNominal = (int) $this->input('nominal');
+            if ($inputNominal > $defaultNominal) {
+                $maxRp = number_format($defaultNominal, 0, ',', '.');
+                $inputRp = number_format($inputNominal, 0, ',', '.');
+                $validator->errors()->add(
+                    'nominal',
+                    "Nominal pembayaran massal (Rp {$inputRp}) tidak boleh melebihi tarif standar SPP (Maksimal: Rp {$maxRp})."
+                );
+            }
+        });
+    }
 }

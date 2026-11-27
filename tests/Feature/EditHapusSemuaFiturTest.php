@@ -279,6 +279,7 @@ class EditHapusSemuaFiturTest extends TestCase
 
     public function test_edit_update_hapus_spp_berhasil(): void
     {
+        \App\Models\Pengaturan::set('spp_nominal_default', 200000);
         $spp = PembayaranSpp::create([
             'siswa_id' => $this->siswa->id,
             'bulan' => 5,

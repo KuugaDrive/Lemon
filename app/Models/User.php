@@ -71,10 +71,6 @@ class User extends Authenticatable
     public static function getKepsek(): ?self
     {
         try {
-            if (!\Spatie\Permission\Models\Role::where('name', 'kepsek')->exists()) {
-                return null;
-            }
-
             return static::role('kepsek')->first();
         } catch (\Throwable $e) {
             return null;

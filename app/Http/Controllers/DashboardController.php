@@ -40,6 +40,7 @@ class DashboardController extends Controller
             $presensiHariIni = Presensi::whereDate('tanggal', $today)->get();
             $presensiHadirCount = $presensiHariIni->filter(fn ($p) => $p->status === StatusPresensi::Hadir)->count();
             $totalPresensiHariIni = $presensiHariIni->count();
+            $presensiBySiswa = $presensiHariIni->groupBy('siswa_id');
 
             $setoranHariIniCount = SetoranIqro::whereDate('tanggal', $today)->count()
                 + SetoranQuran::whereDate('tanggal', $today)->count()
@@ -47,11 +48,8 @@ class DashboardController extends Controller
                 + HafalanHadist::whereDate('tgl_pengujian', $today)->count()
                 + BacaBuku::whereDate('tgl_pengujian', $today)->count();
 
-            $kelasList = Kelas::with(['gurus', 'siswas'])->get()->map(function ($kelas) use ($today) {
-                $siswaIds = $kelas->siswas->pluck('id');
-                $presensi = Presensi::whereDate('tanggal', $today)
-                    ->whereIn('siswa_id', $siswaIds)
-                    ->get();
+            $kelasList = Kelas::with(['gurus', 'siswas'])->get()->map(function ($kelas) use ($presensiBySiswa) {
+                $presensi = $kelas->siswas->flatMap(fn ($s) => $presensiBySiswa->get($s->id, collect()));
 
                 return [
                     'id' => $kelas->id,
@@ -92,6 +90,7 @@ class DashboardController extends Controller
             ->get();
         $presensiHadirCount = $presensiHariIni->filter(fn ($p) => $p->status === StatusPresensi::Hadir)->count();
         $totalPresensiHariIni = $presensiHariIni->count();
+        $presensiBySiswa = $presensiHariIni->groupBy('siswa_id');
 
         $setoranHariIniCount = SetoranIqro::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
             + SetoranQuran::whereDate('tanggal', $today)->whereIn('siswa_id', $siswaIds)->count()
@@ -99,11 +98,8 @@ class DashboardController extends Controller
             + HafalanHadist::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count()
             + BacaBuku::whereDate('tgl_pengujian', $today)->whereIn('siswa_id', $siswaIds)->count();
 
-        $kelasList = $kelasUser->map(function ($kelas) use ($today) {
-            $siswaIds = $kelas->siswas->pluck('id');
-            $presensi = Presensi::whereDate('tanggal', $today)
-                ->whereIn('siswa_id', $siswaIds)
-                ->get();
+        $kelasList = $kelasUser->map(function ($kelas) use ($presensiBySiswa) {
+            $presensi = $kelas->siswas->flatMap(fn ($s) => $presensiBySiswa->get($s->id, collect()));
 
             return [
                 'id' => $kelas->id,

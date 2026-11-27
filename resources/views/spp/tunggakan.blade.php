@@ -61,15 +61,15 @@
             </div>
 
             <div class="p-5 bg-amber-50 rounded-xl shadow-sm border border-amber-200">
-                <span class="text-xs font-semibold text-amber-800 uppercase tracking-wider">Santri Belum Bayar</span>
+                <span class="text-xs font-semibold text-amber-800 uppercase tracking-wider">Santri Belum Lunas</span>
                 <div class="text-2xl font-bold text-amber-700 mt-1">{{ $tunggakanData['total_santri'] }} Anak</div>
-                <div class="text-xs text-amber-600 mt-1">Perlu konfirmasi / penagihan</div>
+                <div class="text-xs text-amber-600 mt-1">Perlu konfirmasi / pelunasan</div>
             </div>
 
             <div class="p-5 bg-rose-50 rounded-xl shadow-sm border border-rose-200">
-                <span class="text-xs font-semibold text-rose-800 uppercase tracking-wider">Potensi SPP Tertunggak</span>
+                <span class="text-xs font-semibold text-rose-800 uppercase tracking-wider">Total Sisa Tunggakan</span>
                 <div class="text-2xl font-bold text-rose-700 mt-1">Rp {{ number_format($tunggakanData['total_nominal'], 0, ',', '.') }}</div>
-                <div class="text-xs text-rose-600 mt-1">Asumsi default Rp {{ number_format($tunggakanData['default_nominal'], 0, ',', '.') }}/bulan</div>
+                <div class="text-xs text-rose-600 mt-1">Akumulasi sisa kekurangan riil (Tarif Rp {{ number_format($tunggakanData['default_nominal'], 0, ',', '.') }}/bln)</div>
             </div>
         </div>
 
@@ -85,7 +85,7 @@
                             <th class="px-6 py-3.5">Nama Orang Tua</th>
                             <th class="px-6 py-3.5">Wali Santri</th>
                             <th class="px-6 py-3.5">Kontak WhatsApp</th>
-                            <th class="px-6 py-3.5 text-center">Status</th>
+                            <th class="px-6 py-3.5 text-center">Status & Sisa</th>
                             <th class="px-6 py-3.5 text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -128,9 +128,18 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-3.5 text-center whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">
-                                        Belum Lunas
-                                    </span>
+                                    @if($siswa->status_tunggakan === 'kurang_bayar')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                                            Kurang Bayar
+                                        </span>
+                                        <div class="text-[11px] text-slate-500 mt-0.5">Terbayar: Rp {{ number_format($siswa->total_dibayar, 0, ',', '.') }}</div>
+                                        <div class="text-xs font-bold text-rose-600">Sisa: Rp {{ number_format($siswa->sisa_tunggakan, 0, ',', '.') }}</div>
+                                    @else
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">
+                                            Belum Bayar
+                                        </span>
+                                        <div class="text-xs font-bold text-rose-600 mt-0.5">Sisa: Rp {{ number_format($siswa->sisa_tunggakan, 0, ',', '.') }}</div>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-3.5 text-right whitespace-nowrap">
                                     <div class="inline-flex items-center gap-2">
@@ -140,7 +149,7 @@
                                             </svg>
                                             <span>Surat Tunggakan</span>
                                         </a>
-                                        <a href="{{ route('spp.create', ['siswa_id' => $siswa->id, 'bulan' => $bulan, 'tahun' => $tahun]) }}" class="inline-flex items-center px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors gap-1">
+                                        <a href="{{ route('spp.create', ['siswa_id' => $siswa->id, 'bulan' => $bulan, 'tahun' => $tahun, 'nominal' => $siswa->sisa_tunggakan]) }}" class="inline-flex items-center px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors gap-1" title="Bayar sisa tagihan Rp {{ number_format($siswa->sisa_tunggakan, 0, ',', '.') }}">
                                             <span>Bayar Sekarang</span>
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

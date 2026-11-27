@@ -159,7 +159,16 @@
                                     {{ $item->siswa->kelas?->nama_kelas ?? '-' }}
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap font-medium text-slate-800">
-                                    {{ $item->periode_label }}
+                                    <div>{{ $item->periode_label }}</div>
+                                    @if($item->nominal >= ($defaultNominal ?? 150000))
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                                            Penuh
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800" title="Pembayaran sebagian / cicilan">
+                                            Cicilan
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-3.5 text-right font-mono font-semibold text-slate-900 whitespace-nowrap">
                                     {{ $item->nominal_rupiah }}

@@ -39,16 +39,30 @@ class StoreSppRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($this->filled('siswa_id') && $this->filled('bulan') && $this->filled('tahun')) {
-                $exists = PembayaranSpp::where('siswa_id', $this->input('siswa_id'))
+                $defaultNominal = (int) \App\Models\Pengaturan::get('spp_nominal_default', 150000);
+                $totalBayar = (int) PembayaranSpp::where('siswa_id', $this->input('siswa_id'))
                     ->where('bulan', $this->input('bulan'))
                     ->where('tahun', $this->input('tahun'))
-                    ->exists();
+                    ->sum('nominal');
 
-                if ($exists) {
+                if ($totalBayar >= $defaultNominal) {
                     $namaBulan = Carbon::createFromDate(null, (int) $this->input('bulan'), 1)->translatedFormat('F');
+                    $terbayarRp = number_format($totalBayar, 0, ',', '.');
                     $validator->errors()->add(
                         'bulan',
-                        "SPP santri ini untuk periode {$namaBulan} {$this->input('tahun')} sudah pernah dibayar."
+                        "SPP santri ini untuk periode {$namaBulan} {$this->input('tahun')} sudah Lunas (Total terbayar: Rp {$terbayarRp})."
+                    );
+                    return;
+                }
+
+                $sisaTagihan = $defaultNominal - $totalBayar;
+                $inputNominal = (int) $this->input('nominal');
+                if ($inputNominal > $sisaTagihan) {
+                    $sisaRp = number_format($sisaTagihan, 0, ',', '.');
+                    $inputRp = number_format($inputNominal, 0, ',', '.');
+                    $validator->errors()->add(
+                        'nominal',
+                        "Nominal pembayaran (Rp {$inputRp}) tidak boleh melebihi sisa tagihan santri (Maksimal: Rp {$sisaRp})."
                     );
                 }
             }

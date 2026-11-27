@@ -39,17 +39,30 @@ class UpdateSppRequest extends FormRequest
         $validator->after(function ($validator) {
             $current = $this->route('spp');
             if ($current && $this->filled('bulan') && $this->filled('tahun')) {
-                $exists = PembayaranSpp::where('siswa_id', $current->siswa_id)
+                $defaultNominal = (int) \App\Models\Pengaturan::get('spp_nominal_default', 150000);
+                $totalBayarLain = (int) PembayaranSpp::where('siswa_id', $current->siswa_id)
                     ->where('bulan', $this->input('bulan'))
                     ->where('tahun', $this->input('tahun'))
                     ->where('id', '!=', $current->id)
-                    ->exists();
+                    ->sum('nominal');
 
-                if ($exists) {
+                if ($totalBayarLain >= $defaultNominal) {
                     $namaBulan = Carbon::createFromDate(null, (int) $this->input('bulan'), 1)->translatedFormat('F');
                     $validator->errors()->add(
                         'bulan',
-                        "SPP santri ini untuk periode {$namaBulan} {$this->input('tahun')} sudah pernah dibayar."
+                        "SPP santri ini untuk periode {$namaBulan} {$this->input('tahun')} sudah Lunas dari transaksi lainnya."
+                    );
+                    return;
+                }
+
+                $sisaTagihan = $defaultNominal - $totalBayarLain;
+                $inputNominal = (int) $this->input('nominal');
+                if ($inputNominal > $sisaTagihan) {
+                    $sisaRp = number_format($sisaTagihan, 0, ',', '.');
+                    $inputRp = number_format($inputNominal, 0, ',', '.');
+                    $validator->errors()->add(
+                        'nominal',
+                        "Nominal pembayaran (Rp {$inputRp}) tidak boleh melebihi sisa tagihan santri (Maksimal: Rp {$sisaRp})."
                     );
                 }
             }

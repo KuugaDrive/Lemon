@@ -7,6 +7,11 @@
 
         <title>{{ config('app.name', 'Binar Sunnah School') }} - Sistem Informasi Sekolah</title>
 
+        <!-- Favicon / Logo di Title Browser Tab -->
+        <link rel="icon" type="image/png" href="{{ asset('images/logo-sekolah.png') }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo-sekolah.png') }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
@@ -318,11 +323,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
-                        @isset($header)
-                            <div>{{ $header }}</div>
-                        @else
-                            <h1 class="text-lg font-semibold text-slate-800">Binar Sunnah School</h1>
-                        @endisset
+                        <div class="flex items-center gap-2.5">
+                            <img src="{{ asset('images/logo-sekolah.png') }}" alt="Logo Binar Sunnah" class="h-8 w-auto object-contain">
+                            @isset($header)
+                                <div>{{ $header }}</div>
+                            @else
+                                <h1 class="text-lg font-semibold text-slate-800">Binar Sunnah School</h1>
+                            @endisset
+                        </div>
                     </div>
 
                     <!-- Right user menu -->

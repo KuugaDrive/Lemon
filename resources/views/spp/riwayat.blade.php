@@ -69,9 +69,23 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-3.5 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
                                         {{ $item->periode_label }}
                                     </span>
+                                    @php
+                                        $periodeKey = $item->tahun . '-' . $item->bulan;
+                                        $totalPeriode = $terbayarPerPeriode[$periodeKey] ?? $item->nominal;
+                                        $isLunas = $totalPeriode >= ($defaultNominal ?? 150000);
+                                    @endphp
+                                    @if($isLunas)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 ml-1">
+                                            Lunas
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 ml-1" title="Total terbayar Rp {{ number_format($totalPeriode, 0, ',', '.') }}">
+                                            Kurang Bayar
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-3.5 text-right font-mono font-semibold text-slate-900 whitespace-nowrap">
                                     {{ $item->nominal_rupiah }}

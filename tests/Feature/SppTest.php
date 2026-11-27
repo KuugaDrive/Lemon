@@ -202,6 +202,147 @@ class SppTest extends TestCase
         $this->assertEquals($this->siswa2->id, $tunggakan['siswa_list']->first()->id);
     }
 
+    public function test_perhitungan_spp_dinamis_parsial_dan_pelunasan_lanjutan(): void
+    {
+        Pengaturan::set('spp_nominal_default', 150000);
+
+        // 1. Santri membayar sebagian: 100k dari 150k
+        $payload1 = [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 5,
+            'tahun' => 2026,
+            'nominal' => 100000,
+            'tgl_bayar' => '2026-05-02',
+            'ket' => 'Bayar awal 100k',
+        ];
+
+        $response1 = $this->actingAs($this->admin)->post(route('spp.store'), $payload1);
+        $response1->assertRedirect(route('spp.index'));
+
+        // 2. Cek endpoint cek-tagihan JSON
+        $cekRes = $this->actingAs($this->admin)->getJson(route('spp.cek-tagihan', [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 5,
+            'tahun' => 2026,
+        ]));
+        $cekRes->assertOk();
+        $cekRes->assertJson([
+            'default_nominal' => 150000,
+            'total_terbayar' => 100000,
+            'sisa_tagihan' => 50000,
+            'is_lunas' => false,
+            'status_label' => 'Kurang Bayar',
+        ]);
+
+        // 3. Cek monitoring tunggakan: Siswa 1 harus TETAP muncul di daftar tunggakan dengan status kurang bayar dan sisa 50k
+        $tunggakan = SppService::tunggakan(5, 2026, $this->kelasA->id);
+        $this->assertEquals(2, $tunggakan['total_santri']); // Siswa 1 dan Siswa 2
+        // Total tunggakan = 50k (siswa 1) + 150k (siswa 2) = 200k
+        $this->assertEquals(200000, $tunggakan['total_nominal']);
+
+        $itemSiswa1 = $tunggakan['siswa_list']->firstWhere('id', $this->siswa1->id);
+        $this->assertNotNull($itemSiswa1);
+        $this->assertEquals('kurang_bayar', $itemSiswa1->status_tunggakan);
+        $this->assertEquals(100000, $itemSiswa1->total_dibayar);
+        $this->assertEquals(50000, $itemSiswa1->sisa_tunggakan);
+
+        // Halaman monitoring tunggakan menampilkan info Kurang Bayar dan sisa
+        $resTunggakan = $this->actingAs($this->admin)->get(route('spp.tunggakan', ['bulan' => 5, 'tahun' => 2026]));
+        $resTunggakan->assertOk();
+        $resTunggakan->assertSee('Kurang Bayar');
+        $resTunggakan->assertSee('Terbayar: Rp 100.000');
+        $resTunggakan->assertSee('Sisa: Rp 50.000');
+
+        // 4. Pembayaran lanjutan 50k diizinkan untuk melunasi
+        $payload2 = [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 5,
+            'tahun' => 2026,
+            'nominal' => 50000,
+            'tgl_bayar' => '2026-05-15',
+            'ket' => 'Pelunasan 50k',
+        ];
+        $response2 = $this->actingAs($this->admin)->post(route('spp.store'), $payload2);
+        $response2->assertRedirect(route('spp.index'));
+
+        // 5. Setelah total 150k, Siswa 1 sudah LUNAS dan hilang dari daftar tunggakan
+        $tunggakanSetelahLunas = SppService::tunggakan(5, 2026, $this->kelasA->id);
+        $this->assertEquals(1, $tunggakanSetelahLunas['total_santri']); // Hanya Siswa 2
+        $this->assertNull($tunggakanSetelahLunas['siswa_list']->firstWhere('id', $this->siswa1->id));
+
+        // 6. Pembayaran ketiga setelah lunas harus DITOLAK
+        $payload3 = [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 5,
+            'tahun' => 2026,
+            'nominal' => 50000,
+            'tgl_bayar' => '2026-05-20',
+        ];
+        $response3 = $this->actingAs($this->admin)->post(route('spp.store'), $payload3);
+        $response3->assertSessionHasErrors('bulan');
+    }
+
+    public function test_nominal_melebihi_tarif_spp_atau_sisa_tagihan_ditolak(): void
+    {
+        Pengaturan::set('spp_nominal_default', 150000);
+
+        // 1. Siswa belum bayar (tarif 150k), coba input 250k -> Ditolak!
+        $payloadLebih = [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 6,
+            'tahun' => 2026,
+            'nominal' => 250000,
+            'tgl_bayar' => now()->toDateString(),
+        ];
+        $resLebih = $this->actingAs($this->admin)->post(route('spp.store'), $payloadLebih);
+        $resLebih->assertSessionHasErrors('nominal');
+
+        // 2. Bayar 100k -> Berhasil (sisa 50k)
+        $payload100 = [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 6,
+            'tahun' => 2026,
+            'nominal' => 100000,
+            'tgl_bayar' => now()->toDateString(),
+        ];
+        $res100 = $this->actingAs($this->admin)->post(route('spp.store'), $payload100);
+        $res100->assertRedirect(route('spp.index'));
+
+        // 3. Sisa 50k, coba bayar 60k -> Ditolak karena melebihi sisa 50k!
+        $payload60 = [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 6,
+            'tahun' => 2026,
+            'nominal' => 60000,
+            'tgl_bayar' => now()->toDateString(),
+        ];
+        $res60 = $this->actingAs($this->admin)->post(route('spp.store'), $payload60);
+        $res60->assertSessionHasErrors('nominal');
+
+        // 4. Bayar tepat 50k -> Berhasil!
+        $payload50 = [
+            'siswa_id' => $this->siswa1->id,
+            'bulan' => 6,
+            'tahun' => 2026,
+            'nominal' => 50000,
+            'tgl_bayar' => now()->toDateString(),
+        ];
+        $res50 = $this->actingAs($this->admin)->post(route('spp.store'), $payload50);
+        $res50->assertRedirect(route('spp.index'));
+
+        // 5. Input massal melebihi tarif default 150k -> Ditolak!
+        $payloadMassal = [
+            'kelas_id' => $this->kelasA->id,
+            'bulan' => 7,
+            'tahun' => 2026,
+            'nominal' => 200000,
+            'tgl_bayar' => now()->toDateString(),
+            'siswa_ids' => [$this->siswa1->id],
+        ];
+        $resMassal = $this->actingAs($this->admin)->post(route('spp.massal.store'), $payloadMassal);
+        $resMassal->assertSessionHasErrors('nominal');
+    }
+
     public function test_siswa_dengan_riwayat_spp_tidak_dapat_dihapus(): void
     {
         PembayaranSpp::create([

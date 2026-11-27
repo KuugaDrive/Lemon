@@ -297,6 +297,7 @@ class Revisi1Test extends TestCase
 
     public function test_input_nominal_uang_berhasil_menerima_format_bulat_ribuan(): void
     {
+        Pengaturan::set('spp_nominal_default', 1000000);
         $testCases = [
             ['input' => '400.000', 'expected' => 400000, 'bulan' => 1],
             ['input' => 'Rp 150.000', 'expected' => 150000, 'bulan' => 2],

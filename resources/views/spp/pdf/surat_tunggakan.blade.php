@@ -270,10 +270,11 @@
     <table class="tabel-tunggakan">
         <thead>
             <tr>
-                <th style="width: 35px;">No</th>
+                <th style="width: 30px;">No</th>
                 <th>Bulan yang Ditunggak</th>
-                <th style="width: 140px;">Batas Jatuh Tempo</th>
-                <th style="width: 150px; text-align: right;">Total per Bulan</th>
+                <th style="width: 120px;">Batas Jatuh Tempo</th>
+                <th style="width: 130px; text-align: center;">Status</th>
+                <th style="width: 130px; text-align: right;">Sisa Tagihan</th>
             </tr>
         </thead>
         <tbody>
@@ -282,18 +283,23 @@
                     <td style="text-align: center; color: #64748b;">{{ $idx + 1 }}</td>
                     <td style="font-weight: 600;">{{ $item['periode_label'] }}</td>
                     <td style="text-align: center; color: #475569;">{{ $item['jatuh_tempo'] }}</td>
+                    <td style="text-align: center; font-size: 8.5pt; color: {{ ($item['terbayar'] ?? 0) > 0 ? '#b45309' : '#b91c1c' }};">
+                        {{ $item['status_info'] ?? 'Belum Bayar' }}
+                    </td>
                     <td style="text-align: right; font-family: monospace; font-weight: bold;">{{ $item['nominal_rupiah'] }}</td>
                 </tr>
             @endforeach
             <tr class="total-row">
-                <td colspan="3" style="text-align: right; text-transform: uppercase;">Total Keseluruhan :</td>
+                <td colspan="4" style="text-align: right; text-transform: uppercase;">Total Tunggakan :</td>
                 <td style="text-align: right; font-family: monospace; color: #b91c1c; font-size: 10.5pt;">{{ $totalKeseluruhanRupiah }}</td>
             </tr>
         </tbody>
     </table>
 
     <div class="terbilang-box">
-        Terbilang: <strong># {{ $terbilang }} #</strong>
+        Terbilang: <strong># {{ $terbilang }} #</strong> <br><br><br>
+        <p> Pembayaran dapat dilakukan melalui rekening di bawah ini: </p>
+        <strong>Bank: BSI - A/N  Binar Sunnah School - No. Rekening: 7326863453 </strong>
     </div>
 
     <p>
